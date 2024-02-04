@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QDebug>
 
+//Should handle timing of updates, play, pause, fastforward,
 class GameLoop : public QObject
 {
     Q_OBJECT
