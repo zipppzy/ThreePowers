@@ -1,23 +1,33 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "location.h"
+#include "action.h"
+#include "skill.h"
+#include <unordered_map>
+
+//list of all skills
+enum class SkillEnum{
+    qiGathering,
+    focus
+};
+
 class Player
 {
 public:
     Player();
+
 private:
-    int age;    //measured  in smallest time unit
-    int lifespan;
+    unsigned long long int age;    //measured in seconds
+    unsigned long long int lifespan;
 
-    double strength;
-    double intelligence;
-    double memory;
-    double speed;
-    double perception;
-    double charisma;
-    double willpower;
-    double stamina;
+    std::unordered_map<SkillEnum, Skill> skillLevels;
 
+    double qi;
+    double maxQi;
+
+    Location* currentLocation;
+    Action* currentAction;
 };
 
 #endif // PLAYER_H
