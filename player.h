@@ -6,19 +6,21 @@
 #include "skill.h"
 #include "skillnames.h"
 #include "toml.hpp"
-#include <unordered_map>
 
 
 class Player
 {
 public:
     Player();
+    bool hasSkill(std::string name);
+    void savePlayerState();
+
 
 private:
     unsigned long long int age;    //measured in seconds
     unsigned long long int lifespan;
 
-    std::unordered_map<SkillName, Skill> skillLevels;
+    std::vector<Skill> skills;
 
     double qi;
     double maxQi;
