@@ -1,6 +1,8 @@
 #ifndef GAMELOOP_H
 #define GAMELOOP_H
 
+#include "player.h"
+#include "location.h"
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
@@ -14,6 +16,7 @@ private:
     bool paused;
     //smallest usable unit of time
     unsigned int ticks = 0;
+    Player player;
 public:
     GameLoop(QObject *parent = nullptr);
     void startTimer();

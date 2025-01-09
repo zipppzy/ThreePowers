@@ -17,6 +17,14 @@ Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor, unsi
     this->level = level;
     this->xp = xp;
 }
+
+Skill::Skill(toml::table skillTable){
+    this->name = skillTable["name"].value_or("");
+    this->level = skillTable["level"].value_or(-1);
+    this->xp = skillTable["xp"].value_or(-1.0);
+    this->baseXpForLevel = skillTable["baseXpForLevel"].value_or(-1.0);
+    this->scalingFactor = skillTable["scalingFactor"].value_or(-1.0);
+}
 unsigned int Skill::getLevel(){
     return this->level;
 }

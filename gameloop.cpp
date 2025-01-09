@@ -2,6 +2,7 @@
 
 GameLoop::GameLoop(QObject *parent):QObject(parent)
 {
+    player = Player(0, 100000, new Location("Village"), new Action());
     startTimer();
 }
 

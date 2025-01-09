@@ -11,6 +11,7 @@ public:
     Skill();
     Skill(std::string name, double baseXpForLevel, double scalingFactor);
     Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int level, double xp);
+    Skill(toml::table skillTable);
 
     std::string name;
     unsigned int getLevel();

@@ -12,8 +12,10 @@ class Player
 {
 public:
     Player();
+    Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation, Action* currentAction);
     bool hasSkill(std::string name);
     void savePlayerState();
+    void loadPlayerState();
 
 
 private:
