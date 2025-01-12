@@ -25,16 +25,25 @@ Skill::Skill(toml::table skillTable){
     this->baseXpForLevel = skillTable["baseXpForLevel"].value_or(-1.0);
     this->scalingFactor = skillTable["scalingFactor"].value_or(-1.0);
 }
+
+std::unordered_map<std::string, Skill> Skill::skillDatabase;
+
 unsigned int Skill::getLevel(){
     return this->level;
 }
 
 void Skill::addXp(double xp){
+    if(level >= maxLevel) return;
+
     this->xp += xp;
     double xpToLevel = this->baseXpForLevel*std::pow(this->scalingFactor, this->level);
     if(this->xp > xpToLevel){
         this->xp -=xpToLevel;
         this->level += 1;
+    }
+
+    if(level >= maxLevel){
+        this->xp = 0;
     }
 }
 
@@ -46,4 +55,22 @@ toml::table Skill::getSkillTable(){
     skill.insert("baseXpForLevel", baseXpForLevel);
     skill.insert("scalingFactor", scalingFactor);
     return skill;
+}
+
+void Skill::loadSkillDatabase(std::string path){
+
+    auto in = toml::parse_file(path);
+
+    Skill::skillDatabase.clear();
+    if(auto skillsArray = in["skills"].as_array(); skillsArray){
+        for(auto& elem : *skillsArray){
+            if(auto skillTable = elem.as_table()){
+                Skill::skillDatabase[skillTable->at("name").value_or("")] = Skill(*skillTable);
+            }
+        }
+    }
+}
+
+const Skill& Skill::checkSkillDatabase(std::string name){
+    return Skill::skillDatabase.at(name);
 }
