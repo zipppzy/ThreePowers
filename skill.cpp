@@ -20,8 +20,8 @@ Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor, unsi
 
 Skill::Skill(toml::table skillTable){
     this->name = skillTable["name"].value_or("");
-    this->level = skillTable["level"].value_or(-1);
-    this->xp = skillTable["xp"].value_or(-1.0);
+    this->level = skillTable["level"].value_or(0);
+    this->xp = skillTable["xp"].value_or(0);
     this->baseXpForLevel = skillTable["baseXpForLevel"].value_or(-1.0);
     this->scalingFactor = skillTable["scalingFactor"].value_or(-1.0);
 }
@@ -71,6 +71,10 @@ void Skill::loadSkillDatabase(std::string path){
     }
 }
 
-const Skill& Skill::checkSkillDatabase(std::string name){
-    return Skill::skillDatabase.at(name);
+std::optional<std::reference_wrapper<const Skill>> Skill::checkSkillDatabase(std::string name){
+    if(auto search = Skill::skillDatabase.find(name); search != Skill::skillDatabase.end()){
+        return std::cref(search->second);
+    }else{
+        return std::nullopt;
+    }
 }

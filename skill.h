@@ -19,7 +19,7 @@ public:
     void addXp(double xp);
     toml::table getSkillTable();
     static void loadSkillDatabase(std::string path);
-    static const Skill& checkSkillDatabase(std::string name);
+    static std::optional<std::reference_wrapper<const Skill>> checkSkillDatabase(std::string name);
 
 private:
 

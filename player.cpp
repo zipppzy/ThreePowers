@@ -1,5 +1,6 @@
 #include "player.h"
 
+
 Player::Player() {
 }
 
@@ -20,6 +21,23 @@ bool Player::hasSkill(std::string name){
         }
     }
     return false;
+}
+
+void Player::addSkillXp(std::string name, double xp){
+    if(this->hasSkill(name)){
+        for(Skill i : this->skills){
+            if(i.name == name){
+                i.addXp(xp);
+            }
+        }
+    }else{
+        auto result = Skill::checkSkillDatabase(name);
+        if(result){
+            this->skills.push_back(Skill(result->get()));
+        }else{
+            qDebug() << "Tried to add xp to non-valid skill";
+        }
+    }
 }
 
 void Player::savePlayerState(){
@@ -60,6 +78,16 @@ void Player::loadPlayerState(){
             if(auto skillTable = elem.as_table()){
                 this->skills.push_back(Skill(*skillTable));
             }
+        }
+    }
+}
+
+void Player::tick(){
+    //ticks currentAction and check if action is completed then gives rewards
+    if(currentAction->tick()){
+        auto rewards = currentAction->getSkillRewards();
+        for(const auto& [key,value] : rewards){
+            this->addSkillXp(key, value);
         }
     }
 }
