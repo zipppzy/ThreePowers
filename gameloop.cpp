@@ -2,9 +2,8 @@
 
 GameLoop::GameLoop(QObject *parent):QObject(parent)
 {
-    player = Player(0, 100000, new Location("Village"), new Action());
-    Skill::loadSkillDatabase("skills_database.toml");
-    qDebug()<<Skill::checkSkillDatabase("Concentration").name;
+    player = Player(0, 100000, new Location("Village"), new Action("Meditate", 60));
+    //test skill reward
     startTimer();
 }
 

@@ -3,17 +3,28 @@
 
 //Action the player can take
 #include <map>
+#include <optional>
 #include <string>
+#include <unordered_map>
+#include "toml.hpp"
 
 class Action
 {
 public:
     Action(std::string name, double baseDuration);
+    Action(toml::table actionTable);
+
+    static void loadActionDatabase(std::string path);
+    static std::optional<std::reference_wrapper<const Action>> checkActionDatabaseDatabase(std::string name);
+
     void reduceDuration(double factor);
-    const std::map<std::string, double>& getSkillRewards();
+    double getCurrentProgress();
+    double getDuration();
+    const std::map<std::string, double> getSkillRewards();
     void multiplySkillMultiplier(std::string name, double factor);
     bool tick();        //returns true when action is completed completed; may rework later?
 private:
+    static std::unordered_map<std::string, Action> actionDatabase;
     std::string name;
     double baseDuration;        //in seconds
     double duration;

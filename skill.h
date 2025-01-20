@@ -22,7 +22,6 @@ public:
     static std::optional<std::reference_wrapper<const Skill>> checkSkillDatabase(std::string name);
 
 private:
-
     static std::unordered_map<std::string, Skill> skillDatabase;
     unsigned int level;         //level starts at 0
     unsigned int maxLevel;      //gain no more xp after reaching this level
