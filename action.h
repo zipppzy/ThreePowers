@@ -6,6 +6,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include "item.h"
 #include "toml.hpp"
 
 class Action
@@ -21,6 +22,7 @@ public:
     double getCurrentProgress();
     double getDuration();
     const std::map<std::string, double> getSkillRewards();
+    const std::vector<Item>& getItemRewards();
     void multiplySkillMultiplier(std::string name, double factor);
     bool tick();        //returns true when action is completed completed; may rework later?
 private:
@@ -30,6 +32,7 @@ private:
     double duration;
     double currentProgress;
     std::map<std::string, std::pair<double, double>> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
+    std::vector<Item> itemRewards;      //includes the count in the Item object
 };
 
 #endif // ACTION_H

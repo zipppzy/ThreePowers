@@ -11,7 +11,8 @@ Player::Player(unsigned long long int age, unsigned long long int lifespan, Loca
     this->currentAction = currentAction;
     this->qi = 0;
     this->maxQi = 100;
-    this->skills.push_back(Skill("Fireball", 100, 1.1));
+    this->maxWeight = 50;
+    this->currentWeight = 0;
 }
 
 bool Player::hasSkill(std::string name){
@@ -38,6 +39,34 @@ void Player::addSkillXp(std::string name, double xp){
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
+}
+
+bool Player::pickupItem(Item item){
+    if(this->currentWeight+(item.getWeight()*item.count) > this->maxWeight){
+        return false;
+    }else{
+        //if there is already an existing item with the same name then add to that stack
+        if(auto existingItem = this->findItem(item.name); existingItem){
+            (*existingItem)->count += item.count;
+        }else{
+            inventory.push_back(item);
+        }
+        this->currentWeight = item.getWeight()*item.count;
+        return true;
+    }
+}
+
+std::optional<Item*> Player::findItem(std::string itemName){
+    auto it  = std::find_if(this->inventory.begin(), this->inventory.end(), [&itemName](const Item& item){return item.name ==itemName;});
+    if(it == inventory.end()){
+        return std::nullopt;
+    }else{
+        return &(*it);
+    }
+}
+
+std::optional<Item*> Player::findItem(Item item){
+    return findItem(item.name);
 }
 
 void Player::savePlayerState(){
@@ -85,9 +114,13 @@ void Player::loadPlayerState(){
 void Player::tick(){
     //ticks currentAction and check if action is completed then gives rewards
     if(currentAction->tick()){
-        auto rewards = currentAction->getSkillRewards();
-        for(const auto& [key,value] : rewards){
+        auto skillRewards = currentAction->getSkillRewards();
+        for(const auto& [key,value] : skillRewards){
             this->addSkillXp(key, value);
+        }
+        auto itemRewards = currentAction->getItemRewards();
+        for(const auto& item : itemRewards){
+            this->pickupItem(item);
         }
     }
 }

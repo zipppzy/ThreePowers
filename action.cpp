@@ -17,10 +17,18 @@ Action::Action(toml::table actionTable){
     }
     this->currentProgress = actionTable["currentProgress"].value_or(0);
 
-    if(auto rewardsTable = actionTable["skillRewards"].as_table()){
-        for(const auto& [key, value] : *rewardsTable){
+    if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
+        for(const auto& [key, value] : *skillRewardsTable){
             if (const auto* arr = value.as_array(); arr && arr->size() == 2){
                 Action::skillRewards[std::string(key)] = {arr->get(0)->value_or(0.0), arr->get(1)->value_or(1.0)};
+            }
+        }
+    }
+
+    if(auto itemRewardsArray = actionTable["itemRewards"].as_array()){
+        for(const auto& itemTable : *itemRewardsArray){
+            if(const auto* table = itemTable.as_table()){
+                this->itemRewards.push_back(Item(*table));
             }
         }
     }
@@ -67,6 +75,10 @@ const std::map<std::string, double> Action::getSkillRewards(){
         rewards[key] = value.first * value.second;
     }
     return rewards;
+}
+
+const std::vector<Item>& Action::getItemRewards(){
+    return this->itemRewards;
 }
 
 void Action::multiplySkillMultiplier(std::string name, double factor){
