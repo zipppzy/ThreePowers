@@ -23,11 +23,14 @@ public:
     double getDuration();
     const std::map<std::string, double> getSkillRewards();
     const std::vector<Item>& getItemRewards();
-    void multiplySkillMultiplier(std::string name, double factor);
+    void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
+    void copyFrom(const Action& other);
+    void reset();       //reset to default values from actionDatabase
     bool tick();        //returns true when action is completed completed; may rework later?
-private:
-    static std::unordered_map<std::string, Action> actionDatabase;
+
     std::string name;
+private:
+    static std::unordered_map<std::string, Action> actionDatabase;      //stores default values for actions
     double baseDuration;        //in seconds
     double duration;
     double currentProgress;

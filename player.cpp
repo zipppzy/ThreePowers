@@ -120,7 +120,9 @@ void Player::tick(){
         }
         auto itemRewards = currentAction->getItemRewards();
         for(const auto& item : itemRewards){
-            this->pickupItem(item);
+            if(!this->pickupItem(item)){
+                qDebug()<<"Couldn't pickup item";
+            }
         }
     }
 }

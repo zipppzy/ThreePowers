@@ -87,6 +87,20 @@ void Action::multiplySkillMultiplier(std::string name, double factor){
     }
 }
 
+void Action::copyFrom(const Action& other){
+    this->name = other.name;
+    this->baseDuration = other.baseDuration;
+    this->duration = other.duration;
+    this->currentProgress = other.currentProgress;
+    this->skillRewards = other.skillRewards;
+    this->itemRewards = other.itemRewards;
+
+}
+
+void Action::reset(){
+    this->copyFrom(Action::actionDatabase[this->name]);
+}
+
 bool Action::tick(){
     currentProgress++;
     if(currentProgress > duration){
