@@ -15,6 +15,7 @@ public:
     Player();
     Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation, Action* currentAction);
     bool hasSkill(std::string name);
+    std::optional<Skill*> findSkill(std::string name);
     void addSkillXp(std::string name, double xp);
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);

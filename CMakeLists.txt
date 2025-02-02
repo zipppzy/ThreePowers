@@ -30,6 +30,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	skill.h skill.cpp
 	world.h world.cpp
 	item.h item.cpp
+	requirement.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ThreePowers APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -32,6 +32,7 @@ Action::Action(toml::table actionTable){
             }
         }
     }
+    this->visibleToPlayer = false;
 }
 
 std::unordered_map<std::string, Action> Action::actionDatabase;

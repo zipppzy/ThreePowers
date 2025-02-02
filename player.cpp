@@ -16,12 +16,16 @@ Player::Player(unsigned long long int age, unsigned long long int lifespan, Loca
 }
 
 bool Player::hasSkill(std::string name){
-    for(Skill i : this->skills){
-        if(i.name == name){
-            return true;
-        }
+    return this->findSkill(name) ? true : false;
+}
+
+std::optional<Skill*> Player::findSkill(std::string name){
+    auto it  = std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
+    if(it == this->skills.end()){
+        return std::nullopt;
+    }else{
+        return &(*it);
     }
-    return false;
 }
 
 void Player::addSkillXp(std::string name, double xp){
