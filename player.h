@@ -26,6 +26,7 @@ public:
 
 
 private:
+    bool checkActionRequirements(Action* action) const;
     unsigned long long int age;    //measured in seconds
     unsigned long long int lifespan;
 

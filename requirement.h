@@ -1,8 +1,11 @@
 #ifndef REQUIREMENT_H
 #define REQUIREMENT_H
 
-#include "player.h"
+//#include "player.h"
+#include "item.h"
+#include "skill.h"
 #include "toml.hpp"
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -35,26 +38,26 @@ struct Requirement {
         }
     }
 
-    bool is_met(Player& player) const{
+    bool isMet(const std::vector<Skill>& skills, const std::vector<Item>& inventory) const{
         if (type == "AND"){
             for (const auto& cond : conditions){
-                if (!cond->is_met(player)) return false;
+                if (!cond->isMet(skills, inventory)) return false;
             }
             return true;
         }else if (type == "OR"){
             for (const auto& cond : conditions){
-                if (cond->is_met(player)) return true;
+                if (cond->isMet(skills, inventory)) return true;
             }
             return false;
         }else if (type == "skill"){
-            auto playerSkill = player.findSkill(name);
-            if(playerSkill){
-                return playerSkill.value()->getLevel() >= level;
+            auto it  = std::find_if(skills.begin(), skills.end(), [&](const Skill& skill){return skill.name == this->name;});
+            if(it != skills.end()){
+                return it->getLevel() >= this->level;
             }
         }else if (type == "item"){
-            auto playerItem = player.findItem("name");
-            if(playerItem){
-                return playerItem.value()->count >= count;
+            auto it  = std::find_if(inventory.begin(), inventory.end(), [&](const Item& item){return item.name == this->name;});
+            if(it != inventory.end()){
+                return it->count >= this->count;
             }
         }
         return false;

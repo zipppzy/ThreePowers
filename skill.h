@@ -15,9 +15,9 @@ public:
     Skill(toml::table skillTable);
 
     std::string name;
-    unsigned int getLevel();
+    unsigned int getLevel() const;
     void addXp(double xp);
-    toml::table getSkillTable();
+    toml::table getSkillTable() const;
     static void loadSkillDatabase(std::string path);
     static std::optional<std::reference_wrapper<const Skill>> checkSkillDatabase(std::string name);
 

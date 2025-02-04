@@ -82,6 +82,10 @@ const std::vector<Item>& Action::getItemRewards(){
     return this->itemRewards;
 }
 
+const std::shared_ptr<Requirement> Action::getActionRequirements() const{
+    return this->actionRequirements;
+}
+
 void Action::multiplySkillMultiplier(std::string name, double factor){
     if(auto search = skillRewards.find(name); search != this->skillRewards.end()){
         search->second.second *= factor;

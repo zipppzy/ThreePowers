@@ -7,7 +7,7 @@
 #include <string>
 #include <unordered_map>
 #include "item.h"
-struct Requirement;
+#include "requirement.h"
 #include "toml.hpp"
 
 //Action the player can take
@@ -25,6 +25,7 @@ public:
     double getDuration();
     const std::map<std::string, double> getSkillRewards();
     const std::vector<Item>& getItemRewards();
+    const std::shared_ptr<Requirement> getActionRequirements() const;
     void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase

@@ -130,3 +130,7 @@ void Player::tick(){
         }
     }
 }
+
+bool Player::checkActionRequirements(Action* action) const{
+    return action->getActionRequirements().get()->isMet(this->skills, this->inventory);
+}
