@@ -1,4 +1,5 @@
 #include "action.h"
+#include <random>
 
 Action::Action(std::string name, double baseDuration){
     this->name = name;
@@ -104,6 +105,14 @@ void Action::copyFrom(const Action& other){
 
 void Action::reset(){
     this->copyFrom(Action::actionDatabase[this->name]);
+}
+
+bool Action::isSuccess() const{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(0,1);
+
+    return dist(gen) > failureChance;
 }
 
 bool Action::tick(){

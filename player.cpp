@@ -118,15 +118,19 @@ void Player::loadPlayerState(){
 void Player::tick(){
     //ticks currentAction and check if action is completed then gives rewards
     if(currentAction->tick()){
-        auto skillRewards = currentAction->getSkillRewards();
-        for(const auto& [key,value] : skillRewards){
-            this->addSkillXp(key, value);
-        }
-        auto itemRewards = currentAction->getItemRewards();
-        for(const auto& item : itemRewards){
-            if(!this->pickupItem(item)){
-                qDebug()<<"Couldn't pickup item";
+        if(currentAction->isSuccess()){
+            auto skillRewards = currentAction->getSkillRewards();
+            for(const auto& [key,value] : skillRewards){
+                this->addSkillXp(key, value);
             }
+            auto itemRewards = currentAction->getItemRewards();
+            for(const auto& item : itemRewards){
+                if(!this->pickupItem(item)){
+                    qDebug()<<"Couldn't pickup item";
+                }
+            }
+        }else{
+            qDebug("Action Failed");
         }
     }
 }

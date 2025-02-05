@@ -29,7 +29,8 @@ public:
     void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase
-    bool tick();        //returns true when action is completed completed; may rework later?
+    bool isSuccess() const;
+    bool tick();        //returns true when action is completed; may rework later?
 
     std::string name;
     bool visibleToPlayer;
@@ -39,6 +40,7 @@ private:
     double baseDuration;        //in seconds
     double duration;
     double currentProgress;
+    double failureChance;
 
     std::shared_ptr<Requirement> actionRequirements;
 
