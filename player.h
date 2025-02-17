@@ -6,6 +6,7 @@
 #include "item.h"
 #include "location.h"
 #include "action.h"
+#include "reserve.h"
 #include "skill.h"
 
 
@@ -14,6 +15,7 @@ class Player
 public:
     Player();
     Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation, Action* currentAction);
+    //TODO: add constructor for toml table
     bool hasSkill(std::string name);
     std::optional<Skill*> findSkill(std::string name);
     void addSkillXp(std::string name, double xp);
@@ -32,8 +34,7 @@ private:
 
     std::vector<Skill> skills;
 
-    double qi;
-    double maxQi;
+    std::vector<Reserve> reserves;
 
     std::vector<Item> inventory;
     double maxWeight;       //in kg; can't carry above this weight
