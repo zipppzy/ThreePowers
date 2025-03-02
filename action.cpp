@@ -63,15 +63,15 @@ void Action::reduceDuration(double factor){
     duration *= factor;
 }
 
-double Action::getCurrentProgress(){
+double Action::getCurrentProgress() const{
     return this->currentProgress;
 }
 
-double Action::getDuration(){
+double Action::getDuration() const{
     return this->duration;
 }
 
-const std::map<std::string, double> Action::getSkillRewards(){
+const std::map<std::string, double> Action::getSkillRewards() const{
     std::map<std::string, double> rewards;
     for(const auto& [key, value] : skillRewards){
         rewards[key] = value.first * value.second;
@@ -79,8 +79,12 @@ const std::map<std::string, double> Action::getSkillRewards(){
     return rewards;
 }
 
-const std::vector<Item>& Action::getItemRewards(){
+const std::vector<Item>& Action::getItemRewards() const{
     return this->itemRewards;
+}
+
+const std::vector<Reserve> Action::getReserveRewards() const{
+    return this->reserveRewards;
 }
 
 const std::shared_ptr<Requirement> Action::getActionRequirements() const{

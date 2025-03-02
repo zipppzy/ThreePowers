@@ -77,6 +77,49 @@ struct Requirement {
         }
         return false;
     }
+    //Total mess prob rework
+    // void getConsumeOptions(
+    //     const Requirement& req,
+    //     std::vector<std::vector<std::shared_ptr<Requirement>>>& result,
+    //     std::vector<std::shared_ptr<Requirement>> current = {}
+    //     ) {
+    //     if (req.type == "AND") {
+    //         std::vector<std::vector<std::shared_ptr<Requirement>>> partialResults;
+    //         for (const auto& cond : req.conditions) {
+    //             std::vector<std::vector<std::shared_ptr<Requirement>>> subResults;
+    //             getConsumeOptions(*cond, subResults, {});
+    //             if(subResults.empty()){
+    //                 partialResults.push_back({ {} });
+    //             }else{
+    //                 partialResults.push_back(subResults);
+    //             }
+    //         }
+
+    //         std::vector<std::shared_ptr<Requirement>> temp;
+    //         std::function<void(size_t)> combine = [&](size_t index) {
+    //             if (index == partialResults.size()) {
+    //                 result.push_back(temp);
+    //                 return;
+    //             }
+    //             for (const auto& subset : partialResults[index]) {
+    //                 temp.insert(temp.end(), subset.begin(), subset.end());
+    //                 combine(index + 1);
+    //                 temp.erase(temp.end() - subset.size(), temp.end());
+    //             }
+    //         };
+    //         combine(0);
+    //     }
+    //     else if (req.type == "OR") {
+    //         for (const auto& cond : req.conditions) {
+    //             getConsumeOptions(*cond, result, current);
+    //         }
+    //     }
+    //     else if (req.consume) {
+    //         current.push_back(std::make_shared<Requirement>(req));
+    //         result.push_back(current);
+    //     }
+    // }
+
 };
 
 #endif // REQUIREMENT_H

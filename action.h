@@ -21,10 +21,11 @@ public:
     static std::optional<std::reference_wrapper<const Action>> checkActionDatabaseDatabase(std::string name);
 
     void reduceDuration(double factor);
-    double getCurrentProgress();
-    double getDuration();
-    const std::map<std::string, double> getSkillRewards();
-    const std::vector<Item>& getItemRewards();
+    double getCurrentProgress() const;
+    double getDuration() const;
+    const std::map<std::string, double> getSkillRewards() const;
+    const std::vector<Item>& getItemRewards() const;
+    const std::vector<Reserve> getReserveRewards() const;
     const std::shared_ptr<Requirement> getActionRequirements() const;
     void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
     void copyFrom(const Action& other);
@@ -46,6 +47,7 @@ private:
 
     std::map<std::string, std::pair<double, double>> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
     std::vector<Item> itemRewards;      //includes the count in the Item object
+    std::vector<Reserve> reserveRewards;
 };
 
 #endif // ACTION_H
