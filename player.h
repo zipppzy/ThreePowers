@@ -18,10 +18,15 @@ public:
     //TODO: add constructor for toml table
     bool hasSkill(std::string name);
     std::optional<Skill*> findSkill(std::string name);
+    bool hasReserve(std::string name);
+    std::optional<Reserve*> findReserve(std::string name);
     void addSkillXp(std::string name, double xp);
+    void addReserve(const Reserve& reserve);
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);
+    bool startAction(Action* action);       //returns true if action is started and false otherwise
+    void extracted(toml::array &skills);
     void savePlayerState();
     void loadPlayerState();
     void tick();

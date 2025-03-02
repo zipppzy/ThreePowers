@@ -9,8 +9,6 @@ Player::Player(unsigned long long int age, unsigned long long int lifespan, Loca
     this->lifespan = lifespan;
     this->currentLocation = currentLocation;
     this->currentAction = currentAction;
-    this->qi = 0;
-    this->maxQi = 100;
     this->maxWeight = 50;
     this->currentWeight = 0;
 }
@@ -22,6 +20,19 @@ bool Player::hasSkill(std::string name){
 std::optional<Skill*> Player::findSkill(std::string name){
     auto it  = std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
     if(it == this->skills.end()){
+        return std::nullopt;
+    }else{
+        return &(*it);
+    }
+}
+
+bool Player::hasReserve(std::string name){
+    return this->findReserve(name) ? true : false;
+}
+
+std::optional<Reserve*> Player::findReserve(std::string name){
+    auto it  = std::find_if(this->reserves.begin(), this->reserves.end(), [&name](const Reserve& reserve){return reserve.name == name;});
+    if(it == this->reserves.end()){
         return std::nullopt;
     }else{
         return &(*it);
@@ -43,6 +54,10 @@ void Player::addSkillXp(std::string name, double xp){
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
+}
+
+void Player::addReserve(const Reserve& reserve){
+
 }
 
 bool Player::pickupItem(Item item){
@@ -73,14 +88,20 @@ std::optional<Item*> Player::findItem(Item item){
     return findItem(item.name);
 }
 
+bool Player::startAction(Action* action){
+    if(checkActionRequirements(action)){
+        this->currentAction = action;
+        return true;
+    }else{
+        return false;
+    }
+}
 void Player::savePlayerState(){
     toml::table playerData;
 
     toml::table attributes;
     attributes.insert("age", std::to_string(age));              //stored as string to avoid length limit
     attributes.insert("lifespan", std::to_string(lifespan));    //stored as string to avoid length limit
-    attributes.insert("qi", qi);
-    attributes.insert("maxQi", maxQi);
 
     playerData.insert("attributes", std::move(attributes));
 
@@ -102,8 +123,6 @@ void Player::loadPlayerState(){
     auto attributes = playerData["attributes"];
     this->age = std::stoull(playerData["age"].value_or("0"));
     this->lifespan = std::stoull(playerData["lifespan"].value_or("0"));
-    this->qi = attributes["qi"].value_or(0.0);
-    this->maxQi = attributes["maxQi"].value_or(0.0);
 
     this->skills.clear();  // Clear existing skills before loading
     if(auto skillsArray = playerData["skills"].as_array()){
@@ -129,6 +148,10 @@ void Player::tick(){
                     qDebug()<<"Couldn't pickup item";
                 }
             }
+            auto reserveRewards = currentAction->getReserveRewards();
+            for(const Reserve& reserve : reserveRewards){
+                this->addReserve(reserve);
+            }
         }else{
             qDebug("Action Failed");
         }
@@ -136,5 +159,5 @@ void Player::tick(){
 }
 
 bool Player::checkActionRequirements(Action* action) const{
-    return action->getActionRequirements().get()->isMet(this->skills, this->inventory);
+    return action->getActionRequirements().get()->isMet(this->skills, this->inventory, this->reserves);
 }
