@@ -2,7 +2,7 @@
 
 GameLoop::GameLoop(QObject *parent):QObject(parent)
 {
-    player = Player(0, 100000, new Location("Village"), new Action("Meditate", 60));
+    player = Player(0, 100000, new Location("Village", nullptr), new Action("Meditate", 60));
     //test skill reward
     startTimer();
 }

@@ -57,7 +57,12 @@ void Player::addSkillXp(std::string name, double xp){
 }
 
 void Player::addReserve(const Reserve& reserve){
-
+    auto existingReserve = this->findReserve(reserve.name);
+    if(existingReserve){
+        (*existingReserve)->add(reserve.getCurrentValue());
+    }else{
+        this->reserves.push_back(Reserve(reserve));
+    }
 }
 
 bool Player::pickupItem(Item item){
@@ -96,7 +101,7 @@ bool Player::startAction(Action* action){
         return false;
     }
 }
-void Player::savePlayerState(){
+void Player::savePlayerState(std::string fileName){
     toml::table playerData;
 
     toml::table attributes;
@@ -112,13 +117,13 @@ void Player::savePlayerState(){
 
     playerData.insert("skills", std::move(skills));
 
-    std::ofstream file("player_state.toml");
+    std::ofstream file(fileName);
     file << playerData;
     file.close();
 }
 
-void Player::loadPlayerState(){
-    auto playerData = toml::parse_file("player_state.toml");
+void Player::loadPlayerState(std::string fileName){
+    auto playerData = toml::parse_file(fileName);
 
     auto attributes = playerData["attributes"];
     this->age = std::stoull(playerData["age"].value_or("0"));

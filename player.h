@@ -27,8 +27,8 @@ public:
     std::optional<Item*> findItem(std::string itemName);
     bool startAction(Action* action);       //returns true if action is started and false otherwise
     void extracted(toml::array &skills);
-    void savePlayerState();
-    void loadPlayerState();
+    void savePlayerState(std::string fileName);
+    void loadPlayerState(std::string fileName);
     void tick();
 
 
