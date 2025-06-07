@@ -5,6 +5,26 @@ Reserve::Reserve(std::string name){
     this->name = name;
 }
 
+Reserve::Reserve(toml::table reserveTable, Reserve* parentReserve = nullptr) {
+    this->name = reserveTable["name"].value_or("");
+    this->maxValue = reserveTable["maxValue"].value_or(0);
+    this->currentValue = reserveTable["currentValue"].value_or(0);
+    //TODO: deal wil hasSubReserves and hasSoftMax
+    this->parentReserve = parentReserve;
+}
+
+Reserve::Reserve(const Reserve& other){
+    this->parentReserve = other.parentReserve;
+    //prob not good to do it this way maybe change later
+    this->subReserves = other.subReserves;
+    this->name = other.name;
+    this->maxValue = other.getMaxValue();
+    this->currentValue = other.getCurrentValue();
+    this->hasSubReserves = other.hasSubReserves;
+    this->hasSoftMax = other.hasSoftMax;
+
+}
+
 bool Reserve::add(double value){
     if(this->currentValue+value > this->maxValue){
         if(!this->hasSoftMax){

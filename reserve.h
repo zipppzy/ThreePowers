@@ -1,6 +1,7 @@
 #ifndef RESERVE_H
 #define RESERVE_H
 
+#include "toml.hpp"
 #include <string>
 #include <vector>
 // Represents a internal resource of the player
@@ -8,6 +9,8 @@ class Reserve
 {
 public:
     Reserve(std::string name);
+    Reserve(toml::table reserveTable, Reserve* parentReserve);
+    Reserve(const Reserve& other);        //copy constructor
 
     double getMaxValue() const{return maxValue;}
     void setMaxValue(double value){this->maxValue = value;}
