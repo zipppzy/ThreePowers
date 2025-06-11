@@ -2,8 +2,15 @@
 
 GameLoop::GameLoop(QObject *parent):QObject(parent)
 {
-    player = Player(0, 100000, new Location("Village", nullptr), new Action("Meditate", 60));
-    //test skill reward
+    Action::loadActionDatabase("action_database.toml");
+    Location startingLocation = Location("Village", nullptr);
+    auto maybeAction = Action::checkActionDatabaseDatabase("Meditate");
+    std::shared_ptr<Action> actionPtr;
+    if(maybeAction.has_value()){
+        actionPtr = std::make_shared<Action>(maybeAction->get());
+    }
+    startingLocation.addAction(actionPtr);
+    player = Player(0, 100000, startingLocation);
     startTimer();
 }
 

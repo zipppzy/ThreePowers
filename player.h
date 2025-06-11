@@ -14,7 +14,7 @@ class Player
 {
 public:
     Player();
-    Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation, Action* currentAction);
+    Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation);
     //TODO: add constructor for toml table
     bool hasSkill(std::string name);
     std::optional<Skill*> findSkill(std::string name);

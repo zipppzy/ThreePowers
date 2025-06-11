@@ -4,11 +4,10 @@
 Player::Player() {
 }
 
-Player::Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation, Action* currentAction){
+Player::Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation){
     this->age = age;
     this->lifespan = lifespan;
     this->currentLocation = currentLocation;
-    this->currentAction = currentAction;
     this->maxWeight = 50;
     this->currentWeight = 0;
 }
@@ -140,6 +139,8 @@ void Player::loadPlayerState(std::string fileName){
 }
 
 void Player::tick(){
+    age++;
+
     //ticks currentAction and check if action is completed then gives rewards
     if(currentAction->tick()){
         if(currentAction->isSuccess()){
