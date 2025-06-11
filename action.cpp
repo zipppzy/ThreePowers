@@ -36,7 +36,7 @@ Action::Action(toml::table actionTable){
     if(auto reserveRewardsArray = actionTable["reserveRewards"].as_array()){
         for(const auto& reserveTable : *reserveRewardsArray){
             if(const auto* table = reserveTable.as_table()){
-                this->reserveRewards.push_back(Reserve(*table));
+                this->reserveRewards.push_back(Reserve(*table, nullptr));
             }
         }
     }
