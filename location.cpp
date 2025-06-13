@@ -1,9 +1,9 @@
 #include "location.h"
 
-Location::Location(std::string name, std::shared_ptr<Location> parentLocation){
+Location::Location(std::string name, int position, int id, std::shared_ptr<Location> parentLocation){
     this->name = name;
-    this->id = Location::nextId;
-    Location::nextId++;
+    this->position = position;
+    this->id = id;
     this->parentLocation = parentLocation;
 }
 

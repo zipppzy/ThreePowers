@@ -4,15 +4,15 @@ World::World(){
     currentId = 0;
 }
 
-void World::addLocation(std::string name){
-    std::shared_ptr<Location> newLocation = std::make_shared<Location>(name, currentId, root);
+void World::addLocation(std::string name, int position){
+    std::shared_ptr<Location> newLocation = std::make_shared<Location>(name, position, currentId, root);
     locationList[currentId] = newLocation;
     root->addSubLocation(newLocation);
     currentId++;
 }
 
-void World::addLocation(std::string name, std::shared_ptr<Location> parent){
-    std::shared_ptr<Location> newLocation = std::make_shared<Location>(name, currentId, parent);
+void World::addLocation(std::string name,int position, std::shared_ptr<Location> parent){
+    std::shared_ptr<Location> newLocation = std::make_shared<Location>(name, position, currentId, parent);
     locationList[currentId] = newLocation;
     parent->addSubLocation(newLocation);
     currentId++;
