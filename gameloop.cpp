@@ -3,7 +3,7 @@
 GameLoop::GameLoop(QObject *parent):QObject(parent)
 {
     Action::loadActionDatabase("action_database.toml");
-    Location startingLocation = Location("Village", nullptr);
+    Location startingLocation = Location("Village", 0, nullptr);
     auto maybeAction = Action::checkActionDatabaseDatabase("Meditate");
     std::shared_ptr<Action> actionPtr;
     if(maybeAction.has_value()){
