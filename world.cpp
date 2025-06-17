@@ -2,6 +2,8 @@
 
 World::World(){
     currentId = 0;
+    root = std::make_shared<Location>("root", 0, currentId, nullptr);
+    currentId++;
 }
 
 void World::addLocation(std::string name, int position){
@@ -18,7 +20,7 @@ void World::addLocation(std::string name,int position, std::shared_ptr<Location>
     currentId++;
 }
 
-std::optional<std::shared_ptr<const Location>> World::findLocation(int id){
+std::optional<std::shared_ptr<Location>> World::findLocation(int id){
     if(auto search = locationList.find(id); search !=locationList.end()){
         return search->second;
     }else{

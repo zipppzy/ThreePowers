@@ -2,7 +2,7 @@
 #define GAMELOOP_H
 
 #include "player.h"
-#include "location.h"
+#include "world.h"
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
