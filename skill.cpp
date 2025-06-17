@@ -28,7 +28,7 @@ Skill::Skill(toml::table skillTable){
 
 std::unordered_map<std::string, Skill> Skill::skillDatabase;
 
-unsigned int Skill::getLevel(){
+unsigned int Skill::getLevel() const{
     return this->level;
 }
 
@@ -47,7 +47,7 @@ void Skill::addXp(double xp){
     }
 }
 
-toml::table Skill::getSkillTable(){
+toml::table Skill::getSkillTable() const{
     toml::table skill;
     skill.insert("name", name);
     skill.insert("level", level);

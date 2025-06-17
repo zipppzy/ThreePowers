@@ -52,7 +52,7 @@ void Action::loadActionDatabase(std::string path){
     if(auto actionsArray = in["actions"].as_array()){
         for(auto& elem : *actionsArray){
             if(auto actionTable = elem.as_table()){
-                Action::actionDatabase[actionTable->at("name").value_or("")] = Action(*actionTable);
+                Action::actionDatabase.insert_or_assign(actionTable->at("name").value_or(""), Action(*actionTable));
             }
         }
     }
@@ -115,7 +115,7 @@ void Action::copyFrom(const Action& other){
 }
 
 void Action::reset(){
-    this->copyFrom(Action::actionDatabase[this->name]);
+    this->copyFrom(Action::checkActionDatabaseDatabase(this->name).value());
 }
 
 bool Action::isSuccess() const{

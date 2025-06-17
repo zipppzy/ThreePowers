@@ -9,7 +9,7 @@ public:
     World();
     void addLocation(std::string name, int position);
     void addLocation(std::string name, int position, std::shared_ptr<Location> parent);
-    std::optional<std::shared_ptr<const Location>> findLocation(int id);
+    std::optional<std::shared_ptr<Location>> findLocation(int id);
 
 private:
     std::shared_ptr<Location> root;
