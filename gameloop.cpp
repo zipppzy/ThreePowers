@@ -13,7 +13,8 @@ GameLoop::GameLoop(QObject *parent):QObject(parent)
     }
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
     startingLocation->addAction(actionPtr);
-    player = Player(0, 100000, startingLocation.get());
+    player = Player(0, 100000, startingLocation);
+    player.startAction(actionPtr);
     startTimer();
 }
 

@@ -94,7 +94,10 @@ const std::vector<Reserve> Action::getReserveRewards() const{
     return this->reserveRewards;
 }
 
-const std::shared_ptr<Requirement> Action::getActionRequirements() const{
+const std::optional<std::shared_ptr<Requirement>> Action::getActionRequirements() const{
+    if(this->actionRequirements == nullptr){
+        return std::nullopt;
+    }
     return this->actionRequirements;
 }
 

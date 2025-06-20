@@ -26,7 +26,7 @@ public:
     const std::map<std::string, double> getSkillRewards() const;
     const std::vector<Item>& getItemRewards() const;
     const std::vector<Reserve> getReserveRewards() const;
-    const std::shared_ptr<Requirement> getActionRequirements() const;
+    const std::optional<std::shared_ptr<Requirement>> getActionRequirements() const;
     void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase

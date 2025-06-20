@@ -14,3 +14,7 @@ void Location::addSubLocation(std::shared_ptr<Location> location){
 void Location::addAction(std::shared_ptr<Action> action){
     actions.push_back(std::move(action));
 }
+
+std::vector<std::shared_ptr<Action>> Location::getActions(){
+    return this->actions;
+}
