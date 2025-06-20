@@ -12,6 +12,7 @@ public:
     bool visibleToPlayer;
     void addSubLocation(std::shared_ptr<Location> location);
     void addAction(std::shared_ptr<Action> action);
+    std::vector<std::shared_ptr<Action>> getActions();
 
 private:
     int position;   //location on a 1d line; 0 is starting location; - is left + is right;

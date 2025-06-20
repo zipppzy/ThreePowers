@@ -4,7 +4,7 @@
 Player::Player() {
 }
 
-Player::Player(unsigned long long int age, unsigned long long int lifespan, Location* currentLocation){
+Player::Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation){
     this->age = age;
     this->lifespan = lifespan;
     this->currentLocation = currentLocation;
@@ -92,7 +92,7 @@ std::optional<Item*> Player::findItem(Item item){
     return findItem(item.name);
 }
 
-bool Player::startAction(Action* action){
+bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;
         return true;
@@ -164,6 +164,10 @@ void Player::tick(){
     }
 }
 
-bool Player::checkActionRequirements(Action* action) const{
-    return action->getActionRequirements().get()->isMet(this->skills, this->inventory, this->reserves);
+bool Player::checkActionRequirements(std::shared_ptr<Action> action) const{
+    auto maybeActionRequirement = action->getActionRequirements();
+    if(maybeActionRequirement){
+        return true;
+    }
+    return maybeActionRequirement->get()->isMet(this->skills, this->inventory, this->reserves);
 }
