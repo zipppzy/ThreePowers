@@ -8,14 +8,30 @@ Action::Action(std::string name, double baseDuration){
     this->currentProgress = 0;
 }
 
+Action::Action(const Action& other)
+    : name(other.name),
+    visibleToPlayer(other.visibleToPlayer),
+    baseDuration(other.baseDuration),
+    duration(other.duration),
+    currentProgress(other.currentProgress),
+    failureChance(other.failureChance),
+    actionRequirements(other.actionRequirements
+                           ? std::make_unique<Requirement>(*other.actionRequirements)
+                           : nullptr),
+    skillRewards(other.skillRewards),
+    itemRewards(other.itemRewards),
+    reserveRewards(other.reserveRewards)
+{}
+
 Action::Action(toml::table actionTable){
     this->name = actionTable["name"].value_or("");
     this->baseDuration = actionTable["baseDuration"].value_or(-1);
-    if(auto duration = actionTable["duration"].value<double>(); duration){
-        this->duration = *duration;
-    }else{
-        this->duration = actionTable["baseDuration"].value_or(-1);
-    }
+    // if(auto duration = actionTable["duration"].value<double>(); duration){
+    //     this->duration = *duration;
+    // }else{
+    //     this->duration = actionTable["baseDuration"].value_or(-1);
+    // }
+    this->duration = actionTable["duration"].value_or(this->baseDuration);
     this->currentProgress = actionTable["currentProgress"].value_or(0);
 
     if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
@@ -90,15 +106,15 @@ const std::vector<Item>& Action::getItemRewards() const{
     return this->itemRewards;
 }
 
-const std::vector<Reserve> Action::getReserveRewards() const{
+const std::vector<Reserve>& Action::getReserveRewards() const{
     return this->reserveRewards;
 }
 
-const std::optional<std::shared_ptr<Requirement>> Action::getActionRequirements() const{
+const std::optional<const Requirement*> Action::getActionRequirements() const{
     if(this->actionRequirements == nullptr){
         return std::nullopt;
     }
-    return this->actionRequirements;
+    return this->actionRequirements.get();
 }
 
 void Action::multiplySkillMultiplier(std::string name, double factor){

@@ -6,15 +6,17 @@ GameLoop::GameLoop(QObject *parent):QObject(parent)
     Action::loadActionDatabase("action_database.toml");
     World world;
     world.addLocation("Village", 0);
-    auto maybeAction = Action::checkActionDatabaseDatabase("Meditate");
-    std::shared_ptr<Action> actionPtr;
-    if(maybeAction.has_value()){
-        actionPtr = std::make_shared<Action>(maybeAction->get());
-    }
+
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
-    startingLocation->addAction(actionPtr);
+
+    auto maybeAction = Action::checkActionDatabaseDatabase("Meditate");
+    if(maybeAction.has_value()){
+        Action action = maybeAction->get();
+        startingLocation->addAction(action);
+    }
+
     player = Player(0, 100000, startingLocation);
-    player.startAction(actionPtr);
+    player.startAction(startingLocation->getActions()[0]);
     startTimer();
 }
 
@@ -38,6 +40,9 @@ void GameLoop::loop()
 {
     if(!paused)
     {
+        if(ticks%10){
+            player.tick();
+        }
         ticks++;
         qDebug()<<ticks;
     }
