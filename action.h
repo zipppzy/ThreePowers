@@ -16,6 +16,7 @@ class Action
 public:
     Action(std::string name, double baseDuration);
     Action(const Action& other);
+    Action& operator=(const Action& other);
     Action(toml::table actionTable);
 
     static void loadActionDatabase(std::string path);
