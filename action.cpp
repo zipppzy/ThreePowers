@@ -23,6 +23,31 @@ Action::Action(const Action& other)
     reserveRewards(other.reserveRewards)
 {}
 
+Action& Action::operator=(const Action& other){
+    if(this != &other){
+        name = other.name;
+        visibleToPlayer = other.visibleToPlayer;
+        baseDuration = other.baseDuration;
+        duration = other.duration;
+        currentProgress = other.currentProgress;
+        failureChance = other.failureChance;
+
+        // Deep copy the requirement if it exists
+        if(other.actionRequirements){
+            actionRequirements = std::make_unique<Requirement>(*other.actionRequirements);
+        }else{
+            actionRequirements.reset();
+        }
+
+        skillRewards = other.skillRewards;
+        itemRewards = other.itemRewards;
+        reserveRewards = other.reserveRewards;
+    }
+
+    return *this;
+}
+
+
 Action::Action(toml::table actionTable){
     this->name = actionTable["name"].value_or("");
     this->baseDuration = actionTable["baseDuration"].value_or(-1);
