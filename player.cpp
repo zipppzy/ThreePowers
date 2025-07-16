@@ -140,7 +140,6 @@ void Player::loadPlayerState(std::string fileName){
 
 void Player::tick(){
     this->age++;
-    qDebug()<<currentAction->name;
     //ticks currentAction and check if action is completed then gives rewards
     if(currentAction->tick()){
         if(currentAction->isSuccess()){
@@ -169,5 +168,5 @@ bool Player::checkActionRequirements(std::shared_ptr<Action> action) const{
     if(!maybeActionRequirement){
         return true;
     }
-    return maybeActionRequirement->get()->isMet(this->skills, this->inventory, this->reserves);
+    return maybeActionRequirement.value()->isMet(this->skills, this->inventory, this->reserves);
 }
