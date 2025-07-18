@@ -39,12 +39,8 @@ std::optional<Reserve*> Player::findReserve(std::string name){
 }
 
 void Player::addSkillXp(std::string name, double xp){
-    if(this->hasSkill(name)){
-        for(Skill i : this->skills){
-            if(i.name == name){
-                i.addXp(xp);
-            }
-        }
+    if(auto maybeSkill = this->findSkill(name)){
+        maybeSkill.value()->addXp(xp);
     }else{
         auto result = Skill::checkSkillDatabase(name);
         if(result){

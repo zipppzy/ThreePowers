@@ -2,20 +2,22 @@
 
 Skill::Skill(){};
 
-Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor){
+Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int maxLevel){
     this->name = name;
     this->baseXpForLevel = baseXpForLevel;
     this->scalingFactor = scalingFactor;
+    this->maxLevel = maxLevel;
     this->level = 0;
     this->xp = 0;
 }
 
-Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int level, double xp){
+Skill::Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int level, double xp, unsigned int maxLevel){
     this->name = name;
     this->baseXpForLevel = baseXpForLevel;
     this->scalingFactor = scalingFactor;
     this->level = level;
     this->xp = xp;
+    this->maxLevel = maxLevel;
 }
 
 Skill::Skill(toml::table skillTable){
@@ -24,6 +26,7 @@ Skill::Skill(toml::table skillTable){
     this->xp = skillTable["xp"].value_or(0);
     this->baseXpForLevel = skillTable["baseXpForLevel"].value_or(-1.0);
     this->scalingFactor = skillTable["scalingFactor"].value_or(-1.0);
+    this->maxLevel = skillTable["maxLevel"].value_or(0);
 }
 
 std::unordered_map<std::string, Skill> Skill::skillDatabase;
@@ -38,7 +41,7 @@ void Skill::addXp(double xp){
     this->xp += xp;
     double xpToLevel = this->baseXpForLevel*std::pow(this->scalingFactor, this->level);
     if(this->xp > xpToLevel){
-        this->xp -=xpToLevel;
+        this->xp -= xpToLevel;
         this->level += 1;
     }
 
@@ -54,6 +57,7 @@ toml::table Skill::getSkillTable() const{
     skill.insert("xp", xp);
     skill.insert("baseXpForLevel", baseXpForLevel);
     skill.insert("scalingFactor", scalingFactor);
+    skill.insert("maxLevel", maxLevel);
     return skill;
 }
 

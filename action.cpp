@@ -58,7 +58,7 @@ Action::Action(toml::table actionTable){
     // }
     this->duration = actionTable["duration"].value_or(this->baseDuration);
     this->currentProgress = actionTable["currentProgress"].value_or(0);
-
+    this->failureChance = actionTable["failureChance"].value_or(0);
     if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
         for(const auto& [key, value] : *skillRewardsTable){
             if (const auto* arr = value.as_array(); arr && arr->size() == 2){
