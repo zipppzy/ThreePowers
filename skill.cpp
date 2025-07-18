@@ -39,10 +39,14 @@ void Skill::addXp(double xp){
     if(level >= maxLevel) return;
 
     this->xp += xp;
-    double xpToLevel = this->baseXpForLevel*std::pow(this->scalingFactor, this->level);
-    if(this->xp > xpToLevel){
-        this->xp -= xpToLevel;
-        this->level += 1;
+    while (level < maxLevel) {
+        double xpToLevel = baseXpForLevel * std::pow(scalingFactor, level);
+        if (this->xp >= xpToLevel) {
+            this->xp -= xpToLevel;
+            level++;
+        } else {
+            break;
+        }
     }
 
     if(level >= maxLevel){
