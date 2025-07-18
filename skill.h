@@ -10,8 +10,8 @@ class Skill
 {
 public:
     Skill();
-    Skill(std::string name, double baseXpForLevel, double scalingFactor);
-    Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int level, double xp);
+    Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int maxLevel);
+    Skill(std::string name, double baseXpForLevel, double scalingFactor, unsigned int level, double xp, unsigned int maxLevel);
     Skill(toml::table skillTable);
 
     std::string name;
