@@ -1,8 +1,9 @@
 #include "actionbutton.h"
 
-ActionButton::ActionButton(const QString &text, QWidget *parent)
+ActionButton::ActionButton(std::shared_ptr<Action> action, QWidget *parent)
     : QWidget{parent}
-    , text(text)
+    , text(QString::fromStdString(action->name))
+    ,action(action)
 {
     this->setMinimumHeight(40);
     this->setMinimumWidth(150);

@@ -1,7 +1,9 @@
 #include "gameloop.h"
 
 
-GameLoop::GameLoop(QObject *parent):QObject(parent)
+GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
+    QObject(parent)
+    , mainWindow(mainWindow)
 {
     Action::loadActionDatabase("action_database.toml");
     Skill::loadSkillDatabase("skills_database.toml");
@@ -18,6 +20,7 @@ GameLoop::GameLoop(QObject *parent):QObject(parent)
 
     player = Player(0, 100000, startingLocation);
     player.startAction(startingLocation->getActions()[0]);
+    mainWindow->addActionButton(startingLocation->getActions()[0]);
     startTimer();
 }
 

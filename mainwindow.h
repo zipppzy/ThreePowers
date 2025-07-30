@@ -2,11 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "gameloop.h"
+#include <qgridlayout.h>
+#include "actionbutton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+#define MAX_ACTION_BUTTON_COLS 5
 
 class MainWindow : public QMainWindow
 {
@@ -16,8 +19,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void addActionButton(std::shared_ptr<Action> action);
+
+
+
 private:
     Ui::MainWindow *ui;
-    GameLoop gameLoop;
+
+    QWidget *buttonContainer = nullptr;
+    QGridLayout *gridLayout = nullptr;
+
+    std::pair<int, int> nextActionButtonCoords;  //position in gridLayout (x,y)
+
 };
 #endif // MAINWINDOW_H
