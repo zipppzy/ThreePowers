@@ -3,6 +3,7 @@
 
 #include "player.h"
 #include "world.h"
+#include "mainwindow.h"
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
@@ -12,13 +13,14 @@ class GameLoop : public QObject
 {
     Q_OBJECT
 private:
+    MainWindow* mainWindow;
     QTimer *timer = new QTimer(this);
     bool paused;
     //smallest usable unit of time
     unsigned int ticks = 0;
     Player player;
 public:
-    GameLoop(QObject *parent = nullptr);
+    GameLoop(MainWindow* mainWindow, QObject *parent = nullptr);
     void startTimer();
 public slots:
     void loop();
