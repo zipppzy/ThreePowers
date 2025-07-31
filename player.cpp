@@ -136,25 +136,27 @@ void Player::loadPlayerState(std::string fileName){
 
 void Player::tick(){
     this->age++;
-    //ticks currentAction and check if action is completed then gives rewards
-    if(currentAction->tick()){
-        if(currentAction->isSuccess()){
-            auto skillRewards = currentAction->getSkillRewards();
-            for(const auto& [key,value] : skillRewards){
-                this->addSkillXp(key, value);
-            }
-            auto itemRewards = currentAction->getItemRewards();
-            for(const auto& item : itemRewards){
-                if(!this->pickupItem(item)){
-                    qDebug()<<"Couldn't pickup item";
+    if(currentAction != nullptr){
+        //ticks currentAction and check if action is completed then gives rewards
+        if(currentAction->tick()){
+            if(currentAction->isSuccess()){
+                auto skillRewards = currentAction->getSkillRewards();
+                for(const auto& [key,value] : skillRewards){
+                    this->addSkillXp(key, value);
                 }
+                auto itemRewards = currentAction->getItemRewards();
+                for(const auto& item : itemRewards){
+                    if(!this->pickupItem(item)){
+                        qDebug()<<"Couldn't pickup item";
+                    }
+                }
+                auto reserveRewards = currentAction->getReserveRewards();
+                for(const Reserve& reserve : reserveRewards){
+                    this->addReserve(reserve);
+                }
+            }else{
+                qDebug("Action Failed");
             }
-            auto reserveRewards = currentAction->getReserveRewards();
-            for(const Reserve& reserve : reserveRewards){
-                this->addReserve(reserve);
-            }
-        }else{
-            qDebug("Action Failed");
         }
     }
 }

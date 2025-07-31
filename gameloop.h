@@ -21,6 +21,7 @@ private:
     Player player;
     std::vector<ActionButton*> actionButtons;
 
+    void connectButtons();
     void addActionButton(std::shared_ptr<Action> action);
 
 public:
