@@ -19,9 +19,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void addActionButton(std::shared_ptr<Action> action);
-
-
+    void addActionButton(ActionButton* btn);
 
 private:
     Ui::MainWindow *ui;

@@ -19,6 +19,9 @@ private:
     //smallest usable unit of time
     unsigned int ticks = 0;
     Player player;
+
+    void addActionButton(std::shared_ptr<Action> action);
+
 public:
     GameLoop(MainWindow* mainWindow, QObject *parent = nullptr);
     void startTimer();
