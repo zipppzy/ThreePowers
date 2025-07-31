@@ -19,6 +19,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QPushButton* getPauseButton() const;
+    QPushButton* getPlayButton() const;
+
     void addActionButton(ActionButton* btn);
 
 private:

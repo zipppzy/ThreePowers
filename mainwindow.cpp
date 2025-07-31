@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     buttonContainer = new QWidget();
     gridLayout = new QGridLayout(buttonContainer);
+    gridLayout->setAlignment(Qt::AlignTop);
 
     buttonContainer->setLayout(gridLayout);
     ui->actionScrollArea->setWidget(buttonContainer);
@@ -26,6 +27,13 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
+QPushButton* MainWindow::getPauseButton() const{
+    return ui->pauseButton;
+}
+
+QPushButton* MainWindow::getPlayButton() const{
+    return ui->playButton;
+}
 
 void MainWindow::addActionButton(ActionButton* btn){
     gridLayout->addWidget(btn, nextActionButtonCoords.second, nextActionButtonCoords.first);

@@ -8,7 +8,7 @@ ActionButton::ActionButton(std::shared_ptr<Action> action, QPushButton *parent)
     this->setMinimumHeight(40);
     this->setMinimumWidth(150);
     this->setCursor(Qt::PointingHandCursor);
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     connect(this, &QPushButton::clicked, this, &ActionButton::tryStartAction);
 }

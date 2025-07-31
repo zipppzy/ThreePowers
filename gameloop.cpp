@@ -5,8 +5,11 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     QObject(parent)
     , mainWindow(mainWindow)
 {
+    this->connectButtons();
+
     Action::loadActionDatabase("action_database.toml");
     Skill::loadSkillDatabase("skills_database.toml");
+
     World world;
     world.addLocation("Village", 0);
 
@@ -19,9 +22,13 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     }
 
     player = Player(0, 100000, startingLocation);
-    player.startAction(startingLocation->getActions()[0]);
     this->addActionButton(startingLocation->getActions()[0]);
     startTimer();
+}
+
+void GameLoop::connectButtons(){
+    connect(mainWindow->getPauseButton(),&QPushButton::clicked, this , &GameLoop::pause);
+    connect(mainWindow->getPlayButton(), &QPushButton::clicked, this , &GameLoop::play);
 }
 
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
