@@ -14,6 +14,7 @@ public:
     explicit ActionButton(std::shared_ptr<Action> action, QPushButton *parent = nullptr);
 
     void setProgress(double value);      // 0.0 to 1.0
+    void updateProgress();
     void setText(const QString &text);
     QString getText() const;
 

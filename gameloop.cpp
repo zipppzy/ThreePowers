@@ -29,6 +29,7 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
     connect(btn, &ActionButton::tryStartAction, this, [this, action](){
         this->player.startAction(action);
     });
+    this->actionButtons.push_back(btn);
     mainWindow->addActionButton(btn);
 }
 
@@ -52,8 +53,11 @@ void GameLoop::loop()
 {
     if(!paused)
     {
-        if(ticks%10){
+        if(ticks%100 == 0){
             player.tick();
+            for(ActionButton* btn : this->actionButtons){
+                btn->updateProgress();
+            }
         }
         ticks++;
         qDebug()<<ticks;

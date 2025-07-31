@@ -19,6 +19,10 @@ void ActionButton::setProgress(double value)
     update();
 }
 
+void ActionButton::updateProgress(){
+    this->setProgress(this->action->getCurrentProgress()/this->action->getDuration());
+}
+
 void ActionButton::setText(const QString &text)
 {
     this->text = text;

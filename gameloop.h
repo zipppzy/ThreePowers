@@ -19,6 +19,7 @@ private:
     //smallest usable unit of time
     unsigned int ticks = 0;
     Player player;
+    std::vector<ActionButton*> actionButtons;
 
     void addActionButton(std::shared_ptr<Action> action);
 
