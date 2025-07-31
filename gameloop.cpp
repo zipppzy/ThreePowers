@@ -20,8 +20,16 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     player = Player(0, 100000, startingLocation);
     player.startAction(startingLocation->getActions()[0]);
-    mainWindow->addActionButton(startingLocation->getActions()[0]);
+    this->addActionButton(startingLocation->getActions()[0]);
     startTimer();
+}
+
+void GameLoop::addActionButton(std::shared_ptr<Action> action){
+    ActionButton* btn = new ActionButton(action);
+    connect(btn, &ActionButton::tryStartAction, this, [this, action](){
+        this->player.startAction(action);
+    });
+    mainWindow->addActionButton(btn);
 }
 
 void GameLoop::startTimer()

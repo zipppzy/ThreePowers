@@ -1,14 +1,16 @@
 #include "actionbutton.h"
 
-ActionButton::ActionButton(std::shared_ptr<Action> action, QWidget *parent)
-    : QWidget{parent}
-    , text(QString::fromStdString(action->name))
-    ,action(action)
+ActionButton::ActionButton(std::shared_ptr<Action> action, QPushButton *parent)
+    : QPushButton{parent}
+    , text{QString::fromStdString(action->name)}
+    ,action{action}
 {
     this->setMinimumHeight(40);
     this->setMinimumWidth(150);
     this->setCursor(Qt::PointingHandCursor);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    connect(this, &QPushButton::clicked, this, &ActionButton::tryStartAction);
 }
 
 void ActionButton::setProgress(double value)
@@ -71,3 +73,4 @@ void ActionButton::leaveEvent(QEvent *)
     hovered = false;
     update();
 }
+

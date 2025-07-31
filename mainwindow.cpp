@@ -27,8 +27,7 @@ MainWindow::~MainWindow(){
 }
 
 
-void MainWindow::addActionButton(std::shared_ptr<Action> action){
-    ActionButton *btn = new ActionButton(action);
+void MainWindow::addActionButton(ActionButton* btn){
     gridLayout->addWidget(btn, nextActionButtonCoords.second, nextActionButtonCoords.first);
 
     if(nextActionButtonCoords.first >= MAX_ACTION_BUTTON_COLS){
