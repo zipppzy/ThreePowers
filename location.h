@@ -7,7 +7,10 @@
 
 class Location{
 public:
-    Location(std::string name, int position, int id, std::shared_ptr<Location> parentLocation);
+    Location(std::string name, int position, int id, bool visibleToPlayer = false, std::shared_ptr<Location> parentLocation = nullptr);
+    Location(toml::table locationTable);
+    Location(const Location& other);
+
     std::string name;
     bool visibleToPlayer;
     void addSubLocation(std::shared_ptr<Location> location);
