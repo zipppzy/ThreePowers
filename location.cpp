@@ -1,9 +1,9 @@
 #include "location.h"
 
-Location::Location(std::string name, int position, int id, bool visibleToPlayer, std::shared_ptr<Location> parentLocation)
+Location::Location(std::string name, int position, int index, bool visibleToPlayer, std::shared_ptr<Location> parentLocation)
     : name{name},
     position{position},
-    id{id},
+    index{index},
     visibleToPlayer{visibleToPlayer},
     parentLocation{parentLocation}
 {}
@@ -16,8 +16,15 @@ Location::Location(toml::table locationTable){
     if(auto actionsArray = locationTable["actions"].as_array()){
         for(auto&& actionName : *actionsArray){
             if(auto maybeAction = Action::checkActionDatabaseDatabase(actionName.value_or(""))){
-                actions.push_back(std::make_shared<Action>(*maybeAction));
+                this->actions.push_back(std::make_shared<Action>(*maybeAction));
             }
+        }
+    }
+
+    if(auto subLocationNamesArray = locationTable["subLocationNames"].as_array()){
+        this->subLocationNames.clear();
+        for(auto&& subLocationName : *subLocationNamesArray){
+            subLocationNames.push_back(subLocationName.value_or(""));
         }
     }
 }
@@ -26,7 +33,7 @@ Location::Location(toml::table locationTable){
 Location::Location(const Location& other)
     : name{other.name},
     position{other.position},
-    id{other.id},
+    index{other.index},
     visibleToPlayer{other.visibleToPlayer}
 {
     for (const auto& action : other.actions) {
@@ -50,6 +57,14 @@ void Location::addAction(Action action){
     actions.push_back(std::make_shared<Action>(action));
 }
 
+void Location::setIndex(int index){
+    this->index = index;
+}
+
 std::vector<std::shared_ptr<Action>> Location::getActions(){
     return this->actions;
+}
+
+int Location::getPosition(){
+    return this->position;
 }

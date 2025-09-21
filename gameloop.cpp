@@ -9,6 +9,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     Action::loadActionDatabase("action_database.toml");
     Skill::loadSkillDatabase("skills_database.toml");
+    World::loadLocationDatabase("location_database.toml");
 
     World world;
     world.addLocation("Village", 0);
