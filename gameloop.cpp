@@ -12,18 +12,14 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     World::loadLocationDatabase("location_database.toml");
 
     World world;
-    world.addLocation("Village", 0);
+    world.loadWorldState("world_state.toml");
 
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
 
-    auto maybeAction = Action::checkActionDatabaseDatabase("Meditate");
-    if(maybeAction.has_value()){
-        Action action = maybeAction->get();
-        startingLocation->addAction(action);
-    }
-
     player = Player(0, 100000, startingLocation);
-    this->addActionButton(startingLocation->getActions()[0]);
+    for(auto action : player.getCurrentLocation()->getActions()){
+        this->addActionButton(action);
+    }
     startTimer();
 }
 

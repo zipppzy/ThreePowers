@@ -88,6 +88,10 @@ std::optional<Item*> Player::findItem(Item item){
     return findItem(item.name);
 }
 
+std::shared_ptr<Location> Player::getCurrentLocation(){
+    return currentLocation;
+}
+
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;
