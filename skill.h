@@ -1,6 +1,7 @@
 #ifndef SKILL_H
 #define SKILL_H
 
+#include "effect.h"
 #include "toml.hpp"
 #include<cmath>
 #include <string>
@@ -23,6 +24,8 @@ public:
 
 private:
     static std::unordered_map<std::string, Skill> skillDatabase;
+
+    std::unordered_map<std::string, std::vector<Effect>> effects;   //name of action or reserve : list of effects
     unsigned int level;         //level starts at 0
     unsigned int maxLevel;      //gain no more xp after reaching this level
     double xp;
