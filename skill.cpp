@@ -65,6 +65,13 @@ toml::table Skill::getSkillTable() const{
     return skill;
 }
 
+std::optional<std::reference_wrapper<const std::vector<Effect>>> Skill::checkEffects(const std::string& name) const{
+    if (auto search = this->effects.find(name); search != this->effects.end()) {
+        return std::cref(search->second);
+    }
+    return std::nullopt;
+}
+
 void Skill::loadSkillDatabase(std::string path){
 
     auto in = toml::parse_file(path);
