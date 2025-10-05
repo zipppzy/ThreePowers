@@ -142,6 +142,49 @@ const std::optional<const Requirement*> Action::getActionRequirements() const{
     return this->actionRequirements.get();
 }
 
+void Action::applyEffects(const std::vector<Effect>& effects){
+    //apply flat effects first
+    for(const Effect& effect : effects){
+        if(effect.type == Effect::flatDuration){
+            this->duration += effect.magnitude;
+            continue;
+        }
+
+        if(effect.type == Effect::flatFailureChance){
+            this->failureChance += effect.magnitude;
+            if(this->failureChance < 0.0){
+                this->failureChance = 0;
+                continue;
+            }
+            if(this->failureChance > 1.0){
+                this->failureChance = 1;
+                continue;
+            }
+            continue;
+        }
+    }
+
+    //apply mult effects
+    for(const Effect& effect : effects){
+        if(effect.type == Effect::multDuration){
+            this->duration *= effect.magnitude;
+            continue;
+        }
+        if(effect.type == Effect::multFailureChance){
+            this->failureChance *= effect.magnitude;
+            if(this->failureChance < 0.0){
+                this->failureChance = 0;
+                continue;
+            }
+            if(this->failureChance > 1.0){
+                this->failureChance = 1;
+                continue;
+            }
+            continue;
+        }
+    }
+}
+
 void Action::multiplySkillMultiplier(std::string name, double factor){
     if(auto search = skillRewards.find(name); search != this->skillRewards.end()){
         search->second.second *= factor;
