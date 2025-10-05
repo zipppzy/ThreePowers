@@ -30,7 +30,6 @@ public:
     const std::vector<Reserve>& getReserveRewards() const;
     const std::optional<const Requirement*> getActionRequirements() const;
     void applyEffects(const std::vector<Effect>& effects);
-    void multiplySkillMultiplier(std::string name, double factor);  //this is awkward maybe should rework
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase
     bool isSuccess() const;
@@ -48,7 +47,7 @@ private:
 
     std::unique_ptr<Requirement> actionRequirements;
 
-    std::map<std::string, std::pair<double, double>> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
+    std::map<std::string, double> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
     std::vector<Item> itemRewards;      //includes the count in the Item object
     std::vector<Reserve> reserveRewards;
 };

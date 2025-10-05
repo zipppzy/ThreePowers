@@ -120,11 +120,7 @@ double Action::getDuration() const{
 }
 
 const std::map<std::string, double> Action::getSkillRewards() const{
-    std::map<std::string, double> rewards;
-    for(const auto& [key, value] : skillRewards){
-        rewards[key] = value.first * value.second;
-    }
-    return rewards;
+    return this->skillRewards;
 }
 
 const std::vector<Item>& Action::getItemRewards() const{
@@ -182,12 +178,6 @@ void Action::applyEffects(const std::vector<Effect>& effects){
             }
             continue;
         }
-    }
-}
-
-void Action::multiplySkillMultiplier(std::string name, double factor){
-    if(auto search = skillRewards.find(name); search != this->skillRewards.end()){
-        search->second.second *= factor;
     }
 }
 
