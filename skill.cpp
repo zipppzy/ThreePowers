@@ -27,6 +27,15 @@ Skill::Skill(toml::table skillTable){
     this->baseXpForLevel = skillTable["baseXpForLevel"].value_or(-1.0);
     this->scalingFactor = skillTable["scalingFactor"].value_or(-1.0);
     this->maxLevel = skillTable["maxLevel"].value_or(0);
+
+    if(auto effectsArray = skillTable["effects"].as_array()){
+        for(auto&& effectNode : *effectsArray){
+            if(auto table = effectNode.as_table()){
+                Effect effect{*table};
+                this->effects[effect.name].push_back(std::move(effect));
+            }
+        }
+    }
 }
 
 std::unordered_map<std::string, Skill> Skill::skillDatabase;
