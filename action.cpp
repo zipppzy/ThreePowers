@@ -60,10 +60,9 @@ Action::Action(toml::table actionTable){
     this->currentProgress = actionTable["currentProgress"].value_or(0);
     this->failureChance = actionTable["failureChance"].value_or(0);
     if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
-        for(const auto& [key, value] : *skillRewardsTable){
-            if (const auto* arr = value.as_array(); arr && arr->size() == 2){
-                Action::skillRewards[std::string(key)] = {arr->get(0)->value_or(0.0), arr->get(1)->value_or(1.0)};
-            }
+        for(const auto& [skillName, xp] : *skillRewardsTable){
+            double xpFloat = xp.is_floating_point() ? xp.as_floating_point()->get(): static_cast<double>(xp.as_integer()->get());
+            this->skillRewards[std::string(skillName)] = xpFloat;
         }
     }
 

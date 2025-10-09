@@ -17,7 +17,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
 
     player = Player(0, 100000, startingLocation);
-    for(auto action : player.getCurrentLocation()->getActions()){
+    for(auto& action : player.getCurrentLocation()->getActions()){
         this->addActionButton(action);
     }
     startTimer();
