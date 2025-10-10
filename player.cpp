@@ -92,6 +92,20 @@ std::shared_ptr<Location> Player::getCurrentLocation(){
     return currentLocation;
 }
 
+void Player::applySkillEffectsCurrentLocation(){
+    for(auto& action : currentLocation->getActions()){
+        std::string actionName = action->name;
+        std::vector<Effect> skillEffectList;
+
+        for(const auto& skill : skills){
+            if(auto maybeEffects = skill.checkEffects(actionName)){
+                skillEffectList.insert(skillEffectList.end(), maybeEffects->get().begin(), maybeEffects->get().end());
+            }
+        }
+        action->applyEffects(skillEffectList);
+    }
+}
+
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;
@@ -110,7 +124,7 @@ void Player::savePlayerState(std::string fileName){
     playerData.insert("attributes", std::move(attributes));
 
     toml::array skills;
-    for(Skill i : this->skills){
+    for(Skill& i : this->skills){
         skills.push_back(i.getSkillTable());
     }
 

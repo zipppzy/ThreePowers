@@ -138,6 +138,9 @@ const std::optional<const Requirement*> Action::getActionRequirements() const{
 }
 
 void Action::applyEffects(const std::vector<Effect>& effects){
+    //reset action to default values first
+    this->reset();
+
     //apply flat effects first
     for(const Effect& effect : effects){
         if(effect.type == Effect::flatDuration){

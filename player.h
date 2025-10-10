@@ -27,6 +27,7 @@ public:
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);
     std::shared_ptr<Location> getCurrentLocation();
+    void applySkillEffectsCurrentLocation();
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
     //void extracted(toml::array &skills);
     void savePlayerState(std::string fileName);
