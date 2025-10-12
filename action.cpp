@@ -137,48 +137,34 @@ const std::optional<const Requirement*> Action::getActionRequirements() const{
     return this->actionRequirements.get();
 }
 
-void Action::applyEffects(const std::vector<Effect>& effects){
+void Action::applyEffects(const std::vector<std::pair<Effect,int>>& effects){
     //reset action to default values first
     this->reset();
 
     //apply flat effects first
-    for(const Effect& effect : effects){
+    // add magnitude * level
+    for(const auto& [effect, level] : effects){
         if(effect.type == Effect::flatDuration){
-            this->duration += effect.magnitude;
+            this->duration += effect.magnitude * level;
             continue;
         }
 
         if(effect.type == Effect::flatFailureChance){
-            this->failureChance += effect.magnitude;
-            if(this->failureChance < 0.0){
-                this->failureChance = 0;
-                continue;
-            }
-            if(this->failureChance > 1.0){
-                this->failureChance = 1;
-                continue;
-            }
-            continue;
+            this->failureChance += effect.magnitude * level;
+            this->failureChance = std::clamp(this->failureChance, 0.0, 1.0);
         }
     }
 
     //apply mult effects
-    for(const Effect& effect : effects){
+    //multiply magnitude^level
+    for(const auto& [effect,level] : effects){
         if(effect.type == Effect::multDuration){
-            this->duration *= effect.magnitude;
+            this->duration *= pow(effect.magnitude, level);
             continue;
         }
         if(effect.type == Effect::multFailureChance){
-            this->failureChance *= effect.magnitude;
-            if(this->failureChance < 0.0){
-                this->failureChance = 0;
-                continue;
-            }
-            if(this->failureChance > 1.0){
-                this->failureChance = 1;
-                continue;
-            }
-            continue;
+            this->failureChance *= pow(effect.magnitude, level);
+            this->failureChance = std::clamp(this->failureChance, 0.0, 1.0);
         }
     }
 }

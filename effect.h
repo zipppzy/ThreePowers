@@ -6,6 +6,8 @@
 #include <string>
 #include <unordered_map>
 
+//TODO: scale effect based on level
+
 //defines an effects skills can have
 class Effect{
 public:

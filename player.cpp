@@ -95,11 +95,13 @@ std::shared_ptr<Location> Player::getCurrentLocation(){
 void Player::applySkillEffectsCurrentLocation(){
     for(auto& action : currentLocation->getActions()){
         std::string actionName = action->name;
-        std::vector<Effect> skillEffectList;
+        std::vector<std::pair<Effect,int>> skillEffectList;
 
         for(const auto& skill : skills){
             if(auto maybeEffects = skill.checkEffects(actionName)){
-                skillEffectList.insert(skillEffectList.end(), maybeEffects->get().begin(), maybeEffects->get().end());
+                for (const auto& effect : maybeEffects->get()) {
+                    skillEffectList.emplace_back(effect, skill.getLevel());
+                }
             }
         }
         action->applyEffects(skillEffectList);

@@ -29,7 +29,7 @@ public:
     const std::vector<Item>& getItemRewards() const;
     const std::vector<Reserve>& getReserveRewards() const;
     const std::optional<const Requirement*> getActionRequirements() const;
-    void applyEffects(const std::vector<Effect>& effects);
+    void applyEffects(const std::vector<std::pair<Effect, int>>& effects);
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase
     bool isSuccess() const;
