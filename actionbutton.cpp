@@ -5,6 +5,7 @@ ActionButton::ActionButton(std::shared_ptr<Action> action, QPushButton *parent)
     , text{QString::fromStdString(action->name)}
     ,action{action}
 {
+    this->tooltip = new Tooltip{this->text};
     this->setMinimumHeight(40);
     this->setMinimumWidth(150);
     this->setCursor(Qt::PointingHandCursor);
@@ -69,12 +70,17 @@ void ActionButton::mousePressEvent(QMouseEvent *event)
 void ActionButton::enterEvent(QEnterEvent *)
 {
     hovered = true;
+    QPoint pos = mapToGlobal(rect().topRight());
+    tooltip->move(pos.x() + 8, pos.y());
+    this->tooltip->move(pos);
+    this->tooltip->show();
     update();
 }
 
 void ActionButton::leaveEvent(QEvent *)
 {
     hovered = false;
+    this->tooltip->hide();
     update();
 }
 

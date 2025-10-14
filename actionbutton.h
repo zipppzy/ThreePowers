@@ -2,6 +2,7 @@
 #define ACTIONBUTTON_H
 
 #include "action.h"
+#include "tooltip.h"
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
@@ -29,6 +30,7 @@ protected:
 
 private:
     QString text;
+    Tooltip* tooltip;
     double progress = 0.0;
     bool hovered = false;
 

@@ -21,6 +21,7 @@ set(PROJECT_SOURCES
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
     qt_add_executable(ThreePowers
         MANUAL_FINALIZATION
@@ -37,6 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         actionbutton.h actionbutton.cpp
         effect.h
         effect.cpp
+        tooltip.h tooltip.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ThreePowers APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -57,6 +59,7 @@ else()
 endif()
 
 target_link_libraries(ThreePowers PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
