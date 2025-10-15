@@ -1,6 +1,5 @@
 #include "tooltip.h"
 #include <qboxlayout.h>
-#include <qlabel.h>
 
 Tooltip::Tooltip(const QString &text, QWidget *parent)
     : QWidget{parent, Qt::ToolTip | Qt::FramelessWindowHint}{
@@ -12,8 +11,42 @@ Tooltip::Tooltip(const QString &text, QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
-    auto* label = new QLabel(text, this);
-    label->setStyleSheet("QLabel { background: #222; color: white; border: 1px solid #444; padding: 4px; }");
-    layout->addWidget(label);
-    this->setLayout(layout);
+    auto style = "QLabel { background: #222; color: white; padding: 6px; }";
+
+    nameLabel = new QLabel(this);
+    nameLabel->setStyleSheet(style);
+    nameLabel->setAlignment(Qt::AlignCenter);
+    QFont nameFont = nameLabel->font();
+    nameFont.setBold(true);
+    nameFont.setPointSize(nameFont.pointSize() + 2);
+    nameLabel->setFont(nameFont);
+
+    progressLabel = new QLabel(this);
+    progressLabel->setStyleSheet(style);
+    progressLabel->setAlignment(Qt::AlignCenter);
+
+    descLabel = new QLabel(this);
+    descLabel->setWordWrap(true);
+    descLabel->setStyleSheet(style);
+
+    auto *frameStyle = "background: #444; max-height: 1px;";
+
+    QFrame *line1 = new QFrame(this);
+    line1->setStyleSheet(frameStyle);
+    QFrame *line2 = new QFrame(this);
+    line2->setStyleSheet(frameStyle);
+
+    layout->addWidget(nameLabel);
+    layout->addWidget(line1);
+    layout->addWidget(progressLabel);
+    layout->addWidget(line2);
+    layout->addWidget(descLabel);
+
+    setLayout(layout);
+}
+
+void Tooltip::setActionData(const QString &name, int current, int total, const QString &desc){
+    nameLabel->setText(name);
+    progressLabel->setText(QString("Progress: %1 / %2").arg(current).arg(total));
+    descLabel->setText(desc);
 }
