@@ -44,6 +44,10 @@ unsigned int Skill::getLevel() const{
     return this->level;
 }
 
+double Skill::getXp() const{
+    return xp;
+}
+
 void Skill::addXp(double xp){
     if(level >= maxLevel) return;
 

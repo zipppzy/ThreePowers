@@ -17,6 +17,7 @@ public:
 
     std::string name;
     unsigned int getLevel() const;
+    double getXp() const;
     void addXp(double xp);
     toml::table getSkillTable() const;
     std::optional<std::reference_wrapper<const std::vector<Effect>>> checkEffects(const std::string& name) const;
