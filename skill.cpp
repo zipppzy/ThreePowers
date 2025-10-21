@@ -67,6 +67,9 @@ void Skill::addXp(double xp){
     }
 }
 
+unsigned int Skill::getMaxLevel() const{
+    return this->maxLevel;
+}
 toml::table Skill::getSkillTable() const{
     toml::table skill;
     skill.insert("name", name);

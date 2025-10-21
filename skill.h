@@ -19,6 +19,7 @@ public:
     unsigned int getLevel() const;
     double getXp() const;
     void addXp(double xp);
+    unsigned int getMaxLevel() const;
     toml::table getSkillTable() const;
     std::optional<std::reference_wrapper<const std::vector<Effect>>> checkEffects(const std::string& name) const;
     static void loadSkillDatabase(std::string path);
