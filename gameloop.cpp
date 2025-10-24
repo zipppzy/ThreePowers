@@ -24,8 +24,12 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         this->addActionButton(action);
     }
 
-    skillModel = new SkillModel(this);
-    skillModel->setSkillSource(&player.getSkills());
+    this->skillModel = new SkillModel(this);
+    this->skillModel->setSkillSource(&player.getSkills());
+    mainWindow->setupSkillView(this->skillModel);
+
+    player.addSkillXp("Concentration", 1000);
+    player.addSkillXp("Persuasion", 150);
 
     startTimer();
 }

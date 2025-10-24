@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "skilldelegate.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -44,5 +45,18 @@ void MainWindow::addActionButton(ActionButton* btn){
     }else{
         nextActionButtonCoords.first++;
     }
+}
+
+void MainWindow::setupSkillView(SkillModel* skillModel){
+    QVBoxLayout* layout = new QVBoxLayout(ui->skillTab);
+
+    this->skillView = new QListView(ui->skillTab);
+    this->skillView->setModel(skillModel);
+    this->skillView->setItemDelegate(new SkillDelegate(this->skillView));
+    this->skillView->setViewMode(QListView::IconMode);
+    this->skillView->setGridSize(QSize(200, 80));
+    this->skillView->setSpacing(10);
+
+    layout->addWidget(this->skillView);
 }
 
