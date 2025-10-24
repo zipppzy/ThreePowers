@@ -17,10 +17,16 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
 
     player = Player(0, 100000, startingLocation);
+
     player.applySkillEffectsCurrentLocation();
+
     for(auto& action : player.getCurrentLocation()->getActions()){
         this->addActionButton(action);
     }
+
+    skillModel = new SkillModel(this);
+    skillModel->setSkillSource(&player.getSkills());
+
     startTimer();
 }
 
@@ -62,6 +68,15 @@ void GameLoop::loop()
             player.tick();
             for(ActionButton* btn : this->actionButtons){
                 btn->updateProgress();
+            }
+            if(!player.updatedSkillIndexes.empty()){
+                for(int i : player.updatedSkillIndexes){
+                    emit this->skillModel->dataChanged(
+                        skillModel->index(i,0),
+                        skillModel->index(i,0),
+                        {SkillModel::XpRole, SkillModel::LevelRole});
+                    player.updatedSkillIndexes.clear();
+                }
             }
         }
         ticks++;

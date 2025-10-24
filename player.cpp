@@ -24,6 +24,13 @@ std::optional<Skill*> Player::findSkill(std::string name){
         return &(*it);
     }
 }
+auto Player::findSkillIter(std::string name){
+    return std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
+}
+
+const std::vector<Skill>& Player::getSkills() const{
+    return skills;
+}
 
 bool Player::hasReserve(std::string name){
     return this->findReserve(name) ? true : false;
@@ -39,16 +46,31 @@ std::optional<Reserve*> Player::findReserve(std::string name){
 }
 
 void Player::addSkillXp(std::string name, double xp){
-    if(auto maybeSkill = this->findSkill(name)){
-        maybeSkill.value()->addXp(xp);
+    auto it = this->findSkillIter(name);
+    if(it != skills.end()){
+        it -> addXp(xp);
+        updatedSkillIndexes.push_back(std::distance(skills.begin(), it));
     }else{
         auto result = Skill::checkSkillDatabase(name);
         if(result){
             this->skills.push_back(Skill(result->get()));
+            skills.back().addXp(xp);
+            updatedSkillIndexes.push_back(skills.size()-1);
         }else{
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
+    // if(auto maybeSkill = this->findSkill(name)){
+    //     maybeSkill.value()->addXp(xp);
+    // }else{
+    //     auto result = Skill::checkSkillDatabase(name);
+    //     if(result){
+    //         this->skills.push_back(Skill(result->get()));
+    //         skills.back().addXp(xp);
+    //     }else{
+    //         qDebug() << "Tried to add xp to non-valid skill";
+    //     }
+    // }
 }
 
 void Player::addReserve(const Reserve& reserve){

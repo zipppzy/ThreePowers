@@ -19,6 +19,8 @@ public:
     //TODO: add constructor for toml table
     bool hasSkill(std::string name);
     std::optional<Skill*> findSkill(std::string name);
+    auto findSkillIter(std::string name);
+    const std::vector<Skill>& getSkills() const;
     bool hasReserve(std::string name);
     std::optional<Reserve*> findReserve(std::string name);
     void addSkillXp(std::string name, double xp);
@@ -33,6 +35,7 @@ public:
     void loadPlayerState(std::string fileName);
     void tick();
 
+    std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
 
 private:
     bool checkActionRequirements(std::shared_ptr<Action> action) const;

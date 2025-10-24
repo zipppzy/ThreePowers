@@ -39,6 +39,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
         effect.h
         effect.cpp
         tooltip.h tooltip.cpp
+        skillmodel.h skillmodel.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ThreePowers APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
