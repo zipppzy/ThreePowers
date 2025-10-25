@@ -60,17 +60,6 @@ void Player::addSkillXp(std::string name, double xp){
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
-    // if(auto maybeSkill = this->findSkill(name)){
-    //     maybeSkill.value()->addXp(xp);
-    // }else{
-    //     auto result = Skill::checkSkillDatabase(name);
-    //     if(result){
-    //         this->skills.push_back(Skill(result->get()));
-    //         skills.back().addXp(xp);
-    //     }else{
-    //         qDebug() << "Tried to add xp to non-valid skill";
-    //     }
-    // }
 }
 
 void Player::addReserve(const Reserve& reserve){

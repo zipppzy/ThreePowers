@@ -48,6 +48,11 @@ double Skill::getXp() const{
     return xp;
 }
 
+double Skill::getXpToNextLevel() const{
+    if(this->level >= this->maxLevel) return 0;
+    return this->baseXpForLevel * pow(this->scalingFactor, this->level);
+}
+
 void Skill::addXp(double xp){
     if(level >= maxLevel) return;
 

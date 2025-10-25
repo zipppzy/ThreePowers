@@ -28,8 +28,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
 
-    player.addSkillXp("Concentration", 1000);
-    player.addSkillXp("Persuasion", 150);
+    player.addSkillXp("Concentration", 150);
 
     startTimer();
 }
@@ -79,8 +78,8 @@ void GameLoop::loop()
                         skillModel->index(i,0),
                         skillModel->index(i,0),
                         {SkillModel::XpRole, SkillModel::LevelRole});
-                    player.updatedSkillIndexes.clear();
                 }
+                player.updatedSkillIndexes.clear();
             }
         }
         ticks++;

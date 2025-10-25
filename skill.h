@@ -18,6 +18,7 @@ public:
     std::string name;
     unsigned int getLevel() const;
     double getXp() const;
+    double getXpToNextLevel() const;
     void addXp(double xp);
     unsigned int getMaxLevel() const;
     toml::table getSkillTable() const;

@@ -12,6 +12,7 @@ public:
         NameRole = Qt::UserRole + 1,
         LevelRole,
         XpRole,
+        XpToNextLevelRole,
         MaxLevelRole
     };
     Q_ENUM(SkillRoles)

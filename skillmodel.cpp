@@ -22,6 +22,8 @@ QVariant SkillModel::data(const QModelIndex &index, int role) const {
         return static_cast<int>(s.getLevel());
     case XpRole:
         return s.getXp();
+    case XpToNextLevelRole:
+        return s.getXpToNextLevel();
     case MaxLevelRole:
         return static_cast<int>(s.getMaxLevel());
     default:
@@ -34,6 +36,7 @@ QHash<int, QByteArray> SkillModel::roleNames() const {
         {NameRole, "name"},
         {LevelRole, "level"},
         {XpRole, "xp"},
+        {XpToNextLevelRole, "xpToNextLevel"},
         {MaxLevelRole, "maxLevel"}
     };
 }
