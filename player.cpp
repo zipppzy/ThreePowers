@@ -55,7 +55,7 @@ void Player::addSkillXp(std::string name, double xp){
         if(result){
             this->skills.push_back(Skill(result->get()));
             skills.back().addXp(xp);
-            updatedSkillIndexes.push_back(skills.size()-1);
+            newSkillIndexes.push_back(skills.size()-1);
         }else{
             qDebug() << "Tried to add xp to non-valid skill";
         }
@@ -151,7 +151,6 @@ void Player::savePlayerState(std::string fileName){
 void Player::loadPlayerState(std::string fileName){
     auto playerData = toml::parse_file(fileName);
 
-    auto attributes = playerData["attributes"];
     this->age = std::stoull(playerData["age"].value_or("0"));
     this->lifespan = std::stoull(playerData["lifespan"].value_or("0"));
 

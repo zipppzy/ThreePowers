@@ -83,6 +83,7 @@ toml::table Skill::getSkillTable() const{
     skill.insert("baseXpForLevel", baseXpForLevel);
     skill.insert("scalingFactor", scalingFactor);
     skill.insert("maxLevel", maxLevel);
+    //TODO: deal with effects
     return skill;
 }
 

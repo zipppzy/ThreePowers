@@ -47,6 +47,10 @@ void SkillModel::setSkillSource(const std::vector<Skill> *skillList) {
     endResetModel();
 }
 
+void SkillModel::onSkillAdded(int index) {
+    beginInsertRows(QModelIndex(), index, index);
+    endInsertRows();
+}
 
 void SkillModel::refreshAll() {
     if (!skills || skills->empty()) return;

@@ -17,16 +17,17 @@ public:
     };
     Q_ENUM(SkillRoles)
 
-    explicit SkillModel(QObject *parent = nullptr);
+    explicit SkillModel(QObject* parent = nullptr);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
     void setSkillSource(const std::vector<Skill>* skillList);
+    void onSkillAdded(int index);
     void refreshAll();
 
-    const Skill *getSkill(int index) const;
+    const Skill* getSkill(int index) const;
 
 private:
     const std::vector<Skill> *skills = nullptr;  // pointer to Player's skill list

@@ -15,7 +15,7 @@ void SkillDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     int maxLevel = index.data(Qt::UserRole + 5).toInt();
 
     // Background
-    QColor bg = option.state & QStyle::State_Selected ? QColor("#444") : QColor("#222");
+    QColor bg = option.state & QStyle::State_Selected ? QColor(68, 68, 68) : QColor(34, 34, 34);
     painter->fillRect(rect, bg);
     painter->setPen(QColor(888));
     painter->drawRect(rect.adjusted(0, 0, -1, -1));
@@ -43,6 +43,11 @@ void SkillDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     QRect filled(barRect.left(), barRect.top(), int(barRect.width() * progress), barRect.height());
     painter->setBrush(QColor(76,175,80));
     painter->drawRect(filled);
+
+    // xp count in progress bar
+    QString xpText = QString("%1 / %2 XP").arg((int)xp).arg((int)xpToNextLevel);
+    painter->setPen(Qt::white);
+    painter->drawText(barRect, Qt::AlignCenter, xpText);
 
     painter->restore();
 }

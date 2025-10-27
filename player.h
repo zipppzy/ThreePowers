@@ -35,6 +35,7 @@ public:
     void loadPlayerState(std::string fileName);
     void tick();
 
+    std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
 
 private:
