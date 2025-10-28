@@ -20,7 +20,11 @@ private:
     bool paused;
     //smallest usable unit of time
     unsigned int ticks = 0;
+
+
     Player player;
+    World world;
+
     std::vector<ActionButton*> actionButtons;
     SkillModel* skillModel;
 

@@ -11,14 +11,11 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     Skill::loadSkillDatabase("skills_database.toml");
     World::loadLocationDatabase("location_database.toml");
 
-    World world;
     world.loadWorldState("world_state.toml");
 
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
 
     player = Player(0, 100000, startingLocation);
-
-    player.applySkillEffectsCurrentLocation();
 
     for(auto& action : player.getCurrentLocation()->getActions()){
         this->addActionButton(action);
@@ -27,6 +24,8 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     this->skillModel = new SkillModel(this);
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
+
+    player.addSkillXp("Concentration", 215);
 
     startTimer();
 }

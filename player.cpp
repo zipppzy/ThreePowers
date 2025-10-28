@@ -60,6 +60,7 @@ void Player::addSkillXp(std::string name, double xp){
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
+    this->applySkillEffectsCurrentLocation();
 }
 
 void Player::addReserve(const Reserve& reserve){
