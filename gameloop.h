@@ -33,6 +33,8 @@ private:
     void connectButtons();
     void addActionButton(std::shared_ptr<Action> action);
 
+    void updateUI();
+
 public:
     GameLoop(MainWindow* mainWindow, QObject *parent = nullptr);
     void startTimer();

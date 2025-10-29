@@ -44,6 +44,27 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
     mainWindow->addActionButton(btn);
 }
 
+void GameLoop::updateUI(){
+    for(ActionButton* btn : this->actionButtons){
+        btn->updateProgress();
+    }
+    if(!player.updatedSkillIndexes.empty()){
+        for(int i : player.updatedSkillIndexes){
+            emit this->skillModel->dataChanged(
+                skillModel->index(i,0),
+                skillModel->index(i,0),
+                {SkillModel::XpRole, SkillModel::LevelRole});
+        }
+        player.updatedSkillIndexes.clear();
+    }
+    if(!player.newSkillIndexes.empty()){
+        for(int i : player.newSkillIndexes){
+            skillModel->onSkillAdded(i);
+        }
+        player.newSkillIndexes.clear();
+    }
+}
+
 void GameLoop::startTimer()
 {
     QObject::connect(timer, &QTimer::timeout, this, &GameLoop::loop);
@@ -71,23 +92,6 @@ void GameLoop::loop()
     if(numTicks <= 0) return;
 
     player.tick(numTicks);
-    for(ActionButton* btn : this->actionButtons){
-        btn->updateProgress();
-    }
-    if(!player.updatedSkillIndexes.empty()){
-        for(int i : player.updatedSkillIndexes){
-            emit this->skillModel->dataChanged(
-                skillModel->index(i,0),
-                skillModel->index(i,0),
-                {SkillModel::XpRole, SkillModel::LevelRole});
-        }
-        player.updatedSkillIndexes.clear();
-    }
-    if(!player.newSkillIndexes.empty()){
-        for(int i : player.newSkillIndexes){
-            skillModel->onSkillAdded(i);
-        }
-        player.newSkillIndexes.clear();
-    }
+    this->updateUI();
     elapsedTimer.restart();
 }
