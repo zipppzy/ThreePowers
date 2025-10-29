@@ -63,6 +63,7 @@ void GameLoop::updateUI(){
         }
         player.newSkillIndexes.clear();
     }
+    this->mainWindow->updateTime(this->ticks);
 }
 
 void GameLoop::startTimer()
@@ -92,6 +93,7 @@ void GameLoop::loop()
     if(numTicks <= 0) return;
 
     player.tick(numTicks);
+    ticks += numTicks;
     this->updateUI();
     elapsedTimer.restart();
 }

@@ -24,6 +24,8 @@ public:
     QPushButton* getPauseButton() const;
     QPushButton* getPlayButton() const;
 
+    void updateTime(unsigned int ticks);
+
     void addActionButton(ActionButton* btn);
 
     void setupSkillView(SkillModel* skillModel);

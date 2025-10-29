@@ -23,6 +23,8 @@ private:
 
     //ticks per real life second
     double timeScale = 50.0;
+    //each tick is a second of game time
+    unsigned int ticks = 0;
 
     Player player;
     World world;

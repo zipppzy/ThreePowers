@@ -47,6 +47,15 @@ void MainWindow::addActionButton(ActionButton* btn){
     }
 }
 
+void MainWindow::updateTime(unsigned int ticks){
+    this->ui->time->setText(QString("%1y %2d %3h %4m %5s")
+                               .arg(ticks / (86400 * 365))
+                               .arg((ticks / 86400) % 365)
+                               .arg((ticks / 3600) % 24)
+                               .arg((ticks / 60) % 60)
+                               .arg(ticks % 60));
+}
+
 void MainWindow::setupSkillView(SkillModel* skillModel){
     QVBoxLayout* layout = new QVBoxLayout(ui->skillTab);
 
