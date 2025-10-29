@@ -192,6 +192,12 @@ void Player::tick(){
     }
 }
 
+void Player::tick(int numTicks){
+    for(int i=0; i<numTicks; i++){
+        this->tick();
+    }
+}
+
 bool Player::checkActionRequirements(std::shared_ptr<Action> action) const{
     auto maybeActionRequirement = action->getActionRequirements();
     if(!maybeActionRequirement){

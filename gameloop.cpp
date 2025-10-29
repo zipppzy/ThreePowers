@@ -47,7 +47,9 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
 void GameLoop::startTimer()
 {
     QObject::connect(timer, &QTimer::timeout, this, &GameLoop::loop);
-    timer->start(1);
+    // should be approximately 100 FPS
+    timer->start(10);
+    elapsedTimer.start();
 }
 
 void GameLoop::play()
@@ -62,30 +64,30 @@ void GameLoop::pause()
 
 void GameLoop::loop()
 {
-    if(!paused)
-    {
-        if(ticks%100 == 0){
-            player.tick();
-            for(ActionButton* btn : this->actionButtons){
-                btn->updateProgress();
-            }
-            if(!player.updatedSkillIndexes.empty()){
-                for(int i : player.updatedSkillIndexes){
-                    emit this->skillModel->dataChanged(
-                        skillModel->index(i,0),
-                        skillModel->index(i,0),
-                        {SkillModel::XpRole, SkillModel::LevelRole});
-                }
-                player.updatedSkillIndexes.clear();
-            }
-            if(!player.newSkillIndexes.empty()){
-                for(int i : player.newSkillIndexes){
-                    skillModel->onSkillAdded(i);
-                }
-                player.newSkillIndexes.clear();
-            }
-        }
-        ticks++;
-        qDebug()<<ticks;
+    if(paused) return;
+
+    double realDeltaTime = elapsedTimer.elapsed() / 1000.0; //time in seconds
+    int numTicks = static_cast<int>(std::floor(realDeltaTime*timeScale));   //number of ticks to simulate this loop
+    if(numTicks <= 0) return;
+
+    player.tick(numTicks);
+    for(ActionButton* btn : this->actionButtons){
+        btn->updateProgress();
     }
+    if(!player.updatedSkillIndexes.empty()){
+        for(int i : player.updatedSkillIndexes){
+            emit this->skillModel->dataChanged(
+                skillModel->index(i,0),
+                skillModel->index(i,0),
+                {SkillModel::XpRole, SkillModel::LevelRole});
+        }
+        player.updatedSkillIndexes.clear();
+    }
+    if(!player.newSkillIndexes.empty()){
+        for(int i : player.newSkillIndexes){
+            skillModel->onSkillAdded(i);
+        }
+        player.newSkillIndexes.clear();
+    }
+    elapsedTimer.restart();
 }

@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include <QObject>
 #include <QTimer>
+#include <QElapsedTimer>
 #include <QDebug>
 
 //Inbetween for UI and gameLogic
@@ -17,10 +18,11 @@ class GameLoop : public QObject
 private:
     MainWindow* mainWindow;
     QTimer* timer = new QTimer(this);
-    bool paused;
-    //smallest usable unit of time
-    unsigned int ticks = 0;
+    QElapsedTimer elapsedTimer;
+    bool paused = false;
 
+    //ticks per real life second
+    double timeScale = 50.0;
 
     Player player;
     World world;
