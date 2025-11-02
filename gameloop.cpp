@@ -25,7 +25,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
 
-    player.addSkillXp("Concentration", 215);
+    player.addActionToQueue(player.getCurrentLocation()->getActions()[0], 2);
 
     startTimer();
 }
@@ -38,7 +38,8 @@ void GameLoop::connectButtons(){
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
     ActionButton* btn = new ActionButton(action);
     connect(btn, &ActionButton::tryStartAction, this, [this, action](){
-        this->player.startAction(action);
+        this->player.addActionToQueue(action, 1);
+        this->play();
     });
     this->actionButtons.push_back(btn);
     mainWindow->addActionButton(btn);
@@ -77,6 +78,7 @@ void GameLoop::startTimer()
 void GameLoop::play()
 {
     paused = false;
+    elapsedTimer.restart();
 }
 
 void GameLoop::pause()
@@ -93,6 +95,9 @@ void GameLoop::loop()
     if(numTicks <= 0) return;
 
     player.tick(numTicks);
+    if(player.getActionQueue().empty()){
+        this->pause();
+    }
     ticks += numTicks;
     this->updateUI();
     elapsedTimer.restart();

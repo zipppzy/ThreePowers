@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <QDebug>
+#include <deque>
 
 #include "item.h"
 #include "location.h"
@@ -30,6 +31,12 @@ public:
     std::optional<Item*> findItem(std::string itemName);
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
+
+    const std::deque<std::pair<std::shared_ptr<Action>, int>>& getActionQueue() const;
+    void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
+    void removeActionFromQueue(int index, int numRemoved);
+    void attemptStartNextAction();
+
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
     void savePlayerState(std::string fileName);
     void loadPlayerState(std::string fileName);
@@ -51,6 +58,9 @@ private:
     std::vector<Item> inventory;
     double maxWeight;       //in kg; can't carry above this weight
     double currentWeight;
+
+    //queue of actions with number of times to repeat; -1 means repeat indefinitely
+    std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;
 
     std::shared_ptr<Location> currentLocation;
     std::shared_ptr<Action> currentAction;

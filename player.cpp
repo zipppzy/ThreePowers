@@ -120,6 +120,27 @@ void Player::applySkillEffectsCurrentLocation(){
     }
 }
 
+const std::deque<std::pair<std::shared_ptr<Action>, int>>& Player::getActionQueue() const{
+    return actionQueue;
+}
+
+void Player::addActionToQueue(std::shared_ptr<Action> action, int numRepeats){
+    this->actionQueue.push_back({action, numRepeats});
+}
+
+void Player::removeActionFromQueue(int index, int numRemoved){
+    this->actionQueue.erase(actionQueue.begin()+index);
+}
+
+void Player::attemptStartNextAction(){
+    if(!this->actionQueue.empty()){
+        if(!startAction(this->actionQueue.front().first)){
+            actionQueue.pop_front();
+            attemptStartNextAction();
+        }
+    }
+}
+
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;
@@ -188,7 +209,20 @@ void Player::tick(){
             }else{
                 qDebug("Action Failed");
             }
+
+            //if current action is not repeating
+            if(actionQueue.front().second != -1){
+                //if we have completed all repeats of current action pop and move to next in queue
+                actionQueue.front().second--;
+                if(actionQueue.front().second == 0){
+                    actionQueue.pop_front();
+                    currentAction = nullptr;
+                    attemptStartNextAction();
+                }
+            }
         }
+    }else{
+        attemptStartNextAction();
     }
 }
 

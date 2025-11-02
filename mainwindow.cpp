@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionScrollArea->setWidget(buttonContainer);
     ui->actionScrollArea->setWidgetResizable(true);
 
+    ui->tabWidget->setCurrentIndex(0);
     // connect(ui->pauseButton, SIGNAL(clicked()), &gameLoop , SLOT(pause()));
     // connect(ui->playButton, SIGNAL(clicked()), &gameLoop , SLOT(play()));
 }
