@@ -125,7 +125,11 @@ const std::deque<std::pair<std::shared_ptr<Action>, int>>& Player::getActionQueu
 }
 
 void Player::addActionToQueue(std::shared_ptr<Action> action, int numRepeats){
-    this->actionQueue.push_back({action, numRepeats});
+    if(!actionQueue.empty() && action->name == actionQueue.back().first->name){
+        this->actionQueue.back().second += numRepeats;
+    }else{
+        this->actionQueue.push_back({action, numRepeats});
+    }
 }
 
 void Player::removeActionFromQueue(int index, int numRemoved){
