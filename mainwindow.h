@@ -5,7 +5,10 @@
 #include <QListView>
 #include <qgridlayout.h>
 #include "actionbutton.h"
+#include "actionqueuemodel.h"
 #include "skillmodel.h"
+#include "skilldelegate.h"
+#include "actionqueuedelegate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,6 +33,8 @@ public:
 
     void setupSkillView(SkillModel* skillModel);
 
+    void setupActionQueueView(ActionQueueModel* actionQueueModel);
+
 private:
     Ui::MainWindow *ui;
 
@@ -39,6 +44,7 @@ private:
     std::pair<int, int> nextActionButtonCoords;  //position in gridLayout (x,y)
 
     QListView* skillView = nullptr;
+    QListView* actionQueueView = nullptr;
 
 };
 #endif // MAINWINDOW_H

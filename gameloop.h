@@ -3,6 +3,7 @@
 
 #include "player.h"
 #include "skillmodel.h"
+#include "actionqueuemodel.h"
 #include "world.h"
 #include "mainwindow.h"
 #include <QObject>
@@ -30,7 +31,8 @@ private:
     World world;
 
     std::vector<ActionButton*> actionButtons;
-    SkillModel* skillModel;
+    SkillModel* skillModel = nullptr;
+    ActionQueueModel* actionQueueModel = nullptr;
 
     void connectButtons();
     void addActionButton(std::shared_ptr<Action> action);

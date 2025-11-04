@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "skilldelegate.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -70,3 +70,15 @@ void MainWindow::setupSkillView(SkillModel* skillModel){
     layout->addWidget(this->skillView);
 }
 
+void MainWindow::setupActionQueueView(ActionQueueModel* actionQueueModel){
+    this->actionQueueView = new QListView(this);
+    actionQueueView->setModel(actionQueueModel);
+    actionQueueView->setItemDelegate(new ActionQueueDelegate(this));
+    actionQueueView->setMouseTracking(true);
+    actionQueueView->setSelectionMode(QAbstractItemView::NoSelection);
+    actionQueueView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    actionQueueView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    actionQueueView->setMaximumWidth(300);
+
+    ui->leftVerticalLayout->addWidget(actionQueueView);
+}

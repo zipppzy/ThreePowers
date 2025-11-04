@@ -25,6 +25,9 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
 
+    this->actionQueueModel = new ActionQueueModel(&player.getActionQueue(), this);
+    mainWindow->setupActionQueueView(this->actionQueueModel);
+
     player.addActionToQueue(player.getCurrentLocation()->getActions()[0], 2);
 
     startTimer();
@@ -49,6 +52,9 @@ void GameLoop::updateUI(){
     for(ActionButton* btn : this->actionButtons){
         btn->updateProgress();
     }
+
+    this->actionQueueModel->refresh();
+
     if(!player.updatedSkillIndexes.empty()){
         for(int i : player.updatedSkillIndexes){
             emit this->skillModel->dataChanged(

@@ -30,7 +30,7 @@ public:
     const Skill* getSkill(int index) const;
 
 private:
-    const std::vector<Skill> *skills = nullptr;  // pointer to Player's skill list
+    const std::vector<Skill>* skills = nullptr;  // pointer to Player's skill list
 };
 
 #endif // SKILLMODEL_H
