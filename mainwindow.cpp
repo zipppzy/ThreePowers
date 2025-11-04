@@ -70,10 +70,13 @@ void MainWindow::setupSkillView(SkillModel* skillModel){
     layout->addWidget(this->skillView);
 }
 
-void MainWindow::setupActionQueueView(ActionQueueModel* actionQueueModel){
+void MainWindow::setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate* actionQueueDelegate){
     this->actionQueueView = new QListView(this);
+
+    connect(actionQueueDelegate, &ActionQueueDelegate::hoverChanged, actionQueueView, QOverload<>::of(&QListView::update));
+
     actionQueueView->setModel(actionQueueModel);
-    actionQueueView->setItemDelegate(new ActionQueueDelegate(this));
+    actionQueueView->setItemDelegate(actionQueueDelegate);
     actionQueueView->setMouseTracking(true);
     actionQueueView->setSelectionMode(QAbstractItemView::NoSelection);
     actionQueueView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

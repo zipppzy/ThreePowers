@@ -35,6 +35,7 @@ public:
     const std::deque<std::pair<std::shared_ptr<Action>, int>>& getActionQueue() const;
     void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
     void removeActionFromQueue(int index, int numRemoved);
+    void moveUpActionInQueue(int index);
     void attemptStartNextAction();
 
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise

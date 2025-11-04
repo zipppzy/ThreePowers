@@ -133,7 +133,16 @@ void Player::addActionToQueue(std::shared_ptr<Action> action, int numRepeats){
 }
 
 void Player::removeActionFromQueue(int index, int numRemoved){
-    this->actionQueue.erase(actionQueue.begin()+index);
+    this->actionQueue.at(index).second -= numRemoved;
+    if(actionQueue.at(index).second <= 0){
+        this->actionQueue.erase(actionQueue.begin()+index);
+    }
+    attemptStartNextAction();
+}
+
+void Player::moveUpActionInQueue(int index){
+    if(index <= 0) return;
+    std::swap(actionQueue[index], actionQueue[index-1]);
 }
 
 void Player::attemptStartNextAction(){

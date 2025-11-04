@@ -33,7 +33,7 @@ public:
 
     void setupSkillView(SkillModel* skillModel);
 
-    void setupActionQueueView(ActionQueueModel* actionQueueModel);
+    void setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate *actionQueueDelegate);
 
 private:
     Ui::MainWindow *ui;

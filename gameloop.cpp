@@ -26,7 +26,16 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     mainWindow->setupSkillView(this->skillModel);
 
     this->actionQueueModel = new ActionQueueModel(&player.getActionQueue(), this);
-    mainWindow->setupActionQueueView(this->actionQueueModel);
+    ActionQueueDelegate* actionQueueDelegate = new ActionQueueDelegate(this);
+    connect(actionQueueDelegate, &ActionQueueDelegate::removeRequested, this, [this](int row) {
+        player.removeActionFromQueue(row, 1);
+        actionQueueModel->refresh();
+    });
+    connect(actionQueueDelegate, &ActionQueueDelegate::moveUpRequested, this, [this](int row) {
+        player.moveUpActionInQueue(row);
+        actionQueueModel->refresh();
+    });
+    mainWindow->setupActionQueueView(this->actionQueueModel, actionQueueDelegate);
 
     player.addActionToQueue(player.getCurrentLocation()->getActions()[0], 2);
 
