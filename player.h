@@ -37,6 +37,7 @@ public:
     void removeActionFromQueue(int index, int numRemoved);
     void moveUpActionInQueue(int index);
     void attemptStartNextAction();
+    void fastForwardQueue();
 
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
     void savePlayerState(std::string fileName);

@@ -154,6 +154,12 @@ void Player::attemptStartNextAction(){
     }
 }
 
+void Player::fastForwardQueue(){
+    while(!actionQueue.empty()){
+        this->tick();
+    }
+}
+
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;

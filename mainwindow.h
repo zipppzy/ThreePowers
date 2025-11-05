@@ -26,6 +26,7 @@ public:
 
     QPushButton* getPauseButton() const;
     QPushButton* getPlayButton() const;
+    QPushButton* getSkipButton() const;
 
     void updateTime(unsigned int ticks);
 

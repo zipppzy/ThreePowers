@@ -91,6 +91,19 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="skipButton">
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>&gt;|</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
@@ -123,7 +136,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>625</width>
+               <width>579</width>
                <height>535</height>
               </rect>
              </property>

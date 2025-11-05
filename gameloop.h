@@ -46,6 +46,7 @@ public slots:
     void loop();
     void play();
     void pause();
+    void skip();
 };
 
 #endif // GAMELOOP_H

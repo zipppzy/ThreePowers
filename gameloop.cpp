@@ -45,6 +45,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 void GameLoop::connectButtons(){
     connect(mainWindow->getPauseButton(),&QPushButton::clicked, this , &GameLoop::pause);
     connect(mainWindow->getPlayButton(), &QPushButton::clicked, this , &GameLoop::play);
+    connect(mainWindow->getSkipButton(), &QPushButton::clicked, this, &GameLoop::skip);
 }
 
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
@@ -99,6 +100,10 @@ void GameLoop::play()
 void GameLoop::pause()
 {
     paused = true;
+}
+
+void GameLoop::skip(){
+    this->player.fastForwardQueue();
 }
 
 void GameLoop::loop()

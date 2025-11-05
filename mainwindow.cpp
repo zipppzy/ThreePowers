@@ -37,6 +37,10 @@ QPushButton* MainWindow::getPlayButton() const{
     return ui->playButton;
 }
 
+QPushButton* MainWindow::getSkipButton() const{
+    return ui->skipButton;
+}
+
 void MainWindow::addActionButton(ActionButton* btn){
     gridLayout->addWidget(btn, nextActionButtonCoords.second, nextActionButtonCoords.first);
 
