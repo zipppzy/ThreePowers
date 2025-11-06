@@ -5,7 +5,7 @@ Reserve::Reserve(std::string name){
     this->name = name;
 }
 
-Reserve::Reserve(toml::table reserveTable, Reserve* parentReserve = nullptr) {
+Reserve::Reserve(toml::table reserveTable, Reserve* parentReserve) {
     this->name = reserveTable["name"].value_or("");
     this->maxValue = reserveTable["maxValue"].value_or(0);
     this->currentValue = reserveTable["currentValue"].value_or(0);
@@ -74,4 +74,8 @@ bool Reserve::subtractSub(std::string name, double value){
         this->subtract(value);
         return it->subtract(value);
     }
+}
+
+void Reserve::applyRegen(){
+    this->add(this->regen);
 }

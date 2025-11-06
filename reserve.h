@@ -19,14 +19,16 @@ public:
     bool addSub(std::string name, double value);
     bool subtract(double value);    //returns false if subtracting went below 0
     bool subtractSub(std::string name, double value);
+    void applyRegen();
 
     std::string name;
 
 private:
-    Reserve* parentReserve;
+    Reserve* parentReserve = nullptr;
     std::vector<Reserve> subReserves;   //if has subReserves main reserve should be sum of subReserves
     double maxValue;
     double currentValue;
+    double regen;
     bool hasSubReserves;
     bool hasSoftMax;
 };

@@ -243,6 +243,9 @@ void Player::tick(){
     }else{
         attemptStartNextAction();
     }
+    for(Reserve& reserve : this->reserves){
+        reserve.applyRegen();
+    }
 }
 
 void Player::tick(int numTicks){
