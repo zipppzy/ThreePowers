@@ -1,0 +1,10 @@
+[[locations]]
+name = "Village"
+visibleToPlayer = true
+actions = ["Meditate", "Beg"]
+subLocationNames = ["Field"]
+
+[[locations]]
+name = "Field"
+visibleToPlayer = true
+actions = ["Run"]

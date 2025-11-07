@@ -1,0 +1,27 @@
+[[actions]]
+name = "Meditate"
+baseDuration = 60
+[actions.skillRewards]
+"Concentration" = 5
+
+[[actions]]
+name = "Beg"
+baseDuration = 300
+[actions.skillRewards]
+"Persuasion" = 5
+[[actions.itemRewards]]
+name = "Copper Coin"
+size = 0.01
+weight = 0.0025
+count = 1
+[[actions.itemRewards]]
+name = "Scrap"
+size = 0.05
+weight = 0.005
+count = 1
+
+[[actions]]
+name = "Run"
+baseDuration = 500
+[[actions.skillRewards]]
+"Stamina" = 1

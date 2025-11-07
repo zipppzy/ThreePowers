@@ -7,11 +7,11 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 {
     this->connectButtons();
 
-    Action::loadActionDatabase("action_database.toml");
-    Skill::loadSkillDatabase("skills_database.toml");
-    World::loadLocationDatabase("location_database.toml");
+    Action::loadActionDatabase("config/databases/action_database.toml");
+    Skill::loadSkillDatabase("config/databases/skills_database.toml");
+    World::loadLocationDatabase("config/databases/location_database.toml");
 
-    world.loadWorldState("world_state.toml");
+    world.loadWorldState("config/world_state.toml");
 
     std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
 

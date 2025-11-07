@@ -68,6 +68,8 @@ target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Core)
 
+file(COPY ${CMAKE_SOURCE_DIR}/config DESTINATION ${CMAKE_BINARY_DIR})
+
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.

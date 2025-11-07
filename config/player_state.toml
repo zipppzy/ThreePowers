@@ -1,0 +1,12 @@
+[attributes]
+age = '0'
+lifespan = '100000'
+maxQi = 100.0
+qi = 0.0
+
+[[skills]]
+baseXpForLevel = 100.0
+level = 0
+name = 'Iceball'
+scalingFactor = 1.1000000000000001
+xp = 0.0

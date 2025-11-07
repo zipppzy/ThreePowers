@@ -1,0 +1,27 @@
+[[skills]]
+name = "Qi Gathering"
+baseXpForLevel = 100
+scalingFactor = 1.1
+maxLevel = 10
+
+[[skills]]
+name = "Concentration"
+baseXpForLevel = 100
+scalingFactor = 1.2
+maxLevel = 5
+    [[skills.effects]]
+    name = "Meditate"
+    type = "multDuration"
+    magnitude = 0.9
+
+[[skills]]
+name = "Persuasion"
+baseXpForLevel = 100
+scalingFactor = 1.1
+maxLevel = 10
+
+[[skills]]
+name = "Stamina"
+baseXpForLevel = 20
+scaling = 1.5
+maxLevel = 100
