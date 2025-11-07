@@ -12,11 +12,27 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
+    main.cpp
+    mainwindow.cpp mainwindow.h mainwindow.ui
+    ui/*.cpp
+    ui/*.h
+    ui/*.ui
+    gameloop.cpp gameloop.h
+    player.cpp player.h
+    action.cpp action.h
+    location.cpp location.h
+    skill.cpp skill.h
+    world.cpp world.h
+    item.cpp item.h
+    requirement.h
+    reserve.cpp reserve.h
+    effect.cpp effect.h
+    skillmodel.h skillmodel.cpp
+    skilldelegate.h skilldelegate.cpp
+    actionqueuemodel.h actionqueuemodel.cpp
+    actionqueuedelegate.h actionqueuedelegate.cpp
+    tooltip.cpp tooltip.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -27,23 +43,6 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
     qt_add_executable(ThreePowers
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-	gameloop.h gameloop.cpp
-	player.h player.cpp
-	action.h action.cpp
-	location.h location.cpp
-	skill.h skill.cpp
-	world.h world.cpp
-	item.h item.cpp
-	requirement.h
-	reserve.h reserve.cpp
-        actionbutton.h actionbutton.cpp
-        effect.h
-        effect.cpp
-        tooltip.h tooltip.cpp
-        skillmodel.h skillmodel.cpp
-        skilldelegate.h skilldelegate.cpp
-        actionqueuemodel.h actionqueuemodel.cpp
-        actionqueuedelegate.h actionqueuedelegate.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ThreePowers APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -67,6 +66,11 @@ target_link_libraries(ThreePowers PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Widgets)
 target_link_libraries(ThreePowers PRIVATE Qt6::Core)
+
+target_include_directories(ThreePowers PRIVATE
+    ${CMAKE_SOURCE_DIR}
+    ui
+)
 
 file(COPY ${CMAKE_SOURCE_DIR}/config DESTINATION ${CMAKE_BINARY_DIR})
 
