@@ -56,9 +56,18 @@ void World::addLocation(std::string name,int position, std::shared_ptr<Location>
         //found template in locationDatabase
         newLocation = std::make_shared<Location>(*maybeLocation);
         newLocation->setIndex(currentIndex);    //set here because template does not have index
+        newLocation->setParent(parent);
+        parent->addSubLocation(newLocation);
         //recursively creates subLocations
-        for(std::string subLocationName : newLocation->subLocationNames){
+        for(std::string& subLocationName : newLocation->subLocationNames){
             this->addLocation(subLocationName, newLocation->getPosition(), newLocation);
+        }
+        //create travel actions to parent and children
+        if(newLocation->getParent()->name != "root"){
+            newLocation->addAction(TravelAction(newLocation->getParent()->name, newLocation->getParent(), newLocation));
+        }
+        for(auto& childLocation : newLocation->getSubLocations()){
+            newLocation->addAction(TravelAction(childLocation->name, childLocation, newLocation));
         }
     }else{
         //default case if no template is found

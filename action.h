@@ -18,6 +18,7 @@ public:
     Action(const Action& other);
     Action& operator=(const Action& other);
     Action(toml::table actionTable);
+    virtual ~Action() = default;
 
     static void loadActionDatabase(std::string path);
     static std::optional<std::reference_wrapper<const Action>> checkActionDatabaseDatabase(std::string name);
@@ -43,7 +44,7 @@ private:
     double baseDuration;        //in seconds
     double duration;
     double currentProgress;
-    double failureChance;
+    double failureChance = 0.0;
 
     std::unique_ptr<Requirement> actionRequirements;
 

@@ -7,6 +7,7 @@
 #include "item.h"
 #include "location.h"
 #include "action.h"
+#include "travelaction.h"
 #include "reserve.h"
 #include "skill.h"
 
@@ -31,6 +32,7 @@ public:
     std::optional<Item*> findItem(std::string itemName);
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
+    void moveLocation(std::shared_ptr<Location> destination);
 
     const std::deque<std::pair<std::shared_ptr<Action>, int>>& getActionQueue() const;
     void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
@@ -47,6 +49,7 @@ public:
 
     std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
+    bool movedLocation = false;
 
 private:
     bool checkActionRequirements(std::shared_ptr<Action> action) const;

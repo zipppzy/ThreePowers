@@ -180,7 +180,10 @@ void Action::copyFrom(const Action& other){
 }
 
 void Action::reset(){
-    this->copyFrom(Action::checkActionDatabaseDatabase(this->name).value());
+    if(auto maybeAction = Action::checkActionDatabaseDatabase(this->name)){
+        this->copyFrom(maybeAction.value());
+    }
+    //TODO: handle reseting TravelActions
 }
 
 bool Action::isSuccess() const{

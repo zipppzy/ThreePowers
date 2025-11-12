@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include "location.h"
+#include "travelaction.h"
 
 class World
 {

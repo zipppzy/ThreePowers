@@ -116,8 +116,15 @@ void Player::applySkillEffectsCurrentLocation(){
                 }
             }
         }
-        action->applyEffects(skillEffectList);
+        if(!skills.empty()){
+            action->applyEffects(skillEffectList);
+        }
     }
+}
+
+void Player::moveLocation(std::shared_ptr<Location> destination){
+    this->currentLocation = destination;
+    this->movedLocation = true;
 }
 
 const std::deque<std::pair<std::shared_ptr<Action>, int>>& Player::getActionQueue() const{
@@ -211,6 +218,9 @@ void Player::tick(){
         //ticks currentAction and check if action is completed then gives rewards
         if(currentAction->tick()){
             if(currentAction->isSuccess()){
+                if(auto travelAction = std::dynamic_pointer_cast<TravelAction>(currentAction)){
+                    this->moveLocation(travelAction->getDestination());
+                }
                 auto skillRewards = currentAction->getSkillRewards();
                 for(const auto& [key,value] : skillRewards){
                     this->addSkillXp(key, value);

@@ -22,9 +22,8 @@ Location::Location(toml::table locationTable){
     }
 
     if(auto subLocationNamesArray = locationTable["subLocationNames"].as_array()){
-        this->subLocationNames.clear();
         for(auto&& subLocationName : *subLocationNamesArray){
-            subLocationNames.push_back(subLocationName.value_or(""));
+            this->subLocationNames.push_back(subLocationName.value_or(""));
         }
     }
 }
@@ -42,11 +41,15 @@ Location::Location(const Location& other)
         }
     }
 
-    for (const auto& subLoc : other.subLocations) {
-        if (subLoc) {
-            subLocations.push_back(std::make_shared<Location>(*subLoc));
-        }
+    for(const std::string& subLocationName : other.subLocationNames){
+        this->subLocationNames.push_back(subLocationName);
     }
+
+    // for (const auto& subLoc : other.subLocations) {
+    //     if (subLoc) {
+    //         subLocations.push_back(std::make_shared<Location>(*subLoc));
+    //     }
+    // }
 }
 
 void Location::addSubLocation(std::shared_ptr<Location> location){
@@ -61,10 +64,22 @@ void Location::setIndex(int index){
     this->index = index;
 }
 
-std::vector<std::shared_ptr<Action>> Location::getActions(){
+void Location::setParent(std::shared_ptr<Location> parent){
+    this->parentLocation = parent;
+}
+
+std::shared_ptr<Location> Location::getParent() const{
+    return this->parentLocation;
+}
+
+std::vector<std::shared_ptr<Location>> Location::getSubLocations() const{
+    return this->subLocations;
+}
+
+std::vector<std::shared_ptr<Action>> Location::getActions() const{
     return this->actions;
 }
 
-int Location::getPosition(){
+int Location::getPosition() const{
     return this->position;
 }

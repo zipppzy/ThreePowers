@@ -13,7 +13,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     world.loadWorldState("config/world_state.toml");
 
-    std::shared_ptr<Location> startingLocation = world.findLocation(1).value_or(nullptr);
+    std::shared_ptr<Location> startingLocation = world.findLocation(2).value_or(nullptr);
 
     player = Player(0, 100000, startingLocation);
 

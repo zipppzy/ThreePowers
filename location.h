@@ -18,8 +18,12 @@ public:
     void addSubLocation(std::shared_ptr<Location> location);
     void addAction(Action action);
     void setIndex(int index);
-    std::vector<std::shared_ptr<Action>> getActions();
-    int getPosition();
+    void setParent(std::shared_ptr<Location> parent);
+
+    std::shared_ptr<Location> getParent() const;
+    std::vector<std::shared_ptr<Location>> getSubLocations() const;
+    std::vector<std::shared_ptr<Action>> getActions() const;
+    int getPosition() const;
 
 private:
     int position;   //location on a 1d line; 0 is starting location; - is left + is right;

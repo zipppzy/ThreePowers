@@ -33,6 +33,7 @@ file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
     actionqueuemodel.h actionqueuemodel.cpp
     actionqueuedelegate.h actionqueuedelegate.cpp
     tooltip.cpp tooltip.h
+    travelaction.cpp travelaction.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
