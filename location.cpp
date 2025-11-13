@@ -44,20 +44,14 @@ Location::Location(const Location& other)
     for(const std::string& subLocationName : other.subLocationNames){
         this->subLocationNames.push_back(subLocationName);
     }
-
-    // for (const auto& subLoc : other.subLocations) {
-    //     if (subLoc) {
-    //         subLocations.push_back(std::make_shared<Location>(*subLoc));
-    //     }
-    // }
 }
 
 void Location::addSubLocation(std::shared_ptr<Location> location){
     subLocations.push_back(std::move(location));
 }
 
-void Location::addAction(Action action){
-    actions.push_back(std::make_shared<Action>(action));
+void Location::addAction(std::shared_ptr<Action> action){
+    actions.push_back(action);
 }
 
 void Location::setIndex(int index){

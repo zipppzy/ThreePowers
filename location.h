@@ -16,7 +16,7 @@ public:
     std::vector<std::string> subLocationNames;
 
     void addSubLocation(std::shared_ptr<Location> location);
-    void addAction(Action action);
+    void addAction(std::shared_ptr<Action> action);
     void setIndex(int index);
     void setParent(std::shared_ptr<Location> parent);
     void setPosition(int pos);

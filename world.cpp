@@ -64,10 +64,10 @@ void World::addLocation(std::string name,int position, std::shared_ptr<Location>
         }
         //create travel actions to parent and children
         if(newLocation->getParent() != nullptr && newLocation->getParent()->name != "root"){
-            newLocation->addAction(TravelAction("Travel To " + newLocation->getParent()->name, newLocation->getParent(), newLocation));
+            newLocation->addAction(std::make_shared<TravelAction>("Travel To " + newLocation->getParent()->name, newLocation->getParent(), newLocation));
         }
         for(auto& childLocation : newLocation->getSubLocations()){
-            newLocation->addAction(TravelAction("Travel To " + childLocation->name, childLocation, newLocation));
+            newLocation->addAction(std::make_shared<TravelAction>("Travel To " + childLocation->name, childLocation, newLocation));
         }
     }else{
         //default case if no template is found

@@ -52,6 +52,17 @@ void MainWindow::addActionButton(ActionButton* btn){
     }
 }
 
+void MainWindow::clearActionButtons() {
+    while (QLayoutItem* item = gridLayout->takeAt(0)) {
+        if (QWidget* w = item->widget()) {
+            w->setParent(nullptr); // detach before deleting
+            delete w;
+        }
+        delete item;
+    }
+    nextActionButtonCoords = {0, 0};
+}
+
 void MainWindow::updateTime(unsigned int ticks){
     this->ui->time->setText(QString("%1y %2d %3h %4m %5s")
                                .arg(ticks / (86400 * 365))

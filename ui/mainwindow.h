@@ -31,6 +31,7 @@ public:
     void updateTime(unsigned int ticks);
 
     void addActionButton(ActionButton* btn);
+    void clearActionButtons();
 
     void setupSkillView(SkillModel* skillModel);
 

@@ -220,6 +220,7 @@ void Player::tick(){
             if(currentAction->isSuccess()){
                 if(auto travelAction = std::dynamic_pointer_cast<TravelAction>(currentAction)){
                     this->moveLocation(travelAction->getDestination());
+                    this->movedLocation = true;
                 }
                 auto skillRewards = currentAction->getSkillRewards();
                 for(const auto& [key,value] : skillRewards){

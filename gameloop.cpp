@@ -63,6 +63,14 @@ void GameLoop::updateUI(){
         btn->updateProgress();
     }
 
+    if(player.movedLocation){
+        this->mainWindow->clearActionButtons();
+        for(auto& action : player.getCurrentLocation()->getActions()){
+            this->addActionButton(action);
+        }
+        player.movedLocation = false;
+    }
+
     this->actionQueueModel->refresh();
 
     if(!player.updatedSkillIndexes.empty()){
