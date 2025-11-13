@@ -19,6 +19,7 @@ public:
     void addAction(Action action);
     void setIndex(int index);
     void setParent(std::shared_ptr<Location> parent);
+    void setPosition(int pos);
 
     std::shared_ptr<Location> getParent() const;
     std::vector<std::shared_ptr<Location>> getSubLocations() const;

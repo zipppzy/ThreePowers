@@ -68,6 +68,10 @@ void Location::setParent(std::shared_ptr<Location> parent){
     this->parentLocation = parent;
 }
 
+void Location::setPosition(int position){
+    this->position = position;
+}
+
 std::shared_ptr<Location> Location::getParent() const{
     return this->parentLocation;
 }
