@@ -37,8 +37,6 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     });
     mainWindow->setupActionQueueView(this->actionQueueModel, actionQueueDelegate);
 
-    player.addActionToQueue(player.getCurrentLocation()->getActions()[0], 2);
-
     startTimer();
 }
 
@@ -65,6 +63,7 @@ void GameLoop::updateUI(){
 
     if(player.movedLocation){
         this->mainWindow->clearActionButtons();
+        this->actionButtons.clear();
         for(auto& action : player.getCurrentLocation()->getActions()){
             this->addActionButton(action);
         }

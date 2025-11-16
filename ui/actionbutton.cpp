@@ -23,6 +23,7 @@ void ActionButton::setProgress(double value)
 }
 
 void ActionButton::updateProgress(){
+    if(this->action->getDuration() == 0.0) return;
     this->setProgress(this->action->getCurrentProgress()/this->action->getDuration());
 }
 
