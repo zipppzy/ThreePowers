@@ -67,6 +67,7 @@ void Skill::addXp(double xp){
         }
     }
 
+    Logger::logMessages.push_back("Added " + std::to_string(xp) + " xp to " + this->name);
     if(level >= maxLevel){
         this->xp = 0;
     }

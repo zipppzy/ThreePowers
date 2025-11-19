@@ -6,6 +6,7 @@
 #include "actionqueuemodel.h"
 #include "world.h"
 #include "mainwindow.h"
+#include "logger.h"
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>
@@ -23,7 +24,7 @@ private:
     bool paused = false;
 
     //ticks per real life second
-    double timeScale = 50.0;
+    double timeScale = 50;
     //each tick is a second of game time
     unsigned int ticks = 0;
 

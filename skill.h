@@ -3,6 +3,7 @@
 
 #include "effect.h"
 #include "toml.hpp"
+#include "logger.h"
 #include<cmath>
 #include <string>
 #include <unordered_map>

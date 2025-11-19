@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <deque>
 
+
 #include "item.h"
 #include "location.h"
 #include "action.h"
@@ -50,6 +51,7 @@ public:
     std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
     bool movedLocation = false;
+
 
 private:
     bool checkActionRequirements(std::shared_ptr<Action> action) const;

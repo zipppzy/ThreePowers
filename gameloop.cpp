@@ -88,6 +88,11 @@ void GameLoop::updateUI(){
         player.newSkillIndexes.clear();
     }
     this->mainWindow->updateTime(this->ticks);
+
+    while(!Logger::logMessages.empty()){
+        this->mainWindow->logMessage(Logger::logMessages.front());
+        Logger::logMessages.pop_front();
+    }
 }
 
 void GameLoop::startTimer()

@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(messageLogWidget, 0);
 
     ui->tabWidget->setCurrentIndex(0);
-    // connect(ui->pauseButton, SIGNAL(clicked()), &gameLoop , SLOT(pause()));
-    // connect(ui->playButton, SIGNAL(clicked()), &gameLoop , SLOT(play()));
 }
 
 MainWindow::~MainWindow(){
@@ -67,6 +65,10 @@ void MainWindow::clearActionButtons() {
         delete item;
     }
     nextActionButtonCoords = {0, 0};
+}
+
+void MainWindow::logMessage(std::string& message){
+    this->messageLogWidget->addMessage(QString::fromStdString(message));
 }
 
 void MainWindow::updateTime(unsigned int ticks){

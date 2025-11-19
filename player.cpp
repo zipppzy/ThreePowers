@@ -61,6 +61,8 @@ void Player::addSkillXp(std::string name, double xp){
         }
     }
     this->applySkillEffectsCurrentLocation();
+
+    //this->logMessages.push_back(std::format("Added {} xp to {}", ))
 }
 
 void Player::addReserve(const Reserve& reserve){

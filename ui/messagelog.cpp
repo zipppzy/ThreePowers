@@ -34,6 +34,7 @@ MessageLog::MessageLog(QWidget *parent)
     entriesLayout = new QVBoxLayout(container);
     entriesLayout->setContentsMargins(0, 0, 0, 0);
     entriesLayout->setSpacing(2);
+    entriesLayout->setAlignment(Qt::AlignTop);
 
     scrollArea->setWidget(container);
 }
@@ -56,6 +57,7 @@ void MessageLog::addMessage(const QString& text){
 
     // Auto-scroll to bottom after layout updates
     QTimer::singleShot(0, [this]{
+        scrollArea->widget()->adjustSize();
         scrollArea->verticalScrollBar()->setValue(scrollArea->verticalScrollBar()->maximum());
     });
 }
