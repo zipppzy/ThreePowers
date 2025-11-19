@@ -6,6 +6,7 @@
 #include <qgridlayout.h>
 #include "actionbutton.h"
 #include "actionqueuemodel.h"
+#include "messagelog.h"
 #include "skillmodel.h"
 #include "skilldelegate.h"
 #include "actionqueuedelegate.h"
@@ -33,6 +34,8 @@ public:
     void addActionButton(ActionButton* btn);
     void clearActionButtons();
 
+    void logMessage(std::string& message);
+
     void setupSkillView(SkillModel* skillModel);
 
     void setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate *actionQueueDelegate);
@@ -42,6 +45,7 @@ private:
 
     QWidget* buttonContainer = nullptr;
     QGridLayout* gridLayout = nullptr;
+    MessageLog* messageLogWidget = nullptr;
 
     std::pair<int, int> nextActionButtonCoords;  //position in gridLayout (x,y)
 

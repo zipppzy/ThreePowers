@@ -20,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->actionScrollArea->setWidget(buttonContainer);
     ui->actionScrollArea->setWidgetResizable(true);
 
+    this->messageLogWidget = new MessageLog(this);
+
+    auto* layout = new QVBoxLayout(ui->messageLogContainer);
+    layout->setContentsMargins(0,0,0,0);
+    layout->addWidget(messageLogWidget, 0);
+
     ui->tabWidget->setCurrentIndex(0);
     // connect(ui->pauseButton, SIGNAL(clicked()), &gameLoop , SLOT(pause()));
     // connect(ui->playButton, SIGNAL(clicked()), &gameLoop , SLOT(play()));
