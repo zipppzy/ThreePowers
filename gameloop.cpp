@@ -17,6 +17,9 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     player = Player(0, 100000, startingLocation);
 
+    player.addNewReserve(Reserve{"Vigor", 10.0});
+    player.findReserve("Vigor").value()->addRegen(.1);
+
     for(auto& action : player.getCurrentLocation()->getActions()){
         this->addActionButton(action);
     }

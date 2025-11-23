@@ -27,7 +27,8 @@ public:
     bool hasReserve(std::string name);
     std::optional<Reserve*> findReserve(std::string name);
     void addSkillXp(std::string name, double xp);
-    void addReserve(const Reserve& reserve);
+    void addNewReserve(const Reserve& reserve);
+    void addReserve(const std::string& name, double gain);
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);

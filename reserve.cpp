@@ -1,29 +1,31 @@
 #include "reserve.h"
 #include <algorithm>
 
-Reserve::Reserve(std::string name){
-    this->name = name;
-}
+Reserve::Reserve(std::string name, double maxValue)
+    : name{name},
+    maxValue{maxValue}
+{}
 
 Reserve::Reserve(toml::table reserveTable, Reserve* parentReserve) {
     this->name = reserveTable["name"].value_or("");
     this->maxValue = reserveTable["maxValue"].value_or(0);
     this->currentValue = reserveTable["currentValue"].value_or(0);
+    this->regen = reserveTable["regen"].value_or(0);
     //TODO: deal wil hasSubReserves and hasSoftMax
     this->parentReserve = parentReserve;
 }
 
-Reserve::Reserve(const Reserve& other){
-    this->parentReserve = other.parentReserve;
-    //prob not good to do it this way maybe change later
-    this->subReserves = other.subReserves;
-    this->name = other.name;
-    this->maxValue = other.getMaxValue();
-    this->currentValue = other.getCurrentValue();
-    this->hasSubReserves = other.hasSubReserves;
-    this->hasSoftMax = other.hasSoftMax;
+// Reserve::Reserve(const Reserve& other){
+//     this->parentReserve = other.parentReserve;
+//     //prob not good to do it this way maybe change later
+//     this->subReserves = other.subReserves;
+//     this->name = other.name;
+//     this->maxValue = other.getMaxValue();
+//     this->currentValue = other.getCurrentValue();
+//     this->hasSubReserves = other.hasSubReserves;
+//     this->hasSoftMax = other.hasSoftMax;
 
-}
+// }
 
 bool Reserve::add(double value){
     if(this->currentValue+value > this->maxValue){
@@ -76,6 +78,13 @@ bool Reserve::subtractSub(std::string name, double value){
     }
 }
 
+void Reserve::addRegen(double value){
+    this->regen += value;
+}
+
+double Reserve::getRegen() const{
+    return this->regen;
+}
 void Reserve::applyRegen(){
     this->add(this->regen);
 }

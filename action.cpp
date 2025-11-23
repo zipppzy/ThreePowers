@@ -20,7 +20,9 @@ Action::Action(const Action& other)
                            : nullptr),
     skillRewards(other.skillRewards),
     itemRewards(other.itemRewards),
-    reserveRewards(other.reserveRewards)
+    reserveRewards(other.reserveRewards),
+    constantReserveCost(other.constantReserveCost),
+    constantReserveGain(other.constantReserveGain)
 {}
 
 Action& Action::operator=(const Action& other){
@@ -42,6 +44,8 @@ Action& Action::operator=(const Action& other){
         skillRewards = other.skillRewards;
         itemRewards = other.itemRewards;
         reserveRewards = other.reserveRewards;
+        constantReserveCost = other.constantReserveCost;
+        constantReserveGain = other.constantReserveGain;
     }
 
     return *this;
@@ -59,9 +63,10 @@ Action::Action(toml::table actionTable){
     this->duration = actionTable["duration"].value_or(this->baseDuration);
     this->currentProgress = actionTable["currentProgress"].value_or(0);
     this->failureChance = actionTable["failureChance"].value_or(0);
+
     if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
         for(const auto& [skillName, xp] : *skillRewardsTable){
-            double xpFloat = xp.is_floating_point() ? xp.as_floating_point()->get(): static_cast<double>(xp.as_integer()->get());
+            double xpFloat = xp.is_floating_point() ? xp.as_floating_point()->get() : static_cast<double>(xp.as_integer()->get());
             this->skillRewards[std::string(skillName)] = xpFloat;
         }
     }
@@ -73,11 +78,24 @@ Action::Action(toml::table actionTable){
             }
         }
     }
-    if(auto reserveRewardsArray = actionTable["reserveRewards"].as_array()){
-        for(const auto& reserveTable : *reserveRewardsArray){
-            if(const auto* table = reserveTable.as_table()){
-                this->reserveRewards.push_back(Reserve(*table, nullptr));
-            }
+    if(auto reserveRewardsTable = actionTable["reserveRewards"].as_table()){
+        for(const auto& [reserveName, gain] : *reserveRewardsTable){
+            double xpFloat = gain.is_floating_point() ? gain.as_floating_point()->get() : static_cast<double>(gain.as_integer()->get());
+            this->skillRewards[std::string(reserveName)] = xpFloat;
+        }
+    }
+
+    if(auto constantReserveCostTable = actionTable["constantReserveCost"].as_table()){
+        for(const auto& [reserveName, cost] : *constantReserveCostTable){
+            double costFloat = cost.is_floating_point() ? cost.as_floating_point()->get() : static_cast<double>(cost.as_integer()->get());
+            this->constantReserveCost[std::string(reserveName)] = costFloat;
+        }
+    }
+
+    if(auto constantReserveGainTable = actionTable["constantReserveGain"].as_table()){
+        for(const auto& [reserveName, gain] : *constantReserveGainTable){
+            double gainFloat = gain.is_floating_point() ? gain.as_floating_point()->get() : static_cast<double>(gain.as_integer()->get());
+            this->constantReserveGain[std::string(reserveName)] = gainFloat;
         }
     }
     this->visibleToPlayer = false;
@@ -126,7 +144,7 @@ const std::vector<Item>& Action::getItemRewards() const{
     return this->itemRewards;
 }
 
-const std::vector<Reserve>& Action::getReserveRewards() const{
+const std::map<std::string, double>& Action::getReserveRewards() const{
     return this->reserveRewards;
 }
 
@@ -135,6 +153,13 @@ const std::optional<const Requirement*> Action::getActionRequirements() const{
         return std::nullopt;
     }
     return this->actionRequirements.get();
+}
+
+const std::map<std::string, double>& Action::getConstantReserveCost() const{
+    return this->constantReserveCost;
+}
+const std::map<std::string, double>& Action::getConstantReserveGain() const{
+    return this->constantReserveGain;
 }
 
 void Action::applyEffects(const std::vector<std::pair<Effect,int>>& effects){

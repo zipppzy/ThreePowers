@@ -65,12 +65,13 @@ void Player::addSkillXp(std::string name, double xp){
     //this->logMessages.push_back(std::format("Added {} xp to {}", ))
 }
 
-void Player::addReserve(const Reserve& reserve){
-    auto existingReserve = this->findReserve(reserve.name);
-    if(existingReserve){
-        (*existingReserve)->add(reserve.getCurrentValue());
-    }else{
-        this->reserves.push_back(Reserve(reserve));
+void Player::addNewReserve(const Reserve& reserve){
+    this->reserves.push_back(Reserve(reserve));
+}
+
+void Player::addReserve(const std::string& name, double gain){
+    if(auto existingReserve = this->findReserve(name)){
+        existingReserve.value()->add(gain);
     }
 }
 
@@ -235,8 +236,8 @@ void Player::tick(){
                     }
                 }
                 auto reserveRewards = currentAction->getReserveRewards();
-                for(const Reserve& reserve : reserveRewards){
-                    this->addReserve(reserve);
+                for(const auto& [reserveName,gain] : reserveRewards){
+                    this->addReserve(reserveName, gain);
                 }
             }else{
                 qDebug("Action Failed");
@@ -250,15 +251,43 @@ void Player::tick(){
                     actionQueue.pop_front();
                     currentAction = nullptr;
                     attemptStartNextAction();
+                    return;
                 }
             }
+        }
+        //apply reserve regen
+        for(Reserve& reserve : this->reserves){
+            reserve.applyRegen();
+        }
+
+        //handle constant rewards and costs
+        auto constantReserveGain = currentAction->getConstantReserveGain();
+        if(!constantReserveGain.empty()){
+            for(const auto& [reserveName,gain] : constantReserveGain){
+                this->addReserve(reserveName, gain);
+            }
+        }
+
+        auto constantReserveCost = currentAction->getConstantReserveCost();
+        for(const auto& [reserveName,cost] : constantReserveCost){
+            this->addReserve(reserveName, -cost);
+            //if reserve runs out move to next action
+            if(auto maybeReserve = this->findReserve(reserveName)){
+                if(maybeReserve.value()->getCurrentValue() <= 0){
+                    actionQueue.pop_front();
+                    currentAction = nullptr;
+                    attemptStartNextAction();
+                }
+            }
+        }
+
+        for(Reserve& reserve : this->reserves){
+            Logger::logMessages.push_back(reserve.name + ": " + std::to_string(reserve.getCurrentValue()));
         }
     }else{
         attemptStartNextAction();
     }
-    for(Reserve& reserve : this->reserves){
-        reserve.applyRegen();
-    }
+
 }
 
 void Player::tick(int numTicks){

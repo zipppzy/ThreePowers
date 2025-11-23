@@ -28,7 +28,9 @@ public:
     double getDuration() const;
     const std::map<std::string, double> getSkillRewards() const;
     const std::vector<Item>& getItemRewards() const;
-    const std::vector<Reserve>& getReserveRewards() const;
+    const std::map<std::string, double>& getReserveRewards() const;
+    const std::map<std::string, double>& getConstantReserveCost() const;
+    const std::map<std::string, double>& getConstantReserveGain() const;
     const std::optional<const Requirement*> getActionRequirements() const;
     void applyEffects(const std::vector<std::pair<Effect, int>>& effects);
     void copyFrom(const Action& other);
@@ -48,9 +50,15 @@ private:
 
     std::unique_ptr<Requirement> actionRequirements;
 
+    //every tick subtract from these reserves or end action
+    //skip action if lacking reserve for one tick
+    std::map<std::string, double> constantReserveCost;
+    //every tick add to these reserves
+    std::map<std::string, double> constantReserveGain;
+
     std::map<std::string, double> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
     std::vector<Item> itemRewards;      //includes the count in the Item object
-    std::vector<Reserve> reserveRewards;
+    std::map<std::string, double> reserveRewards;
 };
 
 #endif // ACTION_H

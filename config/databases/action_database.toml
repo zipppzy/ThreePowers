@@ -23,5 +23,7 @@ count = 1
 [[actions]]
 name = "Run"
 baseDuration = 500
-[[actions.skillRewards]]
+[actions.skillRewards]
 "Stamina" = 1
+[actions.constantReserveCost]
+"Vigor" = 0.5
