@@ -27,3 +27,9 @@ baseDuration = 500
 "Stamina" = 1
 [actions.constantReserveCost]
 "Vigor" = 0.5
+
+[[actions]]
+name = "Rest"
+baseDuration = -1
+[actions.constantReserveGain]
+"Vigor" = 1

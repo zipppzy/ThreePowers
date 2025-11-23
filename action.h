@@ -43,6 +43,7 @@ public:
 private:
     static std::unordered_map<std::string, Action> actionDatabase;      //stores default values for actions
 
+    // -1 means infinite
     double baseDuration;        //in seconds
     double duration;
     double currentProgress;

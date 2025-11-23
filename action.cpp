@@ -220,6 +220,7 @@ bool Action::isSuccess() const{
 }
 
 bool Action::tick(){
+    if(baseDuration == -1) return false;
     currentProgress++;
     if(currentProgress > duration){
         currentProgress = 0;
