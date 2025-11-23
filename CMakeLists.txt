@@ -76,7 +76,15 @@ target_include_directories(ThreePowers PRIVATE
     ui
 )
 
-file(COPY ${CMAKE_SOURCE_DIR}/config DESTINATION ${CMAKE_BINARY_DIR})
+add_custom_target(copy_config ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/config
+            ${CMAKE_BINARY_DIR}/config
+    COMMENT "Copying config directory"
+)
+
+add_dependencies(ThreePowers copy_config)
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
