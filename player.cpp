@@ -61,8 +61,6 @@ void Player::addSkillXp(std::string name, double xp){
         }
     }
     this->applySkillEffectsCurrentLocation();
-
-    //this->logMessages.push_back(std::format("Added {} xp to {}", ))
 }
 
 void Player::addNewReserve(const Reserve& reserve){
@@ -283,10 +281,6 @@ void Player::tick(){
                     attemptStartNextAction();
                 }
             }
-        }
-
-        for(Reserve& reserve : this->reserves){
-            Logger::logMessages.push_back(reserve.name + ": " + std::to_string(reserve.getCurrentValue()));
         }
     }else{
         attemptStartNextAction();

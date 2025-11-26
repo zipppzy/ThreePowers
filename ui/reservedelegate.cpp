@@ -25,16 +25,10 @@ void ReserveDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
     painter->setPen(Qt::white);
     painter->drawText(rect.adjusted(8, 4, -8, -4), Qt::AlignTop | Qt::AlignLeft, name);
 
-    // Regen info
-    painter->setFont(option.font);
-    painter->setPen(Qt::lightGray);
-    QString regenText = QString("Regen: %1/s").arg(regen, 0, 'f', 2);
-    painter->drawText(rect.adjusted(8, 24, -8, -4), Qt::AlignLeft, regenText);
-
     // Progress bar
     int barY = rect.bottom() - 20;
     int barWidth = rect.width() - 16;
-    QRect barRect(rect.left() + 8, barY, barWidth, 10);
+    QRect barRect(rect.left() + 8, barY, barWidth, 14);
     painter->setPen(Qt::NoPen);
     painter->setBrush(QColor(55, 55, 55));
     painter->drawRect(barRect);
@@ -44,14 +38,19 @@ void ReserveDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
     painter->setBrush(QColor(33, 150, 243)); // Blue color for reserves
     painter->drawRect(filled);
 
-    // Value text in progress bar
+    // Value text in progress bar (left aligned)
+    painter->setFont(option.font);
     QString valueText = QString("%1 / %2").arg(currentValue, 0, 'f', 1).arg(maxValue, 0, 'f', 1);
     painter->setPen(Qt::white);
-    painter->drawText(barRect, Qt::AlignCenter, valueText);
+    painter->drawText(barRect.adjusted(4, 0, 0, 0), Qt::AlignLeft | Qt::AlignVCenter, valueText);
+
+    // Regen text in progress bar (right aligned)
+    QString regenText = QString("+%1/s").arg(regen, 0, 'f', 2);
+    painter->drawText(barRect.adjusted(0, 0, -4, 0), Qt::AlignRight | Qt::AlignVCenter, regenText);
 
     painter->restore();
 }
 
 QSize ReserveDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) const {
-    return QSize(200, 70);
+    return QSize(250, 50);
 }
