@@ -28,6 +28,10 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
 
+    this->reserveModel = new ReserveModel(this);
+    this->reserveModel->setReserveSource(&player.getReserves());
+    mainWindow->setupReserveView(this->reserveModel);
+
     this->actionQueueModel = new ActionQueueModel(&player.getActionQueue(), this);
     ActionQueueDelegate* actionQueueDelegate = new ActionQueueDelegate(this);
     connect(actionQueueDelegate, &ActionQueueDelegate::removeRequested, this, [this](int row) {
@@ -74,6 +78,7 @@ void GameLoop::updateUI(){
     }
 
     this->actionQueueModel->refresh();
+    this->reserveModel->refreshAll();
 
     if(!player.updatedSkillIndexes.empty()){
         for(int i : player.updatedSkillIndexes){

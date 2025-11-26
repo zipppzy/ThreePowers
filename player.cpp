@@ -75,6 +75,10 @@ void Player::addReserve(const std::string& name, double gain){
     }
 }
 
+const std::vector<Reserve>& Player::getReserves() const{
+    return reserves;
+}
+
 bool Player::pickupItem(Item item){
     if(this->currentWeight+(item.getWeight()*item.count) > this->maxWeight){
         return false;

@@ -7,6 +7,7 @@
 #include "world.h"
 #include "mainwindow.h"
 #include "logger.h"
+#include "reservemodel.h"
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>
@@ -34,6 +35,7 @@ private:
     std::vector<ActionButton*> actionButtons;
     SkillModel* skillModel = nullptr;
     ActionQueueModel* actionQueueModel = nullptr;
+    ReserveModel* reserveModel = nullptr;
 
     void connectButtons();
     void addActionButton(std::shared_ptr<Action> action);

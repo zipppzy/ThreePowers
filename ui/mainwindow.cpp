@@ -108,3 +108,14 @@ void MainWindow::setupActionQueueView(ActionQueueModel* actionQueueModel, Action
 
     ui->leftVerticalLayout->addWidget(actionQueueView);
 }
+
+void MainWindow::setupReserveView(ReserveModel* reserveModel){
+
+    this->reserveView = new QListView(this);
+    this->reserveView->setModel(reserveModel);
+    this->reserveView->setItemDelegate(new ReserveDelegate(this->reserveView));
+    this->reserveView->setViewMode(QListView::ListMode);
+    this->reserveView->setSpacing(5);
+
+    ui->rightVerticalLayout->layout()->addWidget(this->reserveView);
+}

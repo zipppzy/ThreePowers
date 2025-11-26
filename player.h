@@ -29,6 +29,7 @@ public:
     void addSkillXp(std::string name, double xp);
     void addNewReserve(const Reserve& reserve);
     void addReserve(const std::string& name, double gain);
+    const std::vector<Reserve>& getReserves() const;
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);

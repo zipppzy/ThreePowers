@@ -10,6 +10,8 @@
 #include "skillmodel.h"
 #include "skilldelegate.h"
 #include "actionqueuedelegate.h"
+#include "reservemodel.h"
+#include "reservedelegate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +42,8 @@ public:
 
     void setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate *actionQueueDelegate);
 
+    void setupReserveView(ReserveModel* reserveModel);
+
 private:
     Ui::MainWindow *ui;
 
@@ -51,6 +55,8 @@ private:
 
     QListView* skillView = nullptr;
     QListView* actionQueueView = nullptr;
+
+    QListView* reserveView = nullptr;
 
 };
 #endif // MAINWINDOW_H

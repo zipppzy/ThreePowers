@@ -78,6 +78,7 @@ Action::Action(toml::table actionTable){
             }
         }
     }
+
     if(auto reserveRewardsTable = actionTable["reserveRewards"].as_table()){
         for(const auto& [reserveName, gain] : *reserveRewardsTable){
             double xpFloat = gain.is_floating_point() ? gain.as_floating_point()->get() : static_cast<double>(gain.as_integer()->get());
