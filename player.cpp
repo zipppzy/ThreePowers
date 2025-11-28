@@ -77,6 +77,38 @@ const std::vector<Reserve>& Player::getReserves() const{
     return reserves;
 }
 
+void Player::applyActionConstReserveModifiers(std::shared_ptr<Action> action){
+    auto constantReserveGain = action->getConstantReserveGain();
+    for(const auto& [reserveName, gain] : constantReserveGain){
+        if(auto reserve = this->findReserve(reserveName)){
+            reserve.value()->addRegen(gain);
+        }
+    }
+
+    auto constantReserveCost = action->getConstantReserveCost();
+    for(const auto& [reserveName, cost] : constantReserveCost){
+        if(auto reserve = this->findReserve(reserveName)){
+            reserve.value()->addRegen(-cost);
+        }
+    }
+}
+
+void Player::removeConstActionReserveModifiers(std::shared_ptr<Action> action){
+    auto constantReserveGain = action->getConstantReserveGain();
+    for(const auto& [reserveName, gain] : constantReserveGain){
+        if(auto reserve = this->findReserve(reserveName)){
+            reserve.value()->addRegen(-gain);
+        }
+    }
+
+    auto constantReserveCost = action->getConstantReserveCost();
+    for(const auto& [reserveName, cost] : constantReserveCost){
+        if(auto reserve = this->findReserve(reserveName)){
+            reserve.value()->addRegen(cost);
+        }
+    }
+}
+
 bool Player::pickupItem(Item item){
     if(this->currentWeight+(item.getWeight()*item.count) > this->maxWeight){
         return false;
@@ -145,6 +177,12 @@ void Player::addActionToQueue(std::shared_ptr<Action> action, int numRepeats){
 }
 
 void Player::removeActionFromQueue(int index, int numRemoved){
+    // If removing the currently executing action (index 0), remove its reserve modifiers
+    if(index == 0 && currentAction != nullptr){
+        removeConstActionReserveModifiers(currentAction);
+        currentAction = nullptr;
+    }
+
     this->actionQueue.at(index).second -= numRemoved;
     if(actionQueue.at(index).second <= 0){
         this->actionQueue.erase(actionQueue.begin()+index);
@@ -155,6 +193,12 @@ void Player::removeActionFromQueue(int index, int numRemoved){
 void Player::moveUpActionInQueue(int index){
     if(index <= 0) return;
     std::swap(actionQueue[index], actionQueue[index-1]);
+}
+
+void Player::endCurrentAction(){
+    removeConstActionReserveModifiers(currentAction);
+    actionQueue.pop_front();
+    currentAction = nullptr;
 }
 
 void Player::attemptStartNextAction(){
@@ -175,6 +219,7 @@ void Player::fastForwardQueue(){
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         this->currentAction = action;
+        this->applyActionConstReserveModifiers(action);
         return true;
     }else{
         return false;
@@ -220,6 +265,22 @@ void Player::loadPlayerState(std::string fileName){
 void Player::tick(){
     this->age++;
     if(currentAction != nullptr){
+        // Check if any reserve with a cost has run out
+        auto constantReserveCost = currentAction->getConstantReserveCost();
+        for(const auto& [reserveName, cost] : constantReserveCost){
+            if(auto maybeReserve = this->findReserve(reserveName)){
+                if(maybeReserve.value()->getCurrentValue() <= 0){
+                    // Remove reserve modifiers before ending action
+                    endCurrentAction();
+                    attemptStartNextAction();
+                    return;
+                }
+            }
+        }
+        //apply reserve regen
+        for(Reserve& reserve : this->reserves){
+            reserve.applyRegen();
+        }
         //ticks currentAction and check if action is completed then gives rewards
         if(currentAction->tick()){
             if(currentAction->isSuccess()){
@@ -250,38 +311,33 @@ void Player::tick(){
                 //if we have completed all repeats of current action pop and move to next in queue
                 actionQueue.front().second--;
                 if(actionQueue.front().second == 0){
-                    actionQueue.pop_front();
-                    currentAction = nullptr;
+                    endCurrentAction();
                     attemptStartNextAction();
                     return;
                 }
             }
         }
-        //apply reserve regen
-        for(Reserve& reserve : this->reserves){
-            reserve.applyRegen();
-        }
 
-        //handle constant rewards and costs
-        auto constantReserveGain = currentAction->getConstantReserveGain();
-        if(!constantReserveGain.empty()){
-            for(const auto& [reserveName,gain] : constantReserveGain){
-                this->addReserve(reserveName, gain);
-            }
-        }
+        // //handle constant rewards and costs
+        // auto constantReserveGain = currentAction->getConstantReserveGain();
+        // if(!constantReserveGain.empty()){
+        //     for(const auto& [reserveName,gain] : constantReserveGain){
+        //         this->addReserve(reserveName, gain);
+        //     }
+        // }
 
-        auto constantReserveCost = currentAction->getConstantReserveCost();
-        for(const auto& [reserveName,cost] : constantReserveCost){
-            this->addReserve(reserveName, -cost);
-            //if reserve runs out move to next action
-            if(auto maybeReserve = this->findReserve(reserveName)){
-                if(maybeReserve.value()->getCurrentValue() <= 0){
-                    actionQueue.pop_front();
-                    currentAction = nullptr;
-                    attemptStartNextAction();
-                }
-            }
-        }
+        // auto constantReserveCost = currentAction->getConstantReserveCost();
+        // for(const auto& [reserveName,cost] : constantReserveCost){
+        //     this->addReserve(reserveName, -cost);
+        //     //if reserve runs out move to next action
+        //     if(auto maybeReserve = this->findReserve(reserveName)){
+        //         if(maybeReserve.value()->getCurrentValue() <= 0){
+        //             actionQueue.pop_front();
+        //             currentAction = nullptr;
+        //             attemptStartNextAction();
+        //         }
+        //     }
+        // }
     }else{
         attemptStartNextAction();
     }

@@ -26,7 +26,7 @@ baseDuration = 500
 [actions.skillRewards]
 "Stamina" = 1
 [actions.constantReserveCost]
-"Vigor" = 0.5
+"Vigor" = 0.15
 
 [[actions]]
 name = "Rest"

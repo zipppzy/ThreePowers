@@ -10,8 +10,8 @@ void ActionQueueDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
     // background
     painter->fillRect(r, option.state & QStyle::State_Selected
-                             ? QColor("#d0d0d0")
-                             : QColor("#f8f8f8"));
+                             ? QColor(0xd0d0d0)
+                             : QColor(0xf8f8f8));
 
     // text
     QString text = index.data(Qt::DisplayRole).toString();

@@ -30,6 +30,8 @@ public:
     void addNewReserve(const Reserve& reserve);
     void addReserve(const std::string& name, double gain);
     const std::vector<Reserve>& getReserves() const;
+    void applyActionConstReserveModifiers(std::shared_ptr<Action> action);
+    void removeConstActionReserveModifiers(std::shared_ptr<Action> action);
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);
@@ -41,6 +43,7 @@ public:
     void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
     void removeActionFromQueue(int index, int numRemoved);
     void moveUpActionInQueue(int index);
+    void endCurrentAction();
     void attemptStartNextAction();
     void fastForwardQueue();
 
