@@ -3,10 +3,12 @@
 
 #include "action.h"
 #include "tooltip.h"
+#include "menubuilder.h"
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
 #include <qpushbutton.h>
+#include <QMenu>
 
 class ActionButton : public QPushButton
 {
@@ -27,6 +29,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void enterEvent(QEnterEvent *event) override;
     void leaveEvent(QEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:
     QString text;

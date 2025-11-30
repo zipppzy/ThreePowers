@@ -88,3 +88,12 @@ void ActionButton::leaveEvent(QEvent *)
     update();
 }
 
+void ActionButton::contextMenuEvent(QContextMenuEvent* event) {
+    QMenu menu(this);
+
+    MenuBuilder::addAction(&menu, "Test Menu Item", [this]() {
+        Logger::logMessages.push_back(this->action->name);
+    });
+
+    menu.exec(event->globalPos());
+}
