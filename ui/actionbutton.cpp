@@ -91,6 +91,12 @@ void ActionButton::leaveEvent(QEvent *)
 void ActionButton::contextMenuEvent(QContextMenuEvent* event) {
     QMenu menu(this);
 
+    MenuBuilder::addNumberSpinner(&menu, "Queue: ", "Add to Queue", 1, 1, 999, [this](int count){
+        Logger::logMessages.push_back(std::to_string(count));
+    });
+
+    menu.addSeparator();
+
     MenuBuilder::addAction(&menu, "Test Menu Item", [this]() {
         Logger::logMessages.push_back(this->action->name);
     });

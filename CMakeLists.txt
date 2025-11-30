@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ui/menubuilder.h ui/menubuilder.cpp
+        ui/numberspinnerwidget.h ui/numberspinnerwidget.cpp
     )
 else()
     if(ANDROID)
