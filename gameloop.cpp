@@ -59,6 +59,10 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
         this->player.addActionToQueue(action, 1);
         this->play();
     });
+    connect(btn, &ActionButton::tryStartMultipleActions, this, [this, action](int count){
+        this->player.addActionToQueue(action, count);
+        this->play();
+    });
     this->actionButtons.push_back(btn);
     mainWindow->addActionButton(btn);
 }

@@ -23,6 +23,7 @@ public:
 
 signals:
     void tryStartAction();
+    void tryStartMultipleActions(int count);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
