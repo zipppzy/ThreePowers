@@ -39,6 +39,7 @@ private:
 
     void connectButtons();
     void addActionButton(std::shared_ptr<Action> action);
+    void addActionButtons();
 
     void updateUI();
 

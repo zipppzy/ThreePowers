@@ -39,6 +39,9 @@ public:
     void applySkillEffectsCurrentLocation();
     void moveLocation(std::shared_ptr<Location> destination);
 
+    const std::vector<std::shared_ptr<Action>>& getGlobalActions() const;
+    void addGlobalAction(std::shared_ptr<Action> action);
+
     const std::deque<std::pair<std::shared_ptr<Action>, int>>& getActionQueue() const;
     void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
     void removeActionFromQueue(int index, int numRemoved);
@@ -70,6 +73,8 @@ private:
     std::vector<Item> inventory;
     double maxWeight;       //in kg; can't carry above this weight
     double currentWeight;
+
+    std::vector<std::shared_ptr<Action>> globalActions;
 
     //queue of actions with number of times to repeat; -1 means repeat indefinitely
     std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;

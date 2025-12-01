@@ -7,4 +7,4 @@ subLocationNames = ["Field"]
 [[locations]]
 name = "Field"
 visibleToPlayer = true
-actions = ["Run", "Rest"]
+actions = ["Run"]

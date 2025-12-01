@@ -164,6 +164,14 @@ void Player::moveLocation(std::shared_ptr<Location> destination){
     this->movedLocation = true;
 }
 
+void Player::addGlobalAction(std::shared_ptr<Action> action){
+    this->globalActions.push_back(action);
+}
+
+const std::vector<std::shared_ptr<Action>>& Player::getGlobalActions() const{
+    return this->globalActions;
+}
+
 const std::deque<std::pair<std::shared_ptr<Action>, int>>& Player::getActionQueue() const{
     return actionQueue;
 }

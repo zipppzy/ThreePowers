@@ -20,9 +20,10 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     player.addNewReserve(Reserve{"Vigor", 10.0});
     player.findReserve("Vigor").value()->addRegen(.1);
 
-    for(auto& action : player.getCurrentLocation()->getActions()){
-        this->addActionButton(action);
+    if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
+    this->addActionButtons();
 
     this->skillModel = new SkillModel(this);
     this->skillModel->setSkillSource(&player.getSkills());
@@ -67,6 +68,15 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
     mainWindow->addActionButton(btn);
 }
 
+void GameLoop::addActionButtons(){
+    for(const auto& action : this->player.getGlobalActions()){
+        this->addActionButton(action);
+    }
+    for(const auto& action : this->player.getCurrentLocation()->getActions()){
+        this->addActionButton(action);
+    }
+}
+
 void GameLoop::updateUI(){
     for(ActionButton* btn : this->actionButtons){
         btn->updateProgress();
@@ -75,9 +85,7 @@ void GameLoop::updateUI(){
     if(player.movedLocation){
         this->mainWindow->clearActionButtons();
         this->actionButtons.clear();
-        for(auto& action : player.getCurrentLocation()->getActions()){
-            this->addActionButton(action);
-        }
+        this->addActionButtons();
         player.movedLocation = false;
     }
 
