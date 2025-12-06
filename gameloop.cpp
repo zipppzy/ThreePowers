@@ -23,6 +23,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
+    player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
     this->skillModel = new SkillModel(this);

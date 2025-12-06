@@ -42,6 +42,13 @@ public:
     const std::vector<std::shared_ptr<Action>>& getGlobalActions() const;
     void addGlobalAction(std::shared_ptr<Action> action);
 
+    void setRestAction(std::shared_ptr<Action> action);
+    const std::shared_ptr<Action> getRestAction() const;
+    void handleAutoRest(Reserve* targetReserve);
+    bool autoRest = true;
+    bool isAutoResting = false;
+    Reserve* targetReserve = nullptr;
+
     const std::deque<std::pair<std::shared_ptr<Action>, int>>& getActionQueue() const;
     void addActionToQueue(std::shared_ptr<Action> action, int numRepeats);
     void removeActionFromQueue(int index, int numRemoved);
@@ -75,6 +82,8 @@ private:
     double currentWeight;
 
     std::vector<std::shared_ptr<Action>> globalActions;
+
+    std::shared_ptr<Action> restAction = nullptr;
 
     //queue of actions with number of times to repeat; -1 means repeat indefinitely
     std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;

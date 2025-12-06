@@ -164,6 +164,27 @@ void Player::moveLocation(std::shared_ptr<Location> destination){
     this->movedLocation = true;
 }
 
+void Player::setRestAction(std::shared_ptr<Action> action){
+    this->restAction = action;
+}
+
+void Player::handleAutoRest(Reserve* targetReserve){
+    //check if rest has const gain to the reserve that ran out
+    if(this->restAction->getConstantReserveGain().find(targetReserve->name) != this->restAction->getConstantReserveGain().end()){
+        this->actionQueue.push_front({this->restAction, -1});
+        this->isAutoResting = true;
+        this->targetReserve = targetReserve;
+        this->removeConstActionReserveModifiers(currentAction);
+    }else{
+        this->endCurrentAction();
+    }
+    this->attemptStartNextAction();
+}
+
+const std::shared_ptr<Action> Player::getRestAction() const{
+    return this->restAction;
+}
+
 void Player::addGlobalAction(std::shared_ptr<Action> action){
     this->globalActions.push_back(action);
 }
@@ -233,6 +254,7 @@ bool Player::startAction(std::shared_ptr<Action> action){
         return false;
     }
 }
+
 void Player::savePlayerState(std::string fileName){
     toml::table playerData;
 
@@ -278,9 +300,12 @@ void Player::tick(){
         for(const auto& [reserveName, cost] : constantReserveCost){
             if(auto maybeReserve = this->findReserve(reserveName)){
                 if(maybeReserve.value()->getCurrentValue() <= 0){
-                    // Remove reserve modifiers before ending action
-                    endCurrentAction();
-                    attemptStartNextAction();
+                    //check if autoRest is on
+                    if(this->autoRest){
+                        this->handleAutoRest(maybeReserve.value());
+                    }else{
+                        this->endCurrentAction();
+                    }
                     return;
                 }
             }
@@ -325,27 +350,14 @@ void Player::tick(){
                 }
             }
         }
-
-        // //handle constant rewards and costs
-        // auto constantReserveGain = currentAction->getConstantReserveGain();
-        // if(!constantReserveGain.empty()){
-        //     for(const auto& [reserveName,gain] : constantReserveGain){
-        //         this->addReserve(reserveName, gain);
-        //     }
-        // }
-
-        // auto constantReserveCost = currentAction->getConstantReserveCost();
-        // for(const auto& [reserveName,cost] : constantReserveCost){
-        //     this->addReserve(reserveName, -cost);
-        //     //if reserve runs out move to next action
-        //     if(auto maybeReserve = this->findReserve(reserveName)){
-        //         if(maybeReserve.value()->getCurrentValue() <= 0){
-        //             actionQueue.pop_front();
-        //             currentAction = nullptr;
-        //             attemptStartNextAction();
-        //         }
-        //     }
-        // }
+        //handle ending of autoRest
+        if(this->isAutoResting){
+            if(this->targetReserve->getCurrentValue() >= this->targetReserve->getMaxValue()){
+                this->endCurrentAction();
+                this->attemptStartNextAction();
+                this->isAutoResting = false;
+            }
+        }
     }else{
         attemptStartNextAction();
     }
