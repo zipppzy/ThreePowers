@@ -144,7 +144,10 @@ void GameLoop::skip(){
 
 void GameLoop::loop()
 {
-    if(paused) return;
+    if(paused){
+        this->updateUI();
+        return;
+    }
 
     double realDeltaTime = elapsedTimer.elapsed() / 1000.0; //time in seconds
     int numTicks = static_cast<int>(std::floor(realDeltaTime*timeScale));   //number of ticks to simulate this loop
