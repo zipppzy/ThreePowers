@@ -97,8 +97,8 @@ void ActionButton::contextMenuEvent(QContextMenuEvent* event) {
 
     menu.addSeparator();
 
-    MenuBuilder::addAction(&menu, "Test Menu Item", [this]() {
-        Logger::logMessages.push_back(this->action->name);
+    MenuBuilder::addAction(&menu, "Set Rest Action", [this]() {
+        emit setRestAction(this->action);
     });
 
     menu.exec(event->globalPos());

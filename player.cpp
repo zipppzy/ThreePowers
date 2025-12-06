@@ -301,7 +301,7 @@ void Player::tick(){
             if(auto maybeReserve = this->findReserve(reserveName)){
                 if(maybeReserve.value()->getCurrentValue() <= 0){
                     //check if autoRest is on
-                    if(this->autoRest){
+                    if(this->autoRest && this->restAction != nullptr){
                         this->handleAutoRest(maybeReserve.value());
                     }else{
                         this->endCurrentAction();

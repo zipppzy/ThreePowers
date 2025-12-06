@@ -23,7 +23,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
-    player.setRestAction(player.getGlobalActions()[0]);
+    //player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
     this->skillModel = new SkillModel(this);
@@ -64,6 +64,9 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
     connect(btn, &ActionButton::tryStartMultipleActions, this, [this, action](int count){
         this->player.addActionToQueue(action, count);
         this->play();
+    });
+    connect(btn, &ActionButton::setRestAction, this, [this](std::shared_ptr<Action> action){
+        this->player.setRestAction(action);
     });
     this->actionButtons.push_back(btn);
     mainWindow->addActionButton(btn);

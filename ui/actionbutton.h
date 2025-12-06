@@ -24,6 +24,7 @@ public:
 signals:
     void tryStartAction();
     void tryStartMultipleActions(int count);
+    void setRestAction(std::shared_ptr<Action> action);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
