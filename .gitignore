@@ -1,6 +1,8 @@
 .qtcreator
 .qt
 
+build
+
 Makefile
 
 CMakeFiles
