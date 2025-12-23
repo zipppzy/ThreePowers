@@ -1,5 +1,6 @@
 [[actions]]
 name = "Meditate"
+description = "Focus on nothing"
 baseDuration = 60
 [actions.skillRewards]
 "Concentration" = 5
@@ -22,6 +23,7 @@ count = 1
 
 [[actions]]
 name = "Run"
+description = "Go for a run"
 baseDuration = 500
 [actions.skillRewards]
 "Stamina" = 1
@@ -30,6 +32,7 @@ baseDuration = 500
 
 [[actions]]
 name = "Rest"
+description = "Catch your breath and relax your mind"
 baseDuration = -1
 [actions.constantReserveGain]
 "Vigor" = 1

@@ -6,7 +6,7 @@ ActionButton::ActionButton(std::shared_ptr<Action> action, QPushButton *parent)
     ,action{action}
 {
     this->tooltip = new Tooltip{this->text};
-    this->tooltip->setActionData(QString::fromStdString(action->name), action->getCurrentProgress(), action->getDuration(), "Test Description");
+    this->tooltip->setActionData(QString::fromStdString(action->name), action->getCurrentProgress(), action->getDuration(), QString::fromStdString(action->description));
 
     this->setMinimumHeight(40);
     this->setMinimumWidth(150);
@@ -55,7 +55,7 @@ void ActionButton::paintEvent(QPaintEvent *event)
     // Draw hover overlay
     if (hovered) {
         painter.fillRect(rect(), QColor(255, 255, 255, 30)); // white translucent
-        this->tooltip->setActionData(QString::fromStdString(action->name), action->getCurrentProgress(), action->getDuration(), "Test Description");
+        this->tooltip->setActionData(QString::fromStdString(action->name), action->getCurrentProgress(), action->getDuration(), QString::fromStdString(action->description));
     }
 
     // Draw centered text

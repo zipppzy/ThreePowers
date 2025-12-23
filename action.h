@@ -39,6 +39,8 @@ public:
     bool tick();        //returns true when action is completed; may rework later?
 
     std::string name;
+    std::string description = "";
+
     bool visibleToPlayer;
 private:
     static std::unordered_map<std::string, Action> actionDatabase;      //stores default values for actions

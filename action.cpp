@@ -10,6 +10,7 @@ Action::Action(std::string name, double baseDuration){
 
 Action::Action(const Action& other)
     : name(other.name),
+    description(other.description),
     visibleToPlayer(other.visibleToPlayer),
     baseDuration(other.baseDuration),
     duration(other.duration),
@@ -28,6 +29,7 @@ Action::Action(const Action& other)
 Action& Action::operator=(const Action& other){
     if(this != &other){
         name = other.name;
+        description = other.description;
         visibleToPlayer = other.visibleToPlayer;
         baseDuration = other.baseDuration;
         duration = other.duration;
@@ -54,6 +56,7 @@ Action& Action::operator=(const Action& other){
 
 Action::Action(toml::table actionTable){
     this->name = actionTable["name"].value_or("");
+    this->description = actionTable["description"].value_or("");
     this->baseDuration = actionTable["baseDuration"].value_or(-1);
     // if(auto duration = actionTable["duration"].value<double>(); duration){
     //     this->duration = *duration;
