@@ -8,6 +8,7 @@
 #include <QIntValidator>
 #include <QWheelEvent>
 #include <QMenu>
+#include "logger.h"
 
 NumberSpinnerWidget::NumberSpinnerWidget(const QString& label, const QString& buttonText, int initial, int min, int max, std::function<void(int)> callback, QMenu* parentMenu, QWidget* parent)
     : QWidget(parent)
@@ -42,7 +43,7 @@ NumberSpinnerWidget::NumberSpinnerWidget(const QString& label, const QString& bu
     lineEdit->setAlignment(Qt::AlignCenter);
     lineEdit->setValidator(new QIntValidator(minValue, maxValue, lineEdit));
 
-    connect(lineEdit, &QLineEdit::editingFinished, [this]() {
+    connect(lineEdit, &QLineEdit::textChanged, [this]() {
         bool ok;
         int value = lineEdit->text().toInt(&ok);
         if (ok) {

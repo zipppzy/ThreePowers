@@ -1,1 +1,15 @@
 .qtcreator
+.qt
+
+.vscode
+
+build
+
+Makefile
+
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+
+ThreePowers_autogen
+ThreePowers.app
