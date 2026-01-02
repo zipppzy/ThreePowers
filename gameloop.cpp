@@ -59,6 +59,11 @@ void GameLoop::processTriggeredEffects(){
 void GameLoop::handleTriggeredEffect(const TriggerManager::TriggeredEffect& effect){
     if(effect.effectType == "log"){
         Logger::log(effect.effectData);
+    }else if(effect.effectType == "event"){
+        if(auto maybeEvent = Event::checkEventDatabase(effect.effectData)){
+            EventDialog* dialog = new EventDialog(maybeEvent->get(), this->mainWindow);
+            dialog->exec();
+        }
     }
 }
 

@@ -47,6 +47,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         trigger.h trigger.cpp
         triggermanager.h triggermanager.cpp
         event.h event.cpp
+        ui/eventdialog.h ui/eventdialog.cpp
     )
 else()
     if(ANDROID)

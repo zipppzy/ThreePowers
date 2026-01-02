@@ -1,8 +1,8 @@
 [[triggers]]
 id = "first_field_visit"
 priority = 1
-effectType = "log"
-effectData = "It's a field. Wow"
+effectType = "event"
+effectData = "field_first_visit"
 repeatable = false
 [triggers.condition]
 targetType = "location"
