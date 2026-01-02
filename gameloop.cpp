@@ -10,6 +10,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     Action::loadActionDatabase("config/databases/action_database.toml");
     Skill::loadSkillDatabase("config/databases/skills_database.toml");
     World::loadLocationDatabase("config/databases/location_database.toml");
+    Event::loadEventDatabase("config/databases/event_database.toml");
 
     world.loadWorldState("config/world_state.toml");
 

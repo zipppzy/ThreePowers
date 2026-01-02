@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "logger.h"
 #include "reservemodel.h"
+#include "event.h"
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>

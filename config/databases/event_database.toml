@@ -1,0 +1,6 @@
+[[events]]
+id = "field_first_visit"
+title = "A Field"
+body = "You enter a large clearing in the forest"
+[[events.choices]]
+name = "Continue"

@@ -46,6 +46,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ui/numberspinnerwidget.h ui/numberspinnerwidget.cpp
         trigger.h trigger.cpp
         triggermanager.h triggermanager.cpp
+        event.h event.cpp
     )
 else()
     if(ANDROID)
