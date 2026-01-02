@@ -3,7 +3,7 @@
 
 #include <QDebug>
 #include <deque>
-
+#include <set>
 
 #include "item.h"
 #include "location.h"
@@ -11,6 +11,7 @@
 #include "travelaction.h"
 #include "reserve.h"
 #include "skill.h"
+#include "triggermanager.h"
 
 //TODO: change ptrs to shared_ptr or refrences maybe
 
@@ -63,6 +64,8 @@ public:
     void tick();
     void tick(int numTicks);
 
+    TriggerManager triggerManager;
+
     std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
     bool movedLocation = false;
@@ -90,6 +93,10 @@ private:
 
     std::shared_ptr<Location> currentLocation;
     std::shared_ptr<Action> currentAction;
+
+    std::set<std::string> visitedLocations;
+
+    TriggerContext triggerContext;
 };
 
 #endif // PLAYER_H

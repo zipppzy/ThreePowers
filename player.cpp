@@ -4,12 +4,15 @@
 Player::Player() {
 }
 
-Player::Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation){
-    this->age = age;
-    this->lifespan = lifespan;
-    this->currentLocation = currentLocation;
-    this->maxWeight = 50;
-    this->currentWeight = 0;
+Player::Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation)
+    : age{age},
+    lifespan{lifespan},
+    currentLocation{currentLocation},
+    maxWeight{50},
+    currentWeight{0},
+    triggerContext{&this->skills, &this->reserves, &this->inventory, &this->visitedLocations}
+{
+    this->triggerManager.loadTriggers("config/triggers.toml");
 }
 
 bool Player::hasSkill(std::string name){
@@ -24,6 +27,7 @@ std::optional<Skill*> Player::findSkill(std::string name){
         return &(*it);
     }
 }
+
 auto Player::findSkillIter(std::string name){
     return std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
 }
@@ -162,6 +166,8 @@ void Player::applySkillEffectsCurrentLocation(){
 void Player::moveLocation(std::shared_ptr<Location> destination){
     this->currentLocation = destination;
     this->movedLocation = true;
+    this->visitedLocations.insert(destination->name);
+    this->triggerManager.onLocationChange(this->triggerContext, destination->name);
 }
 
 void Player::setRestAction(std::shared_ptr<Action> action){

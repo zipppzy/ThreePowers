@@ -49,6 +49,18 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     startTimer();
 }
 
+void GameLoop::processTriggeredEffects(){
+    while(auto effect = player.triggerManager.getNextEffect()){
+        handleTriggeredEffect(*effect);
+    }
+}
+
+void GameLoop::handleTriggeredEffect(const TriggerManager::TriggeredEffect& effect){
+    if(effect.effectType == "log"){
+        Logger::log(effect.effectData);
+    }
+}
+
 void GameLoop::connectButtons(){
     connect(mainWindow->getPauseButton(),&QPushButton::clicked, this , &GameLoop::pause);
     connect(mainWindow->getPlayButton(), &QPushButton::clicked, this , &GameLoop::play);
@@ -154,6 +166,9 @@ void GameLoop::loop()
     if(numTicks <= 0) return;
 
     player.tick(numTicks);
+
+    this->processTriggeredEffects();
+
     if(player.getActionQueue().empty()){
         this->pause();
     }

@@ -1,0 +1,10 @@
+[[triggers]]
+id = "first_field_visit"
+priority = 1
+effectType = "log"
+effectData = "It's a field. Wow"
+repeatable = false
+[triggers.condition]
+targetType = "location"
+name = "Field"
+operation = "visit"

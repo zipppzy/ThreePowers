@@ -5,6 +5,7 @@
 #include "reserve.h"
 #include "skill.h"
 #include "toml.hpp"
+#include <set>
 #include <string>
 #include <vector>
 #include <memory>
@@ -14,10 +15,13 @@
 struct TriggerContext
 {
     const std::vector<Skill>* skills = nullptr;
+    //probably remove reserves as a trigger type
     const std::vector<Reserve>* reserves = nullptr;
     const std::vector<Item>* inventory = nullptr;
+    const std::set<std::string>* visitedLocations = nullptr;
 
-    TriggerContext(const std::vector<Skill>* skills, const std::vector<Reserve>* reserves, const std::vector<Item>* inventory);
+    TriggerContext() = default;
+    TriggerContext(const std::vector<Skill>* skills, const std::vector<Reserve>* reserves, const std::vector<Item>* inventory, const std::set<std::string>* visitedLocations);
 };
 
 struct TriggerCondition
@@ -31,7 +35,7 @@ struct TriggerCondition
     std::string operation;     // ">=", "<=", "==", ">", "<", "!=", "visited", "completed", "current"
     double value = 0.0;
     int count = 0;
-    bool firstTime = false;
+
 
     // Nested conditions for logical operators
     std::vector<std::shared_ptr<TriggerCondition>> conditions;
@@ -48,8 +52,8 @@ private:
 struct Trigger {
     std::string id;
     std::shared_ptr<TriggerCondition> condition;
-    std::string effectType;        // "event", "unlock_action", etc.
-    std::string effectData;    // Event ID, action name, etc.
+    std::string effectType;        // "event", "unlock_action", "log"
+    std::string effectData;    // Event ID, action name, log message.
     bool repeatable = false;
     bool triggered = false;
     int priority = 0;

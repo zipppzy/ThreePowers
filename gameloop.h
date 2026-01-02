@@ -32,6 +32,9 @@ private:
     Player player;
     World world;
 
+    void processTriggeredEffects();
+    void handleTriggeredEffect(const TriggerManager::TriggeredEffect& effect);
+
     std::vector<ActionButton*> actionButtons;
     SkillModel* skillModel = nullptr;
     ActionQueueModel* actionQueueModel = nullptr;

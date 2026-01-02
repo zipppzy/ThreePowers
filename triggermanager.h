@@ -38,16 +38,16 @@ public:
     void checkPeriodicTriggers(const TriggerContext& context);
 
     // Queue access
-    bool hasPendingEffects() const { return !effectQueue.empty(); }  // Changed from hasQueuedActions
-    std::optional<TriggeredEffect> getNextEffect();  // Changed from getNextAction
+    bool hasPendingEffects() const { return !effectQueue.empty(); }
+    std::optional<TriggeredEffect> getNextEffect();
 
     // State access (for building context)
-    const std::unordered_set<std::string>& getVisitedLocations() const { return visitedLocations; }
-    const std::unordered_map<std::string, int>& getActionCompletionCounts() const { return actionCompletionCounts; }
+    //const std::unordered_set<std::string>& getVisitedLocations() const { return visitedLocations; }
+    //const std::unordered_map<std::string, int>& getActionCompletionCounts() const { return actionCompletionCounts; }
 
     // Save/load
-    void saveState(toml::table& table) const;
-    void loadState(const toml::table& table);
+    // void saveState(toml::table& table) const;
+    // void loadState(const toml::table& table);
 
 private:
     std::vector<Trigger> triggers;
@@ -60,8 +60,8 @@ private:
     std::vector<size_t> periodicTriggers;
 
     // Tracking data
-    std::unordered_set<std::string> visitedLocations;
-    std::unordered_map<std::string, int> actionCompletionCounts;
+    //std::unordered_set<std::string> visitedLocations;
+    //std::unordered_map<std::string, int> actionCompletionCounts;
 
     void buildIndices();
     void indexTrigger(size_t index, const TriggerCondition* condition);

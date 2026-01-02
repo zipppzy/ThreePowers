@@ -66,20 +66,20 @@ bool TriggerManager::needsPeriodicCheck(const TriggerCondition* condition) const
     return false;
 }
 
-void TriggerManager::recordLocationVisit(const std::string& locationName) {
-    visitedLocations.insert(locationName);
-}
+// void TriggerManager::recordLocationVisit(const std::string& locationName) {
+//     visitedLocations.insert(locationName);
+// }
 
-void TriggerManager::recordActionCompletion(const std::string& actionName) {
-    actionCompletionCounts[actionName]++;
-}
+// void TriggerManager::recordActionCompletion(const std::string& actionName) {
+//     actionCompletionCounts[actionName]++;
+// }
 
 void TriggerManager::checkTriggers(const std::vector<size_t>& indices, const TriggerContext& context, const std::string& eventContext) {
-    for (size_t idx : indices) {
+    for (size_t idx : indices){
         if (idx >= triggers.size()) continue;
 
         Trigger& trigger = triggers[idx];
-        if (trigger.checkCondition(context)) {
+        if (trigger.checkCondition(context)){
             effectQueue.push({trigger.effectType, trigger.effectData, trigger.priority});
             trigger.markTriggered();
         }
@@ -88,21 +88,21 @@ void TriggerManager::checkTriggers(const std::vector<size_t>& indices, const Tri
 
 void TriggerManager::onLocationChange(const TriggerContext& context, const std::string& locationName) {
     auto it = locationTriggers.find(locationName);
-    if (it != locationTriggers.end()) {
+    if (it != locationTriggers.end()){
         checkTriggers(it->second, context, locationName);
     }
 }
 
 void TriggerManager::onActionComplete(const TriggerContext& context, const std::string& actionName) {
     auto it = actionTriggers.find(actionName);
-    if (it != actionTriggers.end()) {
+    if (it != actionTriggers.end()){
         checkTriggers(it->second, context, actionName);
     }
 }
 
 void TriggerManager::onSkillLevelUp(const TriggerContext& context, const std::string& skillName) {
     auto it = skillTriggers.find(skillName);
-    if (it != skillTriggers.end()) {
+    if (it != skillTriggers.end()){
         checkTriggers(it->second, context, skillName);
     }
 }
@@ -118,58 +118,58 @@ std::optional<TriggerManager::TriggeredEffect> TriggerManager::getNextEffect() {
     return effect;
 }
 
-void TriggerManager::saveState(toml::table& table) const {
-    toml::array triggeredArray;
-    for (const auto& trigger : triggers) {
-        if (trigger.triggered) {
-            triggeredArray.push_back(trigger.id);
-        }
-    }
-    table.insert("triggeredTriggers", triggeredArray);
+// void TriggerManager::saveState(toml::table& table) const {
+//     toml::array triggeredArray;
+//     for (const auto& trigger : triggers) {
+//         if (trigger.triggered) {
+//             triggeredArray.push_back(trigger.id);
+//         }
+//     }
+//     table.insert("triggeredTriggers", triggeredArray);
 
-    toml::array locationsArray;
-    for (const auto& loc : visitedLocations) {
-        locationsArray.push_back(loc);
-    }
-    table.insert("visitedLocations", locationsArray);
+//     toml::array locationsArray;
+//     for (const auto& loc : visitedLocations) {
+//         locationsArray.push_back(loc);
+//     }
+//     table.insert("visitedLocations", locationsArray);
 
-    toml::table completionsTable;
-    for (const auto& [actionName, count] : actionCompletionCounts) {
-        completionsTable.insert(actionName, count);
-    }
-    table.insert("actionCompletions", completionsTable);
-}
+//     toml::table completionsTable;
+//     for (const auto& [actionName, count] : actionCompletionCounts) {
+//         completionsTable.insert(actionName, count);
+//     }
+//     table.insert("actionCompletions", completionsTable);
+// }
 
-void TriggerManager::loadState(const toml::table& table) {
-    if (auto triggeredArray = table["triggeredTriggers"].as_array()) {
-        std::unordered_set<std::string> triggeredIds;
-        for (const auto& elem : *triggeredArray) {
-            if (auto id = elem.value<std::string>()) {
-                triggeredIds.insert(*id);
-            }
-        }
-        for (auto& trigger : triggers) {
-            if (triggeredIds.count(trigger.id)) {
-                trigger.markTriggered();
-            }
-        }
-    }
+// void TriggerManager::loadState(const toml::table& table) {
+//     if (auto triggeredArray = table["triggeredTriggers"].as_array()) {
+//         std::unordered_set<std::string> triggeredIds;
+//         for (const auto& elem : *triggeredArray) {
+//             if (auto id = elem.value<std::string>()) {
+//                 triggeredIds.insert(*id);
+//             }
+//         }
+//         for (auto& trigger : triggers) {
+//             if (triggeredIds.count(trigger.id)) {
+//                 trigger.markTriggered();
+//             }
+//         }
+//     }
 
-    visitedLocations.clear();
-    if (auto locationsArray = table["visitedLocations"].as_array()) {
-        for (const auto& elem : *locationsArray) {
-            if (auto loc = elem.value<std::string>()) {
-                visitedLocations.insert(*loc);
-            }
-        }
-    }
+//     visitedLocations.clear();
+//     if (auto locationsArray = table["visitedLocations"].as_array()) {
+//         for (const auto& elem : *locationsArray) {
+//             if (auto loc = elem.value<std::string>()) {
+//                 visitedLocations.insert(*loc);
+//             }
+//         }
+//     }
 
-    actionCompletionCounts.clear();
-    if (auto completionsTable = table["actionCompletions"].as_table()) {
-        for (const auto& [key, value] : *completionsTable) {
-            if (auto count = value.as_integer()) {
-                actionCompletionCounts[std::string(key)] = count->get();
-            }
-        }
-    }
-}
+//     actionCompletionCounts.clear();
+//     if (auto completionsTable = table["actionCompletions"].as_table()) {
+//         for (const auto& [key, value] : *completionsTable) {
+//             if (auto count = value.as_integer()) {
+//                 actionCompletionCounts[std::string(key)] = count->get();
+//             }
+//         }
+//     }
+// }

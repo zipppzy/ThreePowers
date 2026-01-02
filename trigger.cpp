@@ -1,10 +1,11 @@
 #include "trigger.h"
 
 
-TriggerContext::TriggerContext(const std::vector<Skill>* skills, const std::vector<Reserve>* reserves, const std::vector<Item>* inventory)
+TriggerContext::TriggerContext(const std::vector<Skill>* skills, const std::vector<Reserve>* reserves, const std::vector<Item>* inventory, const std::set<std::string>* visitedLocations)
     : skills(skills),
     reserves(reserves),
-    inventory(inventory)
+    inventory(inventory),
+    visitedLocations(visitedLocations)
 {}
 
 TriggerCondition::TriggerCondition(const toml::table& node){
@@ -26,7 +27,7 @@ TriggerCondition::TriggerCondition(const toml::table& node){
         operation = node["operation"].value_or(">=");
         value = node["value"].value_or(0.0);
         count = node["count"].value_or(0);
-        firstTime = node["firstTime"].value_or(false);
+
     }
 }
 
@@ -132,6 +133,11 @@ bool TriggerCondition::evaluateLeaf(const TriggerContext& context) const {
 
     //     return false;
     // }
+    if(targetType == "location"){
+        if(operation == "visit"){
+            return true;
+        }
+    }
 
     // if (targetType == "action") {
     //     if (!context.actionCompletionCounts) return false;
