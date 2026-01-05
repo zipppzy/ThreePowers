@@ -57,13 +57,8 @@ void GameLoop::processTriggeredEffects(){
 }
 
 void GameLoop::handleTriggeredEffect(const TriggerManager::TriggeredEffect& effect){
-    if(effect.effectType == "log"){
-        Logger::log(effect.effectData);
-    }else if(effect.effectType == "event"){
-        if(auto maybeEvent = Event::checkEventDatabase(effect.effectData)){
-            EventDialog* dialog = new EventDialog(maybeEvent->get(), this->mainWindow);
-            dialog->exec();
-        }
+    for (const auto& instantEffect : effect.effects) {
+        player.applyInstantEffect(instantEffect);
     }
 }
 
@@ -134,6 +129,16 @@ void GameLoop::updateUI(){
     while(!Logger::logMessages.empty()){
         this->mainWindow->logMessage(Logger::logMessages.front());
         Logger::logMessages.pop_front();
+    }
+
+    while(!player.pendingEvents.empty()){
+        std::string eventId = player.pendingEvents.front();
+        player.pendingEvents.pop_front();
+
+        if (auto maybeEvent = Event::checkEventDatabase(eventId)) {
+            EventDialog* dialog = new EventDialog(maybeEvent->get(), this->mainWindow);
+            dialog->exec();
+        }
     }
 }
 

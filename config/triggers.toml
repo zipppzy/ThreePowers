@@ -1,10 +1,16 @@
 [[triggers]]
 id = "first_field_visit"
 priority = 1
-effectType = "event"
-effectData = "field_first_visit"
 repeatable = false
 [triggers.condition]
 targetType = "location"
 name = "Field"
 operation = "visit"
+[[triggers.effects]]
+type = "event"
+[triggers.effects.parameters]
+eventId = "field_first_visit"
+[[triggers.effects]]
+type = "log"
+[triggers.effects.parameters]
+message = "You discovered a new location!"

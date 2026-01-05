@@ -1,6 +1,7 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
+#include "instanteffect.h"
 #include "item.h"
 #include "reserve.h"
 #include "skill.h"
@@ -52,8 +53,7 @@ private:
 struct Trigger {
     std::string id;
     std::shared_ptr<TriggerCondition> condition;
-    std::string effectType;        // "event", "unlock_action", "log"
-    std::string effectData;    // Event ID, action name, log message.
+    std::vector<InstantEffect> effects;
     bool repeatable = false;
     bool triggered = false;
     int priority = 0;

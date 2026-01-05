@@ -80,7 +80,7 @@ void TriggerManager::checkTriggers(const std::vector<size_t>& indices, const Tri
 
         Trigger& trigger = triggers[idx];
         if (trigger.checkCondition(context)){
-            effectQueue.push({trigger.effectType, trigger.effectData, trigger.priority});
+            effectQueue.push({trigger.effects, trigger.priority});
             trigger.markTriggered();
         }
     }

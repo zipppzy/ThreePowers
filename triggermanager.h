@@ -12,8 +12,7 @@
 class TriggerManager {
 public:
     struct TriggeredEffect {
-        std::string effectType;
-        std::string effectData;
+        std::vector<InstantEffect> effects;
         int priority;
 
         bool operator<(const TriggeredEffect& other) const {

@@ -174,8 +174,15 @@ Trigger::Trigger(const toml::table& node) {
     id = node["id"].value_or("");
     repeatable = node["repeatable"].value_or(false);
     priority = node["priority"].value_or(0);
-    effectType = node["effectType"].value_or("");
-    effectData = node["effectData"].value_or("");
+
+    // Load effects array
+    if (auto effectsArray = node["effects"].as_array()) {
+        for (const auto& effectNode : *effectsArray) {
+            if (auto effectTable = effectNode.as_table()) {
+                effects.emplace_back(*effectTable);
+            }
+        }
+    }
 
     if (auto condTable = node["condition"].as_table()) {
         condition = std::make_shared<TriggerCondition>(*condTable);

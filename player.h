@@ -12,6 +12,7 @@
 #include "reserve.h"
 #include "skill.h"
 #include "triggermanager.h"
+#include "instanteffect.h"
 
 //TODO: change ptrs to shared_ptr or refrences maybe
 
@@ -39,6 +40,10 @@ public:
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
     void moveLocation(std::shared_ptr<Location> destination);
+
+    void applyInstantEffect(const InstantEffect& effect);
+
+    void queueEvent(const std::string& eventId);
 
     const std::vector<std::shared_ptr<Action>>& getGlobalActions() const;
     void addGlobalAction(std::shared_ptr<Action> action);
@@ -69,6 +74,9 @@ public:
     std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
     bool movedLocation = false;
+
+    // Queue of event IDs to be displayed
+    std::deque<std::string> pendingEvents;
 
 
 private:
