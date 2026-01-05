@@ -14,10 +14,10 @@ Item::Item(toml::table itemTable){
     this->count = itemTable["count"].value_or(-1);
 }
 
-double Item::getWeight(){
+double Item::getWeight() const{
     return this->weight;
 }
 
-double Item::getSize(){
+double Item::getSize() const{
     return this->size;
 }

@@ -37,6 +37,7 @@ public:
     bool pickupItem(Item item);
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);
+    const std::vector<Item>& getInventory() const;
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
     void moveLocation(std::shared_ptr<Location> destination);

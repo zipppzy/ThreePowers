@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "logger.h"
 #include "reservemodel.h"
+#include "inventorymodel.h"
 #include "event.h"
 #include "eventdialog.h"
 #include <QObject>
@@ -39,6 +40,7 @@ private:
 
     std::vector<ActionButton*> actionButtons;
     SkillModel* skillModel = nullptr;
+    InventoryModel* inventoryModel = nullptr;
     ActionQueueModel* actionQueueModel = nullptr;
     ReserveModel* reserveModel = nullptr;
 

@@ -126,7 +126,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="actionTab">
           <attribute name="title">
@@ -159,6 +159,11 @@
          <widget class="QWidget" name="skillTab">
           <attribute name="title">
            <string>Skills</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="inventoryTab">
+          <attribute name="title">
+           <string>Inventory</string>
           </attribute>
          </widget>
         </widget>

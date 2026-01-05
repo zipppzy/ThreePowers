@@ -119,3 +119,31 @@ void MainWindow::setupReserveView(ReserveModel* reserveModel){
 
     ui->rightVerticalLayout->layout()->addWidget(this->reserveView);
 }
+
+void MainWindow::setupInventoryView(InventoryModel* inventoryModel){
+    this->inventoryView = new QTableView(ui->inventoryTab);
+
+    this->inventoryView->setModel(inventoryModel);
+    this->inventoryView->setItemDelegate(new InventoryDelegate(this->inventoryView));
+
+    // Enable sorting
+    this->inventoryView->setSortingEnabled(true);
+    this->inventoryView->sortByColumn(0, Qt::AscendingOrder);
+
+    // Configure table appearance
+    this->inventoryView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    this->inventoryView->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->inventoryView->setAlternatingRowColors(false);
+    this->inventoryView->verticalHeader()->setVisible(false);
+    this->inventoryView->horizontalHeader()->setStretchLastSection(true);
+
+    // Set column widths
+    this->inventoryView->setColumnWidth(0, 200); // Name
+    this->inventoryView->setColumnWidth(1, 80);  // Count
+    this->inventoryView->setColumnWidth(2, 120); // Weight
+    this->inventoryView->setColumnWidth(3, 120); // Volume
+
+    QVBoxLayout* layout = new QVBoxLayout(ui->inventoryTab);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(this->inventoryView);
+}

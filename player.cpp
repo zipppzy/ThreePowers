@@ -141,6 +141,9 @@ std::optional<Item*> Player::findItem(Item item){
     return findItem(item.name);
 }
 
+const std::vector<Item>& Player::getInventory() const{
+    return inventory;
+}
 std::shared_ptr<Location> Player::getCurrentLocation(){
     return currentLocation;
 }

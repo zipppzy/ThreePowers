@@ -49,6 +49,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         event.h event.cpp
         ui/eventdialog.h ui/eventdialog.cpp
         instanteffect.h instanteffect.cpp
+        ui/inventorymodel.h ui/inventorymodel.cpp
+        ui/inventorydelegate.h ui/inventorydelegate.cpp
     )
 else()
     if(ANDROID)

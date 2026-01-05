@@ -24,12 +24,21 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
-    //player.setRestAction(player.getGlobalActions()[0]);
+
+    player.pickupItem(Item("Test Thing", 10, 1, 5));
+    player.pickupItem(Item("abc", 15, 2, 5));
+    player.pickupItem(Item("xyz", 20, 3, 1));
+
+    player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
     this->skillModel = new SkillModel(this);
     this->skillModel->setSkillSource(&player.getSkills());
     mainWindow->setupSkillView(this->skillModel);
+
+    this->inventoryModel = new InventoryModel(this);
+    this->inventoryModel->setInventorySource(&player.getInventory());
+    mainWindow->setupInventoryView(this->inventoryModel);
 
     this->reserveModel = new ReserveModel(this);
     this->reserveModel->setReserveSource(&player.getReserves());
@@ -124,6 +133,9 @@ void GameLoop::updateUI(){
         }
         player.newSkillIndexes.clear();
     }
+
+    this->actionQueueModel->refresh();
+
     this->mainWindow->updateTime(this->ticks);
 
     while(!Logger::logMessages.empty()){

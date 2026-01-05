@@ -3,9 +3,13 @@
 
 #include <QMainWindow>
 #include <QListView>
+#include <QTableView>
+#include <QHeaderView>
 #include <qgridlayout.h>
 #include "actionbutton.h"
 #include "actionqueuemodel.h"
+#include "inventorymodel.h"
+#include "inventorydelegate.h"
 #include "messagelog.h"
 #include "skillmodel.h"
 #include "skilldelegate.h"
@@ -39,10 +43,9 @@ public:
     void logMessage(std::string& message);
 
     void setupSkillView(SkillModel* skillModel);
-
     void setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate *actionQueueDelegate);
-
     void setupReserveView(ReserveModel* reserveModel);
+    void setupInventoryView(InventoryModel* inventoryModel);
 
 private:
     Ui::MainWindow *ui;
@@ -55,8 +58,8 @@ private:
 
     QListView* skillView = nullptr;
     QListView* actionQueueView = nullptr;
-
     QListView* reserveView = nullptr;
+    QTableView* inventoryView = nullptr;
 
 };
 #endif // MAINWINDOW_H
