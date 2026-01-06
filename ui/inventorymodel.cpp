@@ -92,9 +92,17 @@ void InventoryModel::updateSortedIndices() {
 
         bool less = false;
         switch (sortColumn) {
-        case NameColumn:
+        case NameColumn: {
+            // Case-insensitive string comparison
+            std::string nameA = itemA.name;
+            std::string nameB = itemB.name;
+            std::transform(nameA.begin(), nameA.end(), nameA.begin(),
+                           [](unsigned char c){ return std::tolower(c); });
+            std::transform(nameB.begin(), nameB.end(), nameB.begin(),
+                           [](unsigned char c){ return std::tolower(c); });
             less = itemA.name < itemB.name;
             break;
+        }
         case CountColumn:
             less = itemA.count < itemB.count;
             break;
