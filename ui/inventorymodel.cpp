@@ -100,7 +100,7 @@ void InventoryModel::updateSortedIndices() {
                            [](unsigned char c){ return std::tolower(c); });
             std::transform(nameB.begin(), nameB.end(), nameB.begin(),
                            [](unsigned char c){ return std::tolower(c); });
-            less = itemA.name < itemB.name;
+            less = nameA < nameB;
             break;
         }
         case CountColumn:
