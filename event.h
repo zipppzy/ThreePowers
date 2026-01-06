@@ -1,6 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include "instanteffect.h"
 #include "toml.hpp"
 #include <optional>
 #include <string>
@@ -12,6 +13,7 @@ class Event
 public:
     struct Choice {
         std::string name;
+        std::vector<InstantEffect> effects;
 
         Choice() = default;
         explicit Choice(const toml::table& choiceTable);

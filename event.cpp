@@ -2,6 +2,13 @@
 
 Event::Choice::Choice(const toml::table& choiceTable) {
     name = choiceTable["name"].value_or("");
+    if(auto effectsArray = choiceTable["effects"].as_array()) {
+        for(auto&& effectNode : *effectsArray) {
+            if(auto table = effectNode.as_table()) {
+                effects.push_back(InstantEffect(*table));
+            }
+        }
+    }
 }
 
 Event::Event(std::string title, std::string body)

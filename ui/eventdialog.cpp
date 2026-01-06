@@ -2,7 +2,8 @@
 #include <QFrame>
 
 EventDialog::EventDialog(const Event& event, QWidget* parent)
-    : QDialog(parent)
+    : QDialog(parent),
+    eventPtr(&event)
 {
     setupUI(event);
 
@@ -122,7 +123,7 @@ void EventDialog::setupUI(const Event& event) {
 
         // Connect button to emit signal with choice index
         connect(btn, &QPushButton::clicked, this, [this, i]() {
-            emit choiceSelected(static_cast<int>(i));
+            emit choiceSelected(static_cast<int>(i), eventPtr->choices[i].effects);
             accept(); // Close dialog
         });
 

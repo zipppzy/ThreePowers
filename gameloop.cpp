@@ -149,6 +149,15 @@ void GameLoop::updateUI(){
 
         if (auto maybeEvent = Event::checkEventDatabase(eventId)) {
             EventDialog* dialog = new EventDialog(maybeEvent->get(), this->mainWindow);
+
+            connect(dialog, &EventDialog::choiceSelected,
+                    [this](int choiceIndex, const std::vector<InstantEffect>& effects) {
+                        Q_UNUSED(choiceIndex);
+                        // Apply all effects from the chosen option
+                        for (const auto& effect : effects) {
+                            player.applyInstantEffect(effect);
+                        }
+                    });
             dialog->exec();
         }
     }

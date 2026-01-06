@@ -16,7 +16,7 @@ public:
     explicit EventDialog(const Event& event, QWidget* parent = nullptr);
 
 signals:
-    void choiceSelected(int choiceIndex);
+    void choiceSelected(int choiceIndex, const std::vector<InstantEffect>& effects);
 
 private:
     QLabel* titleLabel = nullptr;
@@ -24,6 +24,8 @@ private:
     QLabel* bodyLabel = nullptr;
     QHBoxLayout* choicesLayout = nullptr;
     std::vector<QPushButton*> choiceButtons;
+
+    const Event* eventPtr = nullptr;
 
     void setupUI(const Event& event);
 };
