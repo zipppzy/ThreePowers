@@ -1,6 +1,15 @@
+# [[events]]
+# id = "unique_event_id"                 # Required: Unique identifier
+# title = "Event Title"                  # Required: Display title
+# body = "Event description text"        # Required: Main text content
+
+#   # Optional: Player choices
+#   [[events.choices]]
+#   name = "Choice Text"                   # Required: Button text
+
 [[events]]
 id = "field_first_visit"
 title = "A Field"
 body = "You enter a large clearing in the forest"
-[[events.choices]]
-name = "Continue"
+    [[events.choices]]
+    name = "Continue"

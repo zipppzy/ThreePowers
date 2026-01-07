@@ -4,11 +4,11 @@
 # scalingFactor = 1.1                    # Required: XP multiplier per level
 # maxLevel = 10                          # Required: Maximum achievable level
 
-# # Optional: Effects that modify actions or reserves
-# [[skills.effects]]
-# name = "Action or Reserve Name"        # Target to affect
-# type = "effectType"                    # Effect type (see below)
-# magnitude = 0.9                        # Effect strength
+#   # Optional: Effects that modify actions or reserves
+#   [[skills.effects]]
+#   name = "Action or Reserve Name"        # Target to affect
+#   type = "effectType"                    # Effect type (see below)
+#   magnitude = 0.9                        # Effect strength
 
 # # Effect Types:
 # # - "multDuration": Multiply action duration (magnitude^level)

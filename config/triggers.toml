@@ -1,16 +1,55 @@
+# [[triggers]]
+# id = "unique_trigger_id"               # Required: Unique identifier
+# priority = 1                           # Optional: Higher = executes first (default: 0)
+# repeatable = false                     # Optional: Can trigger multiple times (default: false)
+
+#   # Required: Condition that must be met
+#   [triggers.condition]
+#   targetType = "type"                    # See condition types below
+#   name = "Target Name"                   # Target identifier
+#   operation = "operator"                 # Comparison operator
+#   value = 10.0                           # Optional: Numeric threshold
+#   count = 5                              # Optional: Integer threshold
+
+#   # Optional: Effects to apply when triggered
+#   [[triggers.effects]]
+#   type = "effect_type"                   # See effect types below
+#       [triggers.effects.parameters]
+#       key = "value"                      # Effect-specific parameters
+
+# CONDITION TYPES:
+#   Logical Operators:
+#     type = "AND"             - All nested conditions must be true
+#     type = "OR"              - Any nested condition must be true
+#     type = "NOT"             - Nested condition must be false
+#     Use with: [[triggers.condition.conditions]] for nested conditions
+#
+#   Skill: targetType = "skill", name = "SkillName", operation = ">=|<=|==|>|<|!=", value = level
+#   Reserve: targetType = "reserve", name = "ReserveName", operation = ">=|<=|==|>|<|!=", value = amount
+#   Item: targetType = "item", name = "ItemName", operation = ">=|<=|==|>|<|!=", count = number
+#   Location: targetType = "location", name = "LocationName", operation = "visit"
+
+# EFFECT TYPES (in [[triggers.effects]] with [triggers.effects.parameters]):
+#   Log: type = "log", parameters: message = "text"
+#   Event: type = "event", parameters: eventId = "event_id"
+#   Unlock Action: type = "unlock_action", parameters: actionName = "ActionName"
+#   Add Skill XP: type = "add_skill_xp", parameters: skillName = "SkillName", xp = "100"
+#   Modify Reserve: type = "modify_reserve", parameters: reserveName = "ReserveName", amount = "50.0"
+#   Add Item: type = "add_item", parameters: itemName = "ItemName", count = "1"
+
+
 [[triggers]]
 id = "first_field_visit"
-priority = 1
 repeatable = false
-[triggers.condition]
-targetType = "location"
-name = "Field"
-operation = "visit"
-[[triggers.effects]]
-type = "event"
-[triggers.effects.parameters]
-eventId = "field_first_visit"
-[[triggers.effects]]
-type = "log"
-[triggers.effects.parameters]
-message = "You discovered a new location!"
+    [triggers.condition]
+    targetType = "location"
+    name = "Field"
+    operation = "visit"
+    [[triggers.effects]]
+    type = "event"
+        [triggers.effects.parameters]
+        eventId = "field_first_visit"
+    [[triggers.effects]]
+    type = "log"
+        [triggers.effects.parameters]
+        message = "You discovered a new location!"
