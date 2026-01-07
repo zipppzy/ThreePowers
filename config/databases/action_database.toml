@@ -1,3 +1,31 @@
+# [[actions]]
+# name = "Action Name"                    # Required: Display name
+# description = "Action description"      # Optional: Tooltip text
+# baseDuration = 60                       # Required: Time in seconds (-1 for infinite)
+
+# # Optional: Skills that gain XP when action completes
+# [actions.skillRewards]
+# "Skill Name" = 5.0                     # Skill name = XP amount
+
+# # Optional: Items received on completion
+# [[actions.itemRewards]]
+# name = "Item Name"
+# size = 0.01                            # Volume in m³
+# weight = 0.0025                        # Weight in kg
+# count = 1                              # Number of items
+
+# # Optional: Reserves gained on completion
+# [actions.reserveRewards]
+# "Reserve Name" = 10.0                  # Reserve name = amount gained
+
+# # Optional: Reserve cost per tick (action ends if reserve depleted)
+# [actions.constantReserveCost]
+# "Reserve Name" = 0.15                  # Reserve name = cost per second
+
+# # Optional: Reserve gain per tick
+# [actions.constantReserveGain]
+# "Reserve Name" = 1.0                   # Reserve name = gain per second
+
 [[actions]]
 name = "Meditate"
 description = "Focus on nothing"
@@ -36,3 +64,10 @@ description = "Catch your breath and relax your mind"
 baseDuration = -1
 [actions.constantReserveGain]
 "Vigor" = 1
+
+[[actions]]
+name = "Look for work"
+description = "Ask around for job openings"
+baseDuration = 1800
+[actions.skillRewards]
+"Persuasion" = 20

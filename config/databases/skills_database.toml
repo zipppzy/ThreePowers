@@ -1,3 +1,23 @@
+# [[skills]]
+# name = "Skill Name"                    # Required: Display name
+# baseXpForLevel = 100                   # Required: XP needed for level 1
+# scalingFactor = 1.1                    # Required: XP multiplier per level
+# maxLevel = 10                          # Required: Maximum achievable level
+
+# # Optional: Effects that modify actions or reserves
+# [[skills.effects]]
+# name = "Action or Reserve Name"        # Target to affect
+# type = "effectType"                    # Effect type (see below)
+# magnitude = 0.9                        # Effect strength
+
+# # Effect Types:
+# # - "multDuration": Multiply action duration (magnitude^level)
+# # - "flatDuration": Add to action duration (magnitude * level)
+# # - "multFailureChance": Multiply failure chance (magnitude^level)
+# # - "flatFailureChance": Add to failure chance (magnitude * level)
+# # - "multMaxValue": Multiply reserve max value (magnitude^level)
+# # - "flatMaxValue": Add to reserve max value (magnitude * level)
+
 [[skills]]
 name = "Qi Gathering"
 baseXpForLevel = 100
@@ -19,6 +39,14 @@ name = "Persuasion"
 baseXpForLevel = 100
 scalingFactor = 1.1
 maxLevel = 10
+    [[skills.effects]]
+    name = "Beg"
+    type = "multDuration"
+    magnitude = 0.9
+    [[skills.effects]]
+    name = "Look for work"
+    type = "multDuration"
+    magnitude = 0.9
 
 [[skills]]
 name = "Stamina"

@@ -1,7 +1,13 @@
+# [[locations]]
+# name = "Location Name"                 # Required: Display name
+# visibleToPlayer = true                 # Required: Whether player can see it
+# actions = ["Action1", "Action2"]       # Optional: Available action names
+# subLocationNames = ["SubLoc1"]         # Optional: Child location names
+
 [[locations]]
 name = "Village"
 visibleToPlayer = true
-actions = ["Meditate", "Beg"]
+actions = ["Meditate", "Beg", "Look for Work"]
 subLocationNames = ["Field"]
 
 [[locations]]
