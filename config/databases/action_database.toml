@@ -2,6 +2,7 @@
 # name = "Action Name"                    # Required: Display name
 # description = "Action description"      # Optional: Tooltip text
 # baseDuration = 60                       # Required: Time in seconds (-1 for infinite)
+# failureChance = 0.5                      # Optional: chance of failure(0-1)
 
 #   # Optional: Skills that gain XP when action completes
 #   [actions.skillRewards]
