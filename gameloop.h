@@ -16,6 +16,7 @@
 #include <QElapsedTimer>
 #include <QDebug>
 
+#define TICKS_PER_TRIGGER_CLEANUP 1000
 //Inbetween for UI and gameLogic
 //Should handle timing of updates, play, pause, fastforward
 class GameLoop : public QObject

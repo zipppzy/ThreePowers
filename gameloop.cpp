@@ -201,6 +201,11 @@ void GameLoop::loop()
 
     this->processTriggeredEffects();
 
+    if(ticks % TICKS_PER_TRIGGER_CLEANUP == 0) {
+        player.triggerManager.cleanup();
+    }
+
+
     if(player.getActionQueue().empty()){
         this->pause();
     }

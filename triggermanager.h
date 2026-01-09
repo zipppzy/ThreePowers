@@ -48,6 +48,8 @@ public:
     // void saveState(toml::table& table) const;
     // void loadState(const toml::table& table);
 
+    void cleanup();
+
 private:
     std::vector<Trigger> triggers;
     std::priority_queue<TriggeredEffect> effectQueue;  // Changed from actionQueue

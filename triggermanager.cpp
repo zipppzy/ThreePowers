@@ -173,3 +173,12 @@ std::optional<TriggerManager::TriggeredEffect> TriggerManager::getNextEffect() {
 //         }
 //     }
 // }
+
+void TriggerManager::cleanup(){
+    triggers.erase(
+        std::remove_if(triggers.begin(), triggers.end(),
+                       [](const Trigger& t) { return t.isExhausted(); }),
+        triggers.end()
+        );
+    buildIndices();
+}

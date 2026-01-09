@@ -67,6 +67,8 @@ struct Trigger {
         return condition->evaluate(context);
     }
 
+    bool isExhausted() const{ return triggered && !repeatable; }
+
     void markTriggered() { triggered = true; }
     void reset() { triggered = false; }
 };
