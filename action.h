@@ -6,6 +6,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include "instanteffect.h"
 #include "item.h"
 #include "requirement.h"
 #include "toml.hpp"
@@ -26,6 +27,7 @@ public:
     void reduceDuration(double factor);
     double getCurrentProgress() const;
     double getDuration() const;
+    const std::vector<InstantEffect>& getCompletionEffects() const;
     const std::map<std::string, double> getSkillRewards() const;
     const std::vector<Item>& getItemRewards() const;
     const std::map<std::string, double>& getReserveRewards() const;
@@ -41,7 +43,7 @@ public:
     std::string name;
     std::string description = "";
 
-    bool visibleToPlayer;
+    bool visibleToPlayer = true;
 private:
     static std::unordered_map<std::string, Action> actionDatabase;      //stores default values for actions
 
@@ -62,6 +64,8 @@ private:
     std::map<std::string, double> skillRewards;  //key = name of skill  value = (xp, xpMultiplier)
     std::vector<Item> itemRewards;      //includes the count in the Item object
     std::map<std::string, double> reserveRewards;
+
+    std::vector<InstantEffect> completionEffects;
 };
 
 #endif // ACTION_H

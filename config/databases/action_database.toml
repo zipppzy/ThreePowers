@@ -27,35 +27,53 @@
 #   [actions.constantReserveGain]
 #   "Reserve Name" = 1.0                   # Reserve name = gain per second
 
+#   # Optional: Effects to apply when triggered
+#   [[triggers.effects]]
+#   type = "effect_type"                   # See effect types below
+#       [triggers.effects.parameters]
+#       key = "value"                      # Effect-specific parameters
+
+
+# EFFECT TYPES (in [[triggers.effects]] with [triggers.effects.parameters]):
+#   Log: type = "log", parameters: message = "text"
+#   Event: type = "event", parameters: eventId = "event_id"
+#   Unlock Action: type = "unlock_action", parameters: actionName = "ActionName"
+#   Add Skill XP: type = "add_skill_xp", parameters: skillName = "SkillName", xp = "100"
+#   Modify Reserve: type = "modify_reserve", parameters: reserveName = "ReserveName", amount = "50.0"
+#   Add Item: type = "add_item", parameters: itemName = "ItemName", count = "1"
+
 [[actions]]
 name = "Meditate"
 description = "Focus on nothing"
 baseDuration = 60
-    [actions.skillRewards]
-    "Concentration" = 5
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Concentration"
+        xp = 5
 
 [[actions]]
 name = "Beg"
 baseDuration = 300
-    [actions.skillRewards]
-    "Persuasion" = 5
-    [[actions.itemRewards]]
-    name = "Copper Coin"
-    size = 0.01
-    weight = 0.0025
-    count = 1
-    [[actions.itemRewards]]
-    name = "Scrap"
-    size = 0.05
-    weight = 0.005
-    count = 1
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Persuasion"
+        xp = 5
+    # [actions.skillRewards]
+    # "Persuasion" = 5
 
 [[actions]]
 name = "Run"
 description = "Go for a run"
 baseDuration = 500
-    [actions.skillRewards]
-    "Stamina" = 1
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Stamina"
+        xp = 1
+    # [actions.skillRewards]
+    # "Stamina" = 1
     [actions.constantReserveCost]
     "Vigor" = 0.15
 
@@ -70,5 +88,22 @@ baseDuration = -1
 name = "Look for work"
 description = "Ask around for job openings"
 baseDuration = 1800
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Persuasion"
+        xp = 20
+    # [actions.skillRewards]
+    # "Persuasion" = 20
+
+[[actions]]
+name = "Farm Work"
+descriptions = "Till the fields, milk the cows. Simple honest labor."
+baseDuration = 3600
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Stamina"
+        xp = 5
     [actions.skillRewards]
-    "Persuasion" = 20
+    "Stamina" = 5

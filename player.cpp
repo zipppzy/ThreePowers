@@ -179,62 +179,60 @@ void Player::setRestAction(std::shared_ptr<Action> action){
 
 void Player::applyInstantEffect(const InstantEffect& effect) {
     switch (effect.type) {
-    case InstantEffect::Log: {
-        std::string message = effect.parameters.count("message")
-        ? effect.parameters.at("message") : "";
-        Logger::log(message);
-        break;
-    }
-
-    case InstantEffect::Event: {
-        std::string eventId = effect.parameters.count("eventId")
-        ? effect.parameters.at("eventId") : "";
-        queueEvent(eventId);
-        break;
-    }
-
-    case InstantEffect::UnlockAction: {
-        std::string actionName = effect.parameters.count("actionName")
-        ? effect.parameters.at("actionName") : "";
-        if (auto maybeAction = Action::checkActionDatabaseDatabase(actionName)) {
-            addGlobalAction(std::make_shared<Action>(maybeAction.value()));
-            Logger::log("Unlocked new action: " + actionName);
+        case InstantEffect::Log: {
+            std::string message = effect.parameters.count("message")
+            ? effect.parameters.at("message") : "";
+            Logger::log(message);
+            break;
         }
-        break;
-    }
 
-    case InstantEffect::AddSkillXp: {
-        std::string skillName = effect.parameters.count("skillName")
-        ? effect.parameters.at("skillName") : "";
-        double xp = effect.parameters.count("xp")
-                        ? std::stod(effect.parameters.at("xp")) : 0.0;
-        addSkillXp(skillName, xp);
-        break;
-    }
+        case InstantEffect::Event: {
+            std::string eventId = effect.parameters.count("eventId")
+            ? effect.parameters.at("eventId") : "";
+            queueEvent(eventId);
+            break;
+        }
 
-    case InstantEffect::ModifyReserve: {
-        std::string reserveName = effect.parameters.count("reserveName")
-        ? effect.parameters.at("reserveName") : "";
-        double amount = effect.parameters.count("amount")
-                            ? std::stod(effect.parameters.at("amount")) : 0.0;
-        addReserve(reserveName, amount);
-        break;
-    }
+        case InstantEffect::UnlockAction: {
+            std::string actionName = effect.parameters.count("actionName")
+            ? effect.parameters.at("actionName") : "";
+            if (auto maybeAction = Action::checkActionDatabaseDatabase(actionName)) {
+                addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+                Logger::log("Unlocked new action: " + actionName);
+            }
+            break;
+        }
 
-    case InstantEffect::AddItem: {
-        // TODO: Implement when item creation is needed
-        std::string itemName = effect.parameters.count("itemName")
-                                   ? effect.parameters.at("itemName") : "";
-        int count = effect.parameters.count("count")
-                        ? std::stoi(effect.parameters.at("count")) : 1;
-        // Would need: pickupItem(Item(itemName, ...));
-        break;
-    }
+        case InstantEffect::AddSkillXp: {
+            std::string skillName = effect.parameters.count("skillName") ? effect.parameters.at("skillName") : "";
+            double xp = effect.parameters.count("xp") ? std::stod(effect.parameters.at("xp")) : 0.0;
+            addSkillXp(skillName, xp);
+            break;
+        }
 
-    case InstantEffect::UnlockLocation: {
-        // TODO: Implement when location unlocking is needed
-        break;
-    }
+        case InstantEffect::ModifyReserve: {
+            std::string reserveName = effect.parameters.count("reserveName")
+            ? effect.parameters.at("reserveName") : "";
+            double amount = effect.parameters.count("amount")
+                                ? std::stod(effect.parameters.at("amount")) : 0.0;
+            addReserve(reserveName, amount);
+            break;
+        }
+
+        case InstantEffect::AddItem: {
+            // TODO: Implement when item creation is needed
+            std::string itemName = effect.parameters.count("itemName")
+                                       ? effect.parameters.at("itemName") : "";
+            int count = effect.parameters.count("count")
+                            ? std::stoi(effect.parameters.at("count")) : 1;
+            // Would need: pickupItem(Item(itemName, ...));
+            break;
+        }
+
+        case InstantEffect::UnlockLocation: {
+            // TODO: Implement when location unlocking is needed
+            break;
+        }
     }
 }
 
@@ -408,6 +406,9 @@ void Player::tick(){
                 auto reserveRewards = currentAction->getReserveRewards();
                 for(const auto& [reserveName,gain] : reserveRewards){
                     this->addReserve(reserveName, gain);
+                }
+                for(const InstantEffect& instantEffect : currentAction->getCompletionEffects()){
+                    this->applyInstantEffect(instantEffect);
                 }
             }else{
                 qDebug("Action Failed");

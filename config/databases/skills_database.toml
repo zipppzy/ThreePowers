@@ -53,3 +53,7 @@ name = "Stamina"
 baseXpForLevel = 20
 scaling = 1.5
 maxLevel = 100
+    [[skills.effects]]
+    name = "Farm Work"
+    type = "multDuration"
+    magnitude = 0.9

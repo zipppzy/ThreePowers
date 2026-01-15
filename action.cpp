@@ -23,7 +23,8 @@ Action::Action(const Action& other)
     itemRewards(other.itemRewards),
     reserveRewards(other.reserveRewards),
     constantReserveCost(other.constantReserveCost),
-    constantReserveGain(other.constantReserveGain)
+    constantReserveGain(other.constantReserveGain),
+    completionEffects(other.completionEffects)
 {}
 
 Action& Action::operator=(const Action& other){
@@ -48,6 +49,7 @@ Action& Action::operator=(const Action& other){
         reserveRewards = other.reserveRewards;
         constantReserveCost = other.constantReserveCost;
         constantReserveGain = other.constantReserveGain;
+        completionEffects = other.completionEffects;
     }
 
     return *this;
@@ -102,7 +104,14 @@ Action::Action(toml::table actionTable){
             this->constantReserveGain[std::string(reserveName)] = gainFloat;
         }
     }
-    this->visibleToPlayer = false;
+
+    if (auto effectsArray = actionTable["effects"].as_array()) {
+        for (const auto& effectNode : *effectsArray) {
+            if (auto effectTable = effectNode.as_table()) {
+                this->completionEffects.emplace_back(*effectTable);
+            }
+        }
+    }
 }
 
 std::unordered_map<std::string, Action> Action::actionDatabase;
@@ -140,6 +149,9 @@ double Action::getDuration() const{
     return this->duration;
 }
 
+const std::vector<InstantEffect>& Action::getCompletionEffects() const{
+    return this->completionEffects;
+}
 const std::map<std::string, double> Action::getSkillRewards() const{
     return this->skillRewards;
 }

@@ -7,10 +7,15 @@
 [[locations]]
 name = "Village"
 visibleToPlayer = true
-actions = ["Meditate", "Beg", "Look for Work"]
-subLocationNames = ["Field"]
+actions = ["Meditate", "Beg", "Look for work"]
+subLocationNames = ["Field", "Farm"]
 
 [[locations]]
 name = "Field"
 visibleToPlayer = true
 actions = ["Run"]
+
+[[locations]]
+name = "Farm"
+visibleToPlayer = false
+actions = ["Farm Work"]
