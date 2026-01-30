@@ -20,6 +20,9 @@ public:
     void updateProgress();
     void setText(const QString &text);
     QString getText() const;
+    void setLocked(bool locked);
+    bool isLocked() const { return locked; }
+
 
 signals:
     void tryStartAction();
@@ -38,6 +41,7 @@ private:
     Tooltip* tooltip;
     double progress = 0.0;
     bool hovered = false;
+    bool locked = false;
 
     std::shared_ptr<Action> action;
 };

@@ -38,6 +38,12 @@ QString ActionButton::getText() const
     return this->text;
 }
 
+void ActionButton::setLocked(bool locked) {
+    this->locked = locked;
+    setEnabled(!locked);
+    update();
+}
+
 void ActionButton::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
@@ -56,6 +62,13 @@ void ActionButton::paintEvent(QPaintEvent *event)
     if (hovered) {
         painter.fillRect(rect(), QColor(255, 255, 255, 30)); // white translucent
         this->tooltip->setActionData(QString::fromStdString(action->name), action->getCurrentProgress(), action->getDuration(), QString::fromStdString(action->description));
+    }
+
+    // Draw lock icon or text overlay if locked
+    if (locked) {
+        painter.setPen(QColor(150, 150, 150));
+        painter.setFont(QFont("Segoe UI", 8));
+        painter.drawText(rect().adjusted(0, -15, 0, 0), Qt::AlignCenter, "🔒 LOCKED");
     }
 
     // Draw centered text

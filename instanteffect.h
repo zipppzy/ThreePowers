@@ -14,6 +14,9 @@ public:
         Event,
         UnlockAction,
         UnlockLocation,
+        LockLocation,
+        UnhideLocation,
+        HideLocation,
         AddItem,
         AddSkillXp,
         ModifyReserve

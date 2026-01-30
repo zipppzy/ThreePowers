@@ -13,6 +13,7 @@
 #include "skill.h"
 #include "triggermanager.h"
 #include "instanteffect.h"
+#include "world.h"
 
 //TODO: change ptrs to shared_ptr or refrences maybe
 
@@ -20,7 +21,7 @@ class Player
 {
 public:
     Player();
-    Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation);
+    Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation, World* world);
     //TODO: add constructor for toml table
     bool hasSkill(std::string name);
     std::optional<Skill*> findSkill(std::string name);
@@ -41,6 +42,11 @@ public:
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
     void moveLocation(std::shared_ptr<Location> destination);
+
+    void unlockLocation(const std::string& locationName);
+    void lockLocation(const std::string& locationName);
+    void unhideLocation(const std::string& locationName);
+    void hideLocation(const std::string& locationName);
 
     void applyInstantEffect(const InstantEffect& effect);
 
@@ -99,6 +105,8 @@ private:
 
     //queue of actions with number of times to repeat; -1 means repeat indefinitely
     std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;
+
+    World* world = nullptr;
 
     std::shared_ptr<Location> currentLocation;
     std::shared_ptr<Action> currentAction;

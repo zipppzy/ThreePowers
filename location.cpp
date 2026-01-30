@@ -4,14 +4,14 @@ Location::Location(std::string name, int position, int index, bool visibleToPlay
     : name{name},
     position{position},
     index{index},
-    visibleToPlayer{visibleToPlayer},
     parentLocation{parentLocation}
 {}
 
 //id, position, parent and child locations should be set by world
 Location::Location(toml::table locationTable){
     this->name = locationTable["name"].value_or("");
-    this->visibleToPlayer = locationTable["visibleToPlayer"].value_or(false);
+    this->defaultHidden = locationTable["defaultHidden"].value_or(false);
+    this->defaultLocked = locationTable["defaultLocked"].value_or(false);
 
     if(auto actionsArray = locationTable["actions"].as_array()){
         for(auto&& actionName : *actionsArray){
@@ -33,9 +33,10 @@ Location::Location(const Location& other)
     : name{other.name},
     position{other.position},
     index{other.index},
-    visibleToPlayer{other.visibleToPlayer}
+    defaultHidden{other.defaultHidden},
+    defaultLocked{other.defaultLocked}
 {
-    for (const auto& action : other.actions) {
+    for (const auto& action : other.actions){
         if (action) {
             actions.push_back(std::make_shared<Action>(*action));
         }

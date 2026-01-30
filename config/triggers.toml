@@ -29,10 +29,14 @@
 #   Item: targetType = "item", name = "ItemName", operation = ">=|<=|==|>|<|!=", count = number
 #   Location: targetType = "location", name = "LocationName", operation = "visit"
 
-# EFFECT TYPES (in [[triggers.effects]] with [triggers.effects.parameters]):
+# EFFECT TYPES (in [[actions.effects]] with [actions.effects.parameters]):
 #   Log: type = "log", parameters: message = "text"
 #   Event: type = "event", parameters: eventId = "event_id"
 #   Unlock Action: type = "unlock_action", parameters: actionName = "ActionName"
+#   Unlock Location: type = "unlock_location", parameters: locationName = "LocationName"
+#   Lock Location: type = "lock_location", parameters: locationName = "LocationName"
+#   Unhide Visible: type = "unhide_location", parameters: locationName = "LocationName"
+#   Hide Location: type = "hide_location", parameters: locationName = "LocationName"
 #   Add Skill XP: type = "add_skill_xp", parameters: skillName = "SkillName", xp = "100"
 #   Modify Reserve: type = "modify_reserve", parameters: reserveName = "ReserveName", amount = "50.0"
 #   Add Item: type = "add_item", parameters: itemName = "ItemName", count = "1"

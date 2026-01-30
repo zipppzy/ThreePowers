@@ -4,13 +4,14 @@
 Player::Player() {
 }
 
-Player::Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation)
+Player::Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation, World* world)
     : age{age},
     lifespan{lifespan},
     currentLocation{currentLocation},
     maxWeight{50},
     currentWeight{0},
-    triggerContext{&this->skills, &this->reserves, &this->inventory, &this->visitedLocations}
+    triggerContext{&this->skills, &this->reserves, &this->inventory, &this->visitedLocations},
+    world{world}
 {
     this->triggerManager.loadTriggers("config/triggers.toml");
 }
@@ -173,6 +174,34 @@ void Player::moveLocation(std::shared_ptr<Location> destination){
     this->triggerManager.onLocationChange(this->triggerContext, destination->name);
 }
 
+void Player::unlockLocation(const std::string& locationName) {
+    if (world){
+        world->unlockLocation(locationName);
+        this->movedLocation = true;  // Trigger UI update
+    }
+}
+
+void Player::lockLocation(const std::string& locationName) {
+    if (world){
+        world->lockLocation(locationName);
+        this->movedLocation = true;
+    }
+}
+
+void Player::unhideLocation(const std::string& locationName) {
+    if (world){
+        world->unhideLocation(locationName);
+        this->movedLocation = true;
+    }
+}
+
+void Player::hideLocation(const std::string& locationName) {
+    if (world) {
+        world->hideLocation(locationName);
+        this->movedLocation = true;
+    }
+}
+
 void Player::setRestAction(std::shared_ptr<Action> action){
     this->restAction = action;
 }
@@ -230,7 +259,26 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
         }
 
         case InstantEffect::UnlockLocation: {
-            // TODO: Implement when location unlocking is needed
+            std::string locationName = effect.parameters.count("locationName") ? effect.parameters.at("locationName") : "";
+            this->unlockLocation(locationName);
+            break;
+        }
+
+        case InstantEffect::LockLocation: {
+            std::string locationName = effect.parameters.count("locationName") ? effect.parameters.at("locationName") : "";
+            lockLocation(locationName);
+            break;
+        }
+
+        case InstantEffect::UnhideLocation: {
+            std::string locationName = effect.parameters.count("locationName") ? effect.parameters.at("locationName") : "";
+            unhideLocation(locationName);
+            break;
+        }
+
+        case InstantEffect::HideLocation: {
+            std::string locationName = effect.parameters.count("locationName") ? effect.parameters.at("locationName") : "";
+            hideLocation(locationName);
             break;
         }
     }

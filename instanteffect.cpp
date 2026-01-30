@@ -24,6 +24,9 @@ std::optional<InstantEffect::EffectType> InstantEffect::effectTypeFromString(con
         {"event", Event},
         {"unlock_action", UnlockAction},
         {"unlock_location", UnlockLocation},
+        {"lock_location", LockLocation},
+        {"unhide_location", UnhideLocation},
+        {"hide_location", HideLocation},
         {"add_item", AddItem},
         {"add_skill_xp", AddSkillXp},
         {"modify_reserve", ModifyReserve}

@@ -12,7 +12,9 @@ public:
     Location(const Location& other);
 
     std::string name;
-    bool visibleToPlayer;
+    bool defaultHidden = false;
+    bool defaultLocked = false;
+
     std::vector<std::string> subLocationNames;
 
     void addSubLocation(std::shared_ptr<Location> location);

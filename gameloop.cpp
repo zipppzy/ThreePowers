@@ -14,9 +14,9 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     world.loadWorldState("config/world_state.toml");
 
-    std::shared_ptr<Location> startingLocation = world.findLocation(2).value_or(nullptr);
+    std::shared_ptr<Location> startingLocation = world.findLocation("Village").value_or(nullptr);
 
-    player = Player(0, 100000, startingLocation);
+    player = Player(0, 100000, startingLocation, &this->world);
 
     player.addNewReserve(Reserve{"Vigor", 10.0});
     player.findReserve("Vigor").value()->addRegen(.1);
@@ -79,6 +79,23 @@ void GameLoop::connectButtons(){
 
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
     ActionButton* btn = new ActionButton(action);
+
+    // Check if this is a travel action
+    if (auto travelAction = std::dynamic_pointer_cast<TravelAction>(action)){
+        std::string destName = travelAction->getDestination()->name;
+        bool isUnlocked = world.isLocationUnlocked(destName);
+        bool isVisible = world.isLocationVisible(destName);
+
+        // Only create button if visible
+        if (!isVisible){
+            delete btn;
+            return;
+        }
+
+        // Set locked state
+        btn->setLocked(!isUnlocked);
+    }
+
     connect(btn, &ActionButton::tryStartAction, this, [this, action](){
         this->player.addActionToQueue(action, 1);
         this->play();
