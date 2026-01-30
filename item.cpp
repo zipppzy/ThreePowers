@@ -1,5 +1,13 @@
 #include "item.h"
 
+
+Item::Item()
+    : name(""),
+    size(0.0),
+    weight(0.0),
+    count(0)
+{}
+
 Item::Item(std::string name, double size, double weight, unsigned int count){
     this->name = name;
     this->size = size;
@@ -20,4 +28,30 @@ double Item::getWeight() const{
 
 double Item::getSize() const{
     return this->size;
+}
+
+std::unordered_map<std::string, Item> Item::itemDatabase;
+
+void Item::loadItemDatabase(std::string path){
+    auto in = toml::parse_file(path);
+
+    Item::itemDatabase.clear();
+    if(auto itemsArray = in["items"].as_array()){
+        for(auto& elem : *itemsArray){
+            if(auto itemTable = elem.as_table()){
+                // Create item with count 0 (template)
+                Item templateItem(*itemTable);
+                templateItem.count = 0; // Database stores templates with no count
+                Item::itemDatabase[itemTable->at("name").value_or("")] = templateItem;
+            }
+        }
+    }
+}
+
+std::optional<std::reference_wrapper<const Item>> Item::checkItemDatabase(std::string name){
+    if(auto search = Item::itemDatabase.find(name); search != Item::itemDatabase.end()){
+        return std::cref(search->second);
+    }else{
+        return std::nullopt;
+    }
 }

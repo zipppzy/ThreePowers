@@ -1,0 +1,9 @@
+# [[items]]
+# name = "Item Name"                     # Required: Display name
+# size = 0.01                            # Required: Volume in m³
+# weight = 0.025                         # Required: Weight in kg
+
+[[items]]
+name = "Test Thing"
+size = 10.0
+weight = 1.0

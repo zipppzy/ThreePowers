@@ -249,12 +249,15 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
         }
 
         case InstantEffect::AddItem: {
-            // TODO: Implement when item creation is needed
-            std::string itemName = effect.parameters.count("itemName")
-                                       ? effect.parameters.at("itemName") : "";
-            int count = effect.parameters.count("count")
-                            ? std::stoi(effect.parameters.at("count")) : 1;
-            // Would need: pickupItem(Item(itemName, ...));
+            std::string itemName = effect.parameters.count("itemName") ? effect.parameters.at("itemName") : "";
+            int count = effect.parameters.count("count") ? std::stoi(effect.parameters.at("count")) : 1;
+
+            if(auto maybeItem = Item::checkItemDatabase(itemName)){
+                Item item = maybeItem->get();
+                item.count = count;
+                pickupItem(item);
+                Logger::log("Received " + std::to_string(count) + "x " + itemName);
+            }
             break;
         }
 

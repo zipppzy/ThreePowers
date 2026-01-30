@@ -11,6 +11,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     Skill::loadSkillDatabase("config/databases/skills_database.toml");
     World::loadLocationDatabase("config/databases/location_database.toml");
     Event::loadEventDatabase("config/databases/event_database.toml");
+    Item::loadItemDatabase("config/databases/item_database.toml");
 
     world.loadWorldState("config/world_state.toml");
 
@@ -25,9 +26,11 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
-    player.pickupItem(Item("Test Thing", 10, 1, 5));
-    player.pickupItem(Item("abc", 15, 2, 5));
-    player.pickupItem(Item("xyz", 20, 3, 1));
+    if(auto maybeItem = Item::checkItemDatabase("Test Thing")){
+        Item item = maybeItem->get();
+        item.count = 5;
+        player.pickupItem(item);
+    }
 
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
