@@ -34,10 +34,14 @@
 #       key = "value"                      # Effect-specific parameters
 
 
-# EFFECT TYPES (in [[triggers.effects]] with [triggers.effects.parameters]):
+# EFFECT TYPES (in [[actions.effects]] with [actions.effects.parameters]):
 #   Log: type = "log", parameters: message = "text"
 #   Event: type = "event", parameters: eventId = "event_id"
 #   Unlock Action: type = "unlock_action", parameters: actionName = "ActionName"
+#   Unlock Location: type = "unlock_location", parameters: locationName = "LocationName"
+#   Lock Location: type = "lock_location", parameters: locationName = "LocationName"
+#   Unhide Location: type = "unhide_location", parameters: locationName = "LocationName"
+#   Hide Location: type = "hide_location", parameters: locationName = "LocationName"
 #   Add Skill XP: type = "add_skill_xp", parameters: skillName = "SkillName", xp = "100"
 #   Modify Reserve: type = "modify_reserve", parameters: reserveName = "ReserveName", amount = "50.0"
 #   Add Item: type = "add_item", parameters: itemName = "ItemName", count = "1"
@@ -60,8 +64,6 @@ baseDuration = 300
         [actions.effects.parameters]
         skillName = "Persuasion"
         xp = 5
-    # [actions.skillRewards]
-    # "Persuasion" = 5
 
 [[actions]]
 name = "Run"
@@ -72,8 +74,6 @@ baseDuration = 500
         [actions.effects.parameters]
         skillName = "Stamina"
         xp = 1
-    # [actions.skillRewards]
-    # "Stamina" = 1
     [actions.constantReserveCost]
     "Vigor" = 0.15
 
@@ -93,8 +93,10 @@ baseDuration = 1800
         [actions.effects.parameters]
         skillName = "Persuasion"
         xp = 20
-    # [actions.skillRewards]
-    # "Persuasion" = 20
+    [[actions.effects]]
+    type = "unhide_location"
+        [actions.effects.parameters]
+        locationName = "Farm"
 
 [[actions]]
 name = "Farm Work"
