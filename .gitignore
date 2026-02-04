@@ -13,3 +13,4 @@ cmake_install.cmake
 
 ThreePowers_autogen
 ThreePowers.app
+CMakeLists.txt.user
