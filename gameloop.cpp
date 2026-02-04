@@ -26,12 +26,6 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
-    if(auto maybeItem = Item::checkItemDatabase("Test Thing")){
-        Item item = maybeItem->get();
-        item.count = 5;
-        player.pickupItem(item);
-    }
-
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
@@ -137,6 +131,11 @@ void GameLoop::updateUI(){
 
     this->actionQueueModel->refresh();
     this->reserveModel->refreshAll();
+
+    if(player.inventoryChanged){
+        this->inventoryModel->onItemAdded();
+        player.inventoryChanged = false;
+    }
 
     if(!player.updatedSkillIndexes.empty()){
         for(int i : player.updatedSkillIndexes){

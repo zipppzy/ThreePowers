@@ -81,6 +81,7 @@ public:
     std::vector<int> newSkillIndexes;       //keeps track of new skills for UI updates
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
     bool movedLocation = false;
+    bool inventoryChanged = false;
 
     // Queue of event IDs to be displayed
     std::deque<std::string> pendingEvents;

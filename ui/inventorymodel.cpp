@@ -125,8 +125,7 @@ void InventoryModel::setInventorySource(const std::vector<Item> *inventoryList) 
     endResetModel();
 }
 
-void InventoryModel::onItemAdded(int index) {
-    Q_UNUSED(index);
+void InventoryModel::onItemAdded() {
     beginResetModel();
     updateSortedIndices();
     endResetModel();

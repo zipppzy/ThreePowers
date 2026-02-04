@@ -33,7 +33,7 @@ public:
     void sort(int column, Qt::SortOrder order) override;
 
     void setInventorySource(const std::vector<Item>* inventoryList);
-    void onItemAdded(int index);
+    void onItemAdded();
     void refreshAll();
 
     const Item* getItem(int index) const;

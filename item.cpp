@@ -17,9 +17,9 @@ Item::Item(std::string name, double size, double weight, unsigned int count){
 
 Item::Item(toml::table itemTable){
     this->name = itemTable["name"].value_or("");
-    this->size = itemTable["size"].value_or(-1);
-    this->weight = itemTable["weight"].value_or(-1);
-    this->count = itemTable["count"].value_or(-1);
+    this->size = itemTable["size"].value<double>().value_or(0.0);
+    this->weight = itemTable["weight"].value<double>().value_or(0.0);
+    this->count = itemTable["count"].value<int64_t>().value_or(0);
 }
 
 double Item::getWeight() const{

@@ -125,6 +125,7 @@ bool Player::pickupItem(Item item){
             inventory.push_back(item);
         }
         this->currentWeight = item.getWeight()*item.count;
+        inventoryChanged = true;
         return true;
     }
 }
@@ -255,7 +256,7 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
             if(auto maybeItem = Item::checkItemDatabase(itemName)){
                 Item item = maybeItem->get();
                 item.count = count;
-                pickupItem(item);
+                this->pickupItem(item);
                 Logger::log("Received " + std::to_string(count) + "x " + itemName);
             }
             break;
