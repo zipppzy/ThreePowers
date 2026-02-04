@@ -4,6 +4,6 @@
 # weight = 0.025                         # Required: Weight in kg
 
 [[items]]
-name = "Test Thing"
-size = 10.0
-weight = 1.0
+name = "Copper Coin"
+size = 0.019
+weight = 0.0025

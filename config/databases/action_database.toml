@@ -78,6 +78,18 @@ baseDuration = 500
     "Vigor" = 0.15
 
 [[actions]]
+name = "Push Ups"
+description = "Get a little stronger"
+baseDuration = 300
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Strength"
+        xp = 1
+    [actions.constantReserveCost]
+    "Vigor" = 0.3
+
+[[actions]]
 name = "Rest"
 description = "Catch your breath and relax your mind"
 baseDuration = -1
@@ -100,12 +112,20 @@ baseDuration = 1800
 
 [[actions]]
 name = "Farm Work"
-descriptions = "Till the fields, milk the cows. Simple honest labor."
+description = "Till the fields, milk the cows. Simple honest labor."
 baseDuration = 3600
     [[actions.effects]]
     type = "add_skill_xp"
         [actions.effects.parameters]
         skillName = "Stamina"
         xp = 5
-    [actions.skillRewards]
-    "Stamina" = 5
+    [[actions.effects]]
+    type = "add_skill_xp"
+        [actions.effects.parameters]
+        skillName = "Nature Affinity"
+        xp = 1
+    [[actions.effects]]
+    type = "add_item"
+        [actions.effects.parameters]
+        itemName = "Copper Coin"
+        count = 1
