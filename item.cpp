@@ -23,11 +23,11 @@ Item::Item(toml::table itemTable){
 }
 
 double Item::getWeight() const{
-    return this->weight;
+    return this->weight * this->count;
 }
 
 double Item::getSize() const{
-    return this->size;
+    return this->size * this->count;
 }
 
 std::unordered_map<std::string, Item> Item::itemDatabase;

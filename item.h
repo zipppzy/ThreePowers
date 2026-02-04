@@ -14,8 +14,8 @@ public:
     Item(std::string name, double size, double weight, unsigned int count);
     Item(toml::table itemTable);
 
-    double getWeight() const;
-    double getSize() const;
+    double getWeight() const;   //total for stack
+    double getSize() const;     //total for stack
     unsigned int count;          //number of items in the stack
 
     std::string name;
