@@ -363,10 +363,13 @@ void Player::attemptStartNextAction(){
     }
 }
 
-void Player::fastForwardQueue(){
+unsigned long long int Player::fastForwardQueue(){
+    unsigned long long int ticksSimulated = 0;
     while(!actionQueue.empty()){
         this->tick();
+        ticksSimulated++;
     }
+    return ticksSimulated;
 }
 
 bool Player::startAction(std::shared_ptr<Action> action){

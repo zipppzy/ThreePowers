@@ -202,7 +202,9 @@ void GameLoop::pause()
 }
 
 void GameLoop::skip(){
-    this->player.fastForwardQueue();
+    unsigned long long int ticksSimulated = this->player.fastForwardQueue();
+    this->ticks += ticksSimulated;
+    this->updateUI();
 }
 
 void GameLoop::loop()
