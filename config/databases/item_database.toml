@@ -12,3 +12,8 @@ weight = 0.0025
 name = "Iron Axe"
 size = 0.0025
 weight = 1.4
+
+[[items]]
+name = "Log"
+size = 0.3
+weight = 200

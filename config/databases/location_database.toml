@@ -12,7 +12,7 @@ subLocationNames = ["Field", "Farm", "General Store"]
 
 [[locations]]
 name = "Field"
-actions = ["Run", "Push Ups"]
+actions = ["Run", "Push Ups", "Fell a Tree"]
 
 [[locations]]
 name = "Farm"

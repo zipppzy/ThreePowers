@@ -143,3 +143,18 @@ baseDuration = 0
         [actions.effects.parameters]
         itemName = "Iron Axe"
         count = 1
+
+[[actions]]
+name = "Fell a Tree"
+description = "Knockdown a tree to get a log"
+baseDuration = 5400
+    [actions.requirements]
+        [actions.requirements.conditions]
+        type = "item"
+        name = "Iron Axe"
+        count = 1
+    [[actions.effects]]
+    type = "add item"
+        [actions.effects.parameters]
+        itemName = "Log"
+        count = 1
