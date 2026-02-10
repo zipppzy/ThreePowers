@@ -22,6 +22,7 @@ public:
     QString getText() const;
     void setLocked(bool locked);
     bool isLocked() const { return locked; }
+    std::shared_ptr<Action> getAction() const{return action;}
 
 
 signals:

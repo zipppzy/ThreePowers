@@ -372,8 +372,45 @@ unsigned long long int Player::fastForwardQueue(){
     return ticksSimulated;
 }
 
+void Player::consumeResources(const ConsumeList& toConsume) {
+    // Consume items
+    for (const auto& itemPair : toConsume.items) {
+        const std::string& itemName = itemPair.first;
+        int itemCount = itemPair.second;
+
+        if (auto item = this->findItem(itemName)) {
+            (*item)->count -= itemCount;
+            this->currentWeight -= (*item)->getWeight();
+
+            if ((*item)->count <= 0) {
+                // Remove from inventory
+                inventory.erase(std::remove_if(inventory.begin(), inventory.end(),
+                                               [&itemName](const Item& i) { return i.name == itemName; }),
+                                inventory.end());
+            }
+            inventoryChanged = true;
+        }
+    }
+
+    // Consume reserves
+    for (const auto& reservePair : toConsume.reserves) {
+        const std::string& reserveName = reservePair.first;
+        double amount = reservePair.second;
+
+        if (auto reserve = this->findReserve(reserveName)) {
+            reserve.value()->subtract(amount);
+        }
+    }
+}
+
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
+        // Consume items/reserves before starting
+        if(auto req = action->getActionRequirements()) {
+            ConsumeList toConsume = req.value()->getConsumeList(this->inventory, this->reserves);
+            consumeResources(toConsume);
+        }
+
         this->currentAction = action;
         this->applyActionConstReserveModifiers(action);
         return true;

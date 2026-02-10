@@ -70,9 +70,14 @@ public:
     void attemptStartNextAction();
     unsigned long long int fastForwardQueue();
 
+    bool checkActionRequirements(std::shared_ptr<Action> action) const;
+    void consumeResources(const ConsumeList& toConsume);
+
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
+
     void savePlayerState(std::string fileName);
     void loadPlayerState(std::string fileName);
+
     void tick();
     void tick(int numTicks);
 
@@ -88,7 +93,6 @@ public:
 
 
 private:
-    bool checkActionRequirements(std::shared_ptr<Action> action) const;
     unsigned long long int age;    //measured in seconds
     unsigned long long int lifespan;
 

@@ -60,11 +60,6 @@ Action::Action(toml::table actionTable){
     this->name = actionTable["name"].value_or("");
     this->description = actionTable["description"].value_or("");
     this->baseDuration = actionTable["baseDuration"].value_or(-1);
-    // if(auto duration = actionTable["duration"].value<double>(); duration){
-    //     this->duration = *duration;
-    // }else{
-    //     this->duration = actionTable["baseDuration"].value_or(-1);
-    // }
     this->duration = actionTable["duration"].value_or(this->baseDuration);
     this->currentProgress = actionTable["currentProgress"].value_or(0);
     this->failureChance = actionTable["failureChance"].value_or(0);
@@ -111,6 +106,10 @@ Action::Action(toml::table actionTable){
                 this->completionEffects.emplace_back(*effectTable);
             }
         }
+    }
+
+    if (auto reqTable = actionTable["requirements"].as_table()) {
+        actionRequirements = std::make_unique<Requirement>(*reqTable);
     }
 }
 

@@ -1,6 +1,5 @@
 # [[locations]]
 # name = "Location Name"                 # Required: Display name
-# visibleToPlayer = true                 # Required: Whether player can see it
 # defaultHidden = false                  # Optional: Start hidden (default: false)
 # defaultLocked = false                  # Optional: Start locked (default: false)
 # actions = ["Action1", "Action2"]       # Optional: Available action names
@@ -9,7 +8,7 @@
 [[locations]]
 name = "Village"
 actions = ["Meditate", "Beg", "Look for work"]
-subLocationNames = ["Field", "Farm"]
+subLocationNames = ["Field", "Farm", "General Store"]
 
 [[locations]]
 name = "Field"
@@ -19,3 +18,7 @@ actions = ["Run", "Push Ups"]
 name = "Farm"
 defaultHidden = true
 actions = ["Farm Work"]
+
+[[locations]]
+name = "General Store"
+actions = ["Buy Iron Axe"]

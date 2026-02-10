@@ -8,13 +8,6 @@
 #   [actions.skillRewards]
 #   "Skill Name" = 5.0                     # Skill name = XP amount
 
-#   # Optional: Items received on completion
-#   [[actions.itemRewards]]
-#   name = "Item Name"
-#   size = 0.01                            # Volume in m³
-#   weight = 0.0025                        # Weight in kg
-#   count = 1                              # Number of items
-
 #   # Optional: Reserves gained on completion
 #   [actions.reserveRewards]
 #   "Reserve Name" = 10.0                  # Reserve name = amount gained
@@ -58,12 +51,18 @@ baseDuration = 60
 
 [[actions]]
 name = "Beg"
-baseDuration = 300
+description = "Sometimes there's no other option"
+baseDuration = 10800
     [[actions.effects]]
     type = "add_skill_xp"
         [actions.effects.parameters]
         skillName = "Persuasion"
         xp = 5
+    [[actions.effects]]
+    type = "add_item"
+        [actions.effects.parameters]
+        itemName = "Copper Coin"
+        count = 1
 
 [[actions]]
 name = "Run"
@@ -128,4 +127,19 @@ baseDuration = 3600
     type = "add_item"
         [actions.effects.parameters]
         itemName = "Copper Coin"
+        count = 1
+
+[[actions]]
+name = "Buy Iron Axe"
+description = "Perfect for chopping down some trees"
+baseDuration = 0
+    [actions.requirements]
+        [actions.requirements.consumables]
+        type = "item"
+        name = "Copper Coin"
+        count = 50
+    [[actions.effects]]
+    type = "add_item"
+        [actions.effects.parameters]
+        itemName = "Iron Axe"
         count = 1

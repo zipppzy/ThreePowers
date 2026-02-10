@@ -91,6 +91,10 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
 
         // Set locked state
         btn->setLocked(!isUnlocked);
+    }else{
+        // Check if action requirements are met
+        bool requirementsMet = player.checkActionRequirements(action);
+        btn->setLocked(!requirementsMet);
     }
 
     connect(btn, &ActionButton::tryStartAction, this, [this, action](){
@@ -120,6 +124,15 @@ void GameLoop::addActionButtons(){
 void GameLoop::updateUI(){
     for(ActionButton* btn : this->actionButtons){
         btn->updateProgress();
+
+        // Update locked state based on current player state
+        std::shared_ptr<Action> action = btn->getAction();
+
+        // Skip travel actions - they have their own lock logic based on location visibility
+        if(!std::dynamic_pointer_cast<TravelAction>(action)){
+            bool requirementsMet = player.checkActionRequirements(action);
+            btn->setLocked(!requirementsMet);
+        }
     }
 
     if(player.movedLocation){

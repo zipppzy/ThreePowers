@@ -51,6 +51,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         instanteffect.h instanteffect.cpp
         ui/inventorymodel.h ui/inventorymodel.cpp
         ui/inventorydelegate.h ui/inventorydelegate.cpp
+        requirement.cpp
     )
 else()
     if(ANDROID)
