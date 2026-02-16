@@ -49,6 +49,9 @@ private:
     void addActionButton(std::shared_ptr<Action> action);
     void addActionButtons();
 
+    //helper method for displaying requirements in the tooltip
+    QString generateRequirementString(std::shared_ptr<Action> action) const;
+
     void updateUI();
 
 public:

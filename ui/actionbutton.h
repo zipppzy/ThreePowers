@@ -24,6 +24,7 @@ public:
     bool isLocked() const { return locked; }
     std::shared_ptr<Action> getAction() const{return action;}
 
+    void updateRequirementsDisplay(const QString& reqString);
 
 signals:
     void tryStartAction();
@@ -45,6 +46,7 @@ private:
     bool locked = false;
 
     std::shared_ptr<Action> action;
+    QString cachedRequirementsString;
 };
 
 #endif // ACTIONBUTTON_H

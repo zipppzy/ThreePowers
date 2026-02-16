@@ -10,6 +10,7 @@ class Tooltip : public QWidget
 public:
     explicit Tooltip(const QString &text, QWidget *parent = nullptr);
     void setActionData(const QString &name, int current, int total, const QString &desc);
+    void setRequirements(const QString& reqText);
 
 protected:
     void leaveEvent(QEvent *) override { hide(); }
@@ -18,7 +19,7 @@ private:
     QLabel *nameLabel;
     QLabel *progressLabel;
     QLabel *descLabel;
-
+    QLabel *requirementsLabel;
 signals:
 };
 

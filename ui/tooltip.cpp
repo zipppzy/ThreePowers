@@ -29,18 +29,28 @@ Tooltip::Tooltip(const QString &text, QWidget *parent)
     descLabel->setWordWrap(true);
     descLabel->setStyleSheet(style);
 
+    requirementsLabel = new QLabel(this);
+    requirementsLabel->setWordWrap(true);
+    requirementsLabel->setStyleSheet(style);
+    requirementsLabel->setTextFormat(Qt::PlainText);
+    requirementsLabel->hide();  // Hidden by default
+
     auto *frameStyle = "background: #444; max-height: 1px;";
 
     QFrame *line1 = new QFrame(this);
     line1->setStyleSheet(frameStyle);
     QFrame *line2 = new QFrame(this);
     line2->setStyleSheet(frameStyle);
+    QFrame *line3 = new QFrame(this);
+    line3->setStyleSheet(frameStyle);
 
     layout->addWidget(nameLabel);
     layout->addWidget(line1);
     layout->addWidget(progressLabel);
     layout->addWidget(line2);
     layout->addWidget(descLabel);
+    layout->addWidget(line3);
+    layout->addWidget(requirementsLabel);
 
     setLayout(layout);
 }
@@ -49,4 +59,13 @@ void Tooltip::setActionData(const QString &name, int current, int total, const Q
     nameLabel->setText(name);
     progressLabel->setText(QString("Progress: %1 / %2").arg(current).arg(total));
     descLabel->setText(desc);
+}
+
+void Tooltip::setRequirements(const QString& reqText) {
+    if (reqText.isEmpty()) {
+        requirementsLabel->hide();
+    } else {
+        requirementsLabel->setText(reqText);
+        requirementsLabel->show();
+    }
 }

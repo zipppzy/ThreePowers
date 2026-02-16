@@ -7,6 +7,7 @@
 #include "toml.hpp"
 #include <algorithm>
 #include <memory>
+#include <QString>
 #include <string>
 #include <vector>
 
@@ -28,6 +29,7 @@ struct Requirement {
     std::vector<std::shared_ptr<Requirement>> conditions;    // Check-only requirements
     std::vector<std::shared_ptr<Requirement>> consumables;   // Items/reserves to consume
 
+    Requirement() = default;
     explicit Requirement(const toml::table& node);
 
     // Check if all requirements (both conditions and consumables) are met
@@ -35,6 +37,9 @@ struct Requirement {
 
     // Get what should be consumed (only processes consumables tree)
     ConsumeList getConsumeList(const std::vector<Item>& inventory, const std::vector<Reserve>& reserves) const;
+
+    // Generate formatted string for display in tooltips
+    QString toDisplayString(const std::vector<Skill>& skills, const std::vector<Item>& inventory, const std::vector<Reserve>& reserves) const;
 
 private:
     //helper functions for constructor
@@ -45,6 +50,12 @@ private:
 
     // Helper to recursively get consumables from tree
     void gatherConsumables(ConsumeList& list, const std::vector<Item>& inventory, const std::vector<Reserve>& reserves) const;
+
+    // Helper methods for display string generation
+    QString buildConditionsString(const std::vector<Skill>& skills, const std::vector<Item>& inventory, const std::vector<Reserve>& reserves, int indent) const;
+    QString buildConsumablesString(const std::vector<Item>& inventory, const std::vector<Reserve>& reserves, int indent) const;
+    bool checkSingleCondition(const std::vector<Skill>& skills, const std::vector<Item>& inventory, const std::vector<Reserve>& reserves) const;
+    bool checkSingleConsumable(const std::vector<Item>& inventory, const std::vector<Reserve>& reserves) const;
 };
 
 #endif // REQUIREMENT_H

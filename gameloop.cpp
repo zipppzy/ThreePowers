@@ -97,6 +97,8 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
         btn->setLocked(!requirementsMet);
     }
 
+    btn->updateRequirementsDisplay(generateRequirementString(action));
+
     connect(btn, &ActionButton::tryStartAction, this, [this, action](){
         this->player.addActionToQueue(action, 1);
         this->play();
@@ -121,6 +123,13 @@ void GameLoop::addActionButtons(){
     }
 }
 
+QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) const{
+    if (auto req = action->getActionRequirements()){
+        return req.value()->toDisplayString(player.getSkills(), player.getInventory(), player.getReserves());
+    }
+    return "";
+}
+
 void GameLoop::updateUI(){
     for(ActionButton* btn : this->actionButtons){
         btn->updateProgress();
@@ -132,6 +141,8 @@ void GameLoop::updateUI(){
         if(!std::dynamic_pointer_cast<TravelAction>(action)){
             bool requirementsMet = player.checkActionRequirements(action);
             btn->setLocked(!requirementsMet);
+
+            btn->updateRequirementsDisplay(generateRequirementString(action));
         }
     }
 

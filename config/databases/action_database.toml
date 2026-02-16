@@ -26,6 +26,106 @@
 #       [triggers.effects.parameters]
 #       key = "value"                      # Effect-specific parameters
 
+# REQUIREMENTS:
+# Requirements are checked before an action starts. They consist of two parts:
+#   1. Conditions - Must be satisfied but are NOT consumed (skills, minimum items/reserves)
+#   2. Consumables - Items/reserves that ARE consumed when the action starts
+#
+# Both conditions and consumables use the same tree structure with AND/OR logic.
+#
+# STRUCTURE:
+#   [actions.requirements]
+#     [[actions.requirements.conditions]]  # Optional: check-only requirements
+#     # ... condition nodes ...
+#     
+#     [[actions.requirements.consumables]] # Optional: consumed on start
+#     # ... consumable nodes ...
+#
+# NODE TYPES:
+#   Logical Operators (have nested nodes):
+#     type = "AND"  - All nested nodes must be satisfied
+#     type = "OR"   - At least one nested node must be satisfied
+#     Use [[node.conditions]] or [[node.consumables]] for nested nodes
+#
+#   Leaf Nodes (actual checks):
+#     type = "skill"
+#     name = "SkillName"
+#       level = 5                    # Minimum skill level required
+#
+#     type = "item"
+#     name = "ItemName"
+#     count = 10                   # Minimum/exact count required
+#
+#     type = "reserve"
+#     name = "ReserveName"
+#     value = 50.0                 # Minimum/exact amount required
+#
+# EXAMPLES:
+#
+# Simple item cost (consumed on start):
+#   [actions.requirements]
+#     [[actions.requirements.consumables]]
+#     type = "item"
+#     name = "Copper Coin"
+#     count = 50
+#
+# Skill requirement (not consumed):
+#   [actions.requirements]
+#     [[actions.requirements.conditions]]
+#     type = "skill"
+#     name = "Smithing"
+#     level = 5
+#
+# Both skill requirement AND item cost:
+#   [actions.requirements]
+#     [[actions.requirements.conditions]]
+#     type = "skill"
+#     name = "Smithing"
+#     level = 5
+#     
+#     [[actions.requirements.consumables]]
+#     type = "item"
+#     name = "Iron Ingot"
+#     count = 10
+#
+# Complex: Multiple items with OR logic:
+#   [actions.requirements]
+#     [[actions.requirements.consumables]]
+#     type = "OR"
+#       [[actions.requirements.consumables.consumables]]
+#       type = "item"
+#       name = "Gold Coin"
+#       count = 100
+#       
+#       [[actions.requirements.consumables.consumables]]
+#       type = "item"
+#       name = "Silver Coin"
+#       count = 500
+#
+# Complex: Skill AND (item OR reserve):
+#   [actions.requirements]
+#     [[actions.requirements.conditions]]
+#     type = "skill"
+#     name = "Enchanting"
+#     level = 3
+#     
+#     [[actions.requirements.consumables]]
+#     type = "OR"
+#       [[actions.requirements.consumables.consumables]]
+#       type = "item"
+#       name = "Essence Stone"
+#       count = 50
+#       
+#       [[actions.requirements.consumables.consumables]]
+#       type = "reserve"
+#       name = "Mana"
+#       value = 100.0
+#
+# NOTES:
+#   - Skills are NEVER consumed (always use in conditions, not consumables)
+#   - For OR with consumables, first available option is consumed
+#   - Action button will be greyed out if requirements are not met
+#   - Consumables are taken when action STARTS, not when it completes
 
 # EFFECT TYPES (in [[actions.effects]] with [actions.effects.parameters]):
 #   Log: type = "log", parameters: message = "text"
@@ -113,6 +213,17 @@ baseDuration = 1800
 name = "Farm Work"
 description = "Till the fields, milk the cows. Simple honest labor."
 baseDuration = 3600
+    [actions.requirements]
+        [actions.requirements.conditions]
+        type = "AND"
+            [[actions.requirements.conditions.conditions]]
+            type = "skill"
+            name = "Stamina"
+            level = 5
+            [[actions.requirements.conditions.conditions]]
+            type = "skill"
+            name = "Strength"
+            level = 2
     [[actions.effects]]
     type = "add_skill_xp"
         [actions.effects.parameters]
