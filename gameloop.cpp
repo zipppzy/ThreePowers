@@ -155,6 +155,9 @@ QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) cons
             result += "Consumes:\n" + consStr;
         }
     }
+
+    result.replace("\n", "<br>");
+
     return result;
 }
 

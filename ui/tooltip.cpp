@@ -30,9 +30,9 @@ Tooltip::Tooltip(const QString &text, QWidget *parent)
     descLabel->setStyleSheet(style);
 
     requirementsLabel = new QLabel(this);
-    requirementsLabel->setWordWrap(true);
+    requirementsLabel->setWordWrap(false);
     requirementsLabel->setStyleSheet(style);
-    requirementsLabel->setTextFormat(Qt::PlainText);
+    requirementsLabel->setTextFormat(Qt::RichText);
     requirementsLabel->hide();  // Hidden by default
 
     auto *frameStyle = "background: #444; max-height: 1px;";
@@ -68,4 +68,5 @@ void Tooltip::setRequirements(const QString& reqText) {
         requirementsLabel->setText(reqText);
         requirementsLabel->show();
     }
+    adjustSize();
 }

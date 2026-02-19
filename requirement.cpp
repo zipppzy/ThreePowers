@@ -148,12 +148,14 @@ QString Requirement::buildDisplayString(const std::vector<Skill>& skills,
 
         bool met = checkLeafRequirement(skills, inventory, reserves);
         QString status = met ? "✓" : "✗";
+        QString color = met ? "#00ff00" : "#ff0000";  // Green if met, red if not
 
         if (type == "skill") {
             auto it = std::find_if(skills.begin(), skills.end(),
                                    [this](const Skill& skill) { return skill.name == this->name; });
             int currentLevel = (it != skills.end()) ? it->getLevel() : 0;
-            result = QString("%1 %2: Level %3 (have %4)")
+            result = QString("<span style='color:%1'>%2 %3: Level %4 (have %5)</span>")
+                         .arg(color)
                          .arg(status)
                          .arg(QString::fromStdString(name))
                          .arg(level)
@@ -162,7 +164,8 @@ QString Requirement::buildDisplayString(const std::vector<Skill>& skills,
             auto it = std::find_if(inventory.begin(), inventory.end(),
                                    [this](const Item& item) { return item.name == this->name; });
             int currentCount = (it != inventory.end()) ? it->count : 0;
-            result = QString("%1 %2 x%3 (have %4)")
+            result = QString("<span style='color:%1'>%2 %3 x%4 (have %5)</span>")
+                         .arg(color)
                          .arg(status)
                          .arg(QString::fromStdString(name))
                          .arg(count)
@@ -171,7 +174,8 @@ QString Requirement::buildDisplayString(const std::vector<Skill>& skills,
             auto it = std::find_if(reserves.begin(), reserves.end(),
                                    [this](const Reserve& reserve) { return reserve.name == this->name; });
             double currentValue = (it != reserves.end()) ? it->getCurrentValue() : 0.0;
-            result = QString("%1 %2: %3 (have %4)")
+            result = QString("<span style='color:%1'>%2 %3: %4 (have %5)</span>")
+                         .arg(color)
                          .arg(status)
                          .arg(QString::fromStdString(name))
                          .arg(value)
