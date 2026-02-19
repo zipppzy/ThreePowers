@@ -33,7 +33,8 @@ public:
     const std::map<std::string, double>& getReserveRewards() const;
     const std::map<std::string, double>& getConstantReserveCost() const;
     const std::map<std::string, double>& getConstantReserveGain() const;
-    const std::optional<const Requirement*> getActionRequirements() const;
+    const Requirement* getConditionsRequirement() const;
+    const Requirement* getConsumablesRequirement() const;
     void applyEffects(const std::vector<std::pair<Effect, int>>& effects);
     void copyFrom(const Action& other);
     void reset();       //reset to default values from actionDatabase
@@ -53,7 +54,8 @@ private:
     double currentProgress;
     double failureChance = 0.0;
 
-    std::unique_ptr<Requirement> actionRequirements;
+    std::unique_ptr<Requirement> conditionsRequirement;
+    std::unique_ptr<Requirement> consumablesRequirement;
 
     //every tick subtract from these reserves or end action
     //skip action if lacking reserve for one tick

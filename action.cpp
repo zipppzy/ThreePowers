@@ -16,9 +16,12 @@ Action::Action(const Action& other)
     duration(other.duration),
     currentProgress(other.currentProgress),
     failureChance(other.failureChance),
-    actionRequirements(other.actionRequirements
-                           ? std::make_unique<Requirement>(*other.actionRequirements)
-                           : nullptr),
+    conditionsRequirement(other.conditionsRequirement
+                              ? std::make_unique<Requirement>(*other.conditionsRequirement)
+                              : nullptr),
+    consumablesRequirement(other.consumablesRequirement
+                               ? std::make_unique<Requirement>(*other.consumablesRequirement)
+                               : nullptr),
     skillRewards(other.skillRewards),
     itemRewards(other.itemRewards),
     reserveRewards(other.reserveRewards),
@@ -37,11 +40,17 @@ Action& Action::operator=(const Action& other){
         currentProgress = other.currentProgress;
         failureChance = other.failureChance;
 
-        // Deep copy the requirement if it exists
-        if(other.actionRequirements){
-            actionRequirements = std::make_unique<Requirement>(*other.actionRequirements);
+        // Deep copy both requirements if they exist
+        if(other.conditionsRequirement){
+            conditionsRequirement = std::make_unique<Requirement>(*other.conditionsRequirement);
         }else{
-            actionRequirements.reset();
+            conditionsRequirement.reset();
+        }
+
+        if(other.consumablesRequirement){
+            consumablesRequirement = std::make_unique<Requirement>(*other.consumablesRequirement);
+        }else{
+            consumablesRequirement.reset();
         }
 
         skillRewards = other.skillRewards;
@@ -109,7 +118,17 @@ Action::Action(toml::table actionTable){
     }
 
     if (auto reqTable = actionTable["requirements"].as_table()) {
-        actionRequirements = std::make_unique<Requirement>(*reqTable);
+        if (auto condNode = reqTable->get("conditions")) {
+            if (auto condTable = condNode->as_table()) {
+                conditionsRequirement = std::make_unique<Requirement>(*condTable);
+            }
+        }
+
+        if (auto consNode = reqTable->get("consumables")) {
+            if (auto consTable = consNode->as_table()) {
+                consumablesRequirement = std::make_unique<Requirement>(*consTable);
+            }
+        }
     }
 }
 
@@ -163,19 +182,21 @@ const std::map<std::string, double>& Action::getReserveRewards() const{
     return this->reserveRewards;
 }
 
-const std::optional<const Requirement*> Action::getActionRequirements() const{
-    if(this->actionRequirements == nullptr){
-        return std::nullopt;
-    }
-    return this->actionRequirements.get();
-}
-
 const std::map<std::string, double>& Action::getConstantReserveCost() const{
     return this->constantReserveCost;
 }
 const std::map<std::string, double>& Action::getConstantReserveGain() const{
     return this->constantReserveGain;
 }
+
+const Requirement* Action::getConditionsRequirement() const {
+    return conditionsRequirement.get();
+}
+
+const Requirement* Action::getConsumablesRequirement() const {
+    return consumablesRequirement.get();
+}
+
 
 void Action::applyEffects(const std::vector<std::pair<Effect,int>>& effects){
     //reset action to default values first

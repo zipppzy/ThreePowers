@@ -406,8 +406,8 @@ void Player::consumeResources(const ConsumeList& toConsume) {
 bool Player::startAction(std::shared_ptr<Action> action){
     if(checkActionRequirements(action)){
         // Consume items/reserves before starting
-        if(auto req = action->getActionRequirements()) {
-            ConsumeList toConsume = req.value()->getConsumeList(this->inventory, this->reserves);
+        if(auto consReq = action->getConsumablesRequirement()) {
+            ConsumeList toConsume = consReq->getConsumeList(this->inventory, this->reserves);
             consumeResources(toConsume);
         }
 
@@ -538,9 +538,19 @@ void Player::tick(int numTicks){
 }
 
 bool Player::checkActionRequirements(std::shared_ptr<Action> action) const{
-    auto maybeActionRequirement = action->getActionRequirements();
-    if(!maybeActionRequirement){
-        return true;
+    // Check conditions (if they exist)
+    if (auto condReq = action->getConditionsRequirement()) {
+        if (!condReq->isMet(this->skills, this->inventory, this->reserves)) {
+            return false;
+        }
     }
-    return maybeActionRequirement.value()->isMet(this->skills, this->inventory, this->reserves);
+
+    // Check consumables (if they exist)
+    if (auto consReq = action->getConsumablesRequirement()) {
+        if (!consReq->isMet(this->skills, this->inventory, this->reserves)) {
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -124,10 +124,38 @@ void GameLoop::addActionButtons(){
 }
 
 QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) const{
-    if (auto req = action->getActionRequirements()){
-        return req.value()->toDisplayString(player.getSkills(), player.getInventory(), player.getReserves());
+    QString result;
+
+    // Build conditions string
+    if (auto condReq = action->getConditionsRequirement()) {
+        QString condStr = condReq->toDisplayString(
+            player.getSkills(),
+            player.getInventory(),
+            player.getReserves()
+            );
+        if (!condStr.isEmpty()) {
+            result += "Requires:\n" + condStr;
+        }
     }
-    return "";
+
+    // Build consumables string
+    if (auto consReq = action->getConsumablesRequirement()) {
+        QString consStr = consReq->toDisplayString(
+            player.getSkills(),
+            player.getInventory(),
+            player.getReserves()
+            );
+
+        // Add separator if we have both sections
+        if (!result.isEmpty() && !consStr.isEmpty()) {
+            result += "\n\n";
+        }
+
+        if (!consStr.isEmpty()) {
+            result += "Consumes:\n" + consStr;
+        }
+    }
+    return result;
 }
 
 void GameLoop::updateUI(){
