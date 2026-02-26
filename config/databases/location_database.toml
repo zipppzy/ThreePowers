@@ -8,7 +8,7 @@
 [[locations]]
 name = "Village"
 actions = ["Meditate", "Beg", "Look for work"]
-subLocationNames = ["Field", "Farm", "General Store"]
+subLocationNames = ["Field", "Farm", "General Store", "Library"]
 
 [[locations]]
 name = "Field"
@@ -22,3 +22,8 @@ actions = ["Farm Work"]
 [[locations]]
 name = "General Store"
 actions = ["Buy Iron Axe"]
+
+[[locations]]
+name = "Library"
+actions = ["Buy a Library Card"]
+

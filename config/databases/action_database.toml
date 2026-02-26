@@ -269,3 +269,18 @@ baseDuration = 5400
         [actions.effects.parameters]
         itemName = "Log"
         count = 1
+
+[[actions]]
+name = "Buy a Library Card"
+description = "Lets you take out one book at a time"
+baseDuration = 300
+    [actions.requirements]
+        [actions.requirements.consumables]
+        type = "item"
+        name = "Copper Coin"
+        count = 5
+    [[actions.effects]]
+    type = "add_item"
+        [actions.effects.parameters]
+        itemName = "Library Card"
+        count = 1
