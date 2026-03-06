@@ -11,6 +11,7 @@
 #include "inventorymodel.h"
 #include "event.h"
 #include "eventdialog.h"
+#include "tags.h"
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>

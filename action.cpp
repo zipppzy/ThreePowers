@@ -27,7 +27,8 @@ Action::Action(const Action& other)
     reserveRewards(other.reserveRewards),
     constantReserveCost(other.constantReserveCost),
     constantReserveGain(other.constantReserveGain),
-    completionEffects(other.completionEffects)
+    completionEffects(other.completionEffects),
+    tags(other.tags)
 {}
 
 Action& Action::operator=(const Action& other){
@@ -59,6 +60,7 @@ Action& Action::operator=(const Action& other){
         constantReserveCost = other.constantReserveCost;
         constantReserveGain = other.constantReserveGain;
         completionEffects = other.completionEffects;
+        tags = other.tags;
     }
 
     return *this;
@@ -72,6 +74,14 @@ Action::Action(toml::table actionTable){
     this->duration = actionTable["duration"].value_or(this->baseDuration);
     this->currentProgress = actionTable["currentProgress"].value_or(0);
     this->failureChance = actionTable["failureChance"].value_or(0);
+
+    if (auto tagsArray = actionTable["tags"].as_array()) {
+        for (const auto& tag : *tagsArray) {
+            if (auto val = tag.value<std::string>()) {
+                this->tags.insert(*val);
+            }
+        }
+    }
 
     if(auto skillRewardsTable = actionTable["skillRewards"].as_table()){
         for(const auto& [skillName, xp] : *skillRewardsTable){
@@ -197,7 +207,6 @@ const Requirement* Action::getConsumablesRequirement() const {
     return consumablesRequirement.get();
 }
 
-
 void Action::applyEffects(const std::vector<std::pair<Effect,int>>& effects){
     //reset action to default values first
     this->reset();
@@ -237,7 +246,7 @@ void Action::copyFrom(const Action& other){
     this->currentProgress = other.currentProgress;
     this->skillRewards = other.skillRewards;
     this->itemRewards = other.itemRewards;
-
+    this->tags = other.tags;
 }
 
 void Action::reset(){

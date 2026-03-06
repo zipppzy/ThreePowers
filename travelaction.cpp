@@ -4,7 +4,10 @@ TravelAction::TravelAction(std::string name, std::shared_ptr<Location> destinati
     //setting baseDuration to be = distance between locations
     //TODO: rework later
     Action(name, std::abs(currentLocation->getPosition() - destination->getPosition())),
-    destination(destination){}
+    destination(destination)
+{
+    this->tags.insert("ui:travel");
+}
 
 std::shared_ptr<Location> TravelAction::getDestination(){
     return this->destination;

@@ -8,6 +8,7 @@
 #include <qgridlayout.h>
 #include "actionbutton.h"
 #include "actionqueuemodel.h"
+#include "collapsibleactionsection.h"
 #include "inventorymodel.h"
 #include "inventorydelegate.h"
 #include "messagelog.h"
@@ -37,7 +38,7 @@ public:
 
     void updateTime(unsigned int ticks);
 
-    void addActionButton(ActionButton* btn);
+    void addActionButton(ActionButton* btn, const QString& section);
     void clearActionButtons();
 
     void logMessage(std::string& message);
@@ -50,11 +51,15 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    QWidget* buttonContainer = nullptr;
-    QGridLayout* gridLayout = nullptr;
+    // QWidget* buttonContainer = nullptr;
+    // QGridLayout* gridLayout = nullptr;
     MessageLog* messageLogWidget = nullptr;
 
-    std::pair<int, int> nextActionButtonCoords;  //position in gridLayout (x,y)
+    QWidget* sectionsContainer = nullptr;
+    QVBoxLayout* sectionsLayout = nullptr;
+    QMap<QString, CollapsibleActionSection*> actionSections;
+
+    //std::pair<int, int> nextActionButtonCoords;  //position in gridLayout (x,y)
 
     QListView* skillView = nullptr;
     QListView* actionQueueView = nullptr;

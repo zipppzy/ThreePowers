@@ -5,6 +5,7 @@
 #include <map>
 #include <optional>
 #include <string>
+#include <set>
 #include <unordered_map>
 #include "instanteffect.h"
 #include "item.h"
@@ -43,6 +44,7 @@ public:
 
     std::string name;
     std::string description = "";
+    std::set<std::string> tags;
 
     bool visibleToPlayer = true;
 private:

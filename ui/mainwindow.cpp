@@ -6,18 +6,23 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , nextActionButtonCoords{0,0}
 {
     ui->setupUi(this);
 
     this->showMaximized();
 
-    buttonContainer = new QWidget();
-    gridLayout = new QGridLayout(buttonContainer);
-    gridLayout->setAlignment(Qt::AlignTop);
+    // buttonContainer = new QWidget();
+    // gridLayout = new QGridLayout(buttonContainer);
+    // gridLayout->setAlignment(Qt::AlignTop);
 
-    buttonContainer->setLayout(gridLayout);
-    ui->actionScrollArea->setWidget(buttonContainer);
+    // buttonContainer->setLayout(gridLayout);
+    // ui->actionScrollArea->setWidget(buttonContainer);
+    sectionsContainer = new QWidget();
+    sectionsLayout = new QVBoxLayout(sectionsContainer);
+    sectionsLayout->setAlignment(Qt::AlignTop);
+    sectionsContainer->setLayout(sectionsLayout);
+    ui->actionScrollArea->setWidget(sectionsContainer);
+    ui->actionScrollArea->setWidgetResizable(true);
     ui->actionScrollArea->setWidgetResizable(true);
 
     this->messageLogWidget = new MessageLog(this);
@@ -45,26 +50,21 @@ QPushButton* MainWindow::getSkipButton() const{
     return ui->skipButton;
 }
 
-void MainWindow::addActionButton(ActionButton* btn){
-    gridLayout->addWidget(btn, nextActionButtonCoords.second, nextActionButtonCoords.first);
-
-    if(nextActionButtonCoords.first >= MAX_ACTION_BUTTON_COLS){
-        nextActionButtonCoords.first = 0;
-        nextActionButtonCoords.second++;
-    }else{
-        nextActionButtonCoords.first++;
+void MainWindow::addActionButton(ActionButton* btn, const QString& section){
+    if (!actionSections.contains(section)) {
+        auto* s = new CollapsibleActionSection(section);
+        sectionsLayout->addWidget(s);
+        actionSections[section] = s;
     }
+    actionSections[section]->addButton(btn);
 }
 
 void MainWindow::clearActionButtons() {
-    while (QLayoutItem* item = gridLayout->takeAt(0)) {
-        if (QWidget* w = item->widget()) {
-            w->setParent(nullptr); // detach before deleting
-            delete w;
-        }
-        delete item;
+    for (auto* section : actionSections) {
+        section->setParent(nullptr);
+        delete section;
     }
-    nextActionButtonCoords = {0, 0};
+    actionSections.clear();
 }
 
 void MainWindow::logMessage(std::string& message){

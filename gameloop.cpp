@@ -111,7 +111,13 @@ void GameLoop::addActionButton(std::shared_ptr<Action> action){
         this->player.setRestAction(action);
     });
     this->actionButtons.push_back(btn);
-    mainWindow->addActionButton(btn);
+
+    QString section = "General";
+    if (auto sectionTag = Tags::getSectionName(action->tags)) {
+        section = Tags::toDisplayName(*sectionTag);
+    }
+
+    mainWindow->addActionButton(btn, section);
 }
 
 void GameLoop::addActionButtons(){

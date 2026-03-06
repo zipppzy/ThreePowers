@@ -52,6 +52,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ui/inventorymodel.h ui/inventorymodel.cpp
         ui/inventorydelegate.h ui/inventorydelegate.cpp
         requirement.cpp
+        ui/collapsibleactionsection.h ui/collapsibleactionsection.cpp
+        tags.h
     )
 else()
     if(ANDROID)
