@@ -40,7 +40,8 @@ public:
     const std::vector<Item>& getInventory() const;
     const std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>>& getItemActions() const;
     std::shared_ptr<Location> getCurrentLocation();
-    void applySkillEffectsCurrentLocation();
+    void applySkillEffectsToAction(std::shared_ptr<Action> action);
+    void applySkillEffectsAllActions();   // replaces applySkillEffectsCurrentLocation
     void moveLocation(std::shared_ptr<Location> destination);
 
     void unlockLocation(const std::string& locationName);

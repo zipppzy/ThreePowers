@@ -65,7 +65,7 @@ void Player::addSkillXp(std::string name, double xp){
             qDebug() << "Tried to add xp to non-valid skill";
         }
     }
-    this->applySkillEffectsCurrentLocation();
+    this->applySkillEffectsAllActions();
 }
 
 void Player::addNewReserve(const Reserve& reserve){
@@ -174,20 +174,35 @@ std::shared_ptr<Location> Player::getCurrentLocation(){
     return currentLocation;
 }
 
-void Player::applySkillEffectsCurrentLocation(){
-    for(auto& action : currentLocation->getActions()){
-        std::string actionName = action->name;
-        std::vector<std::pair<Effect,int>> skillEffectList;
+void Player::applySkillEffectsToAction(std::shared_ptr<Action> action){
+    std::vector<std::pair<Effect, int>> skillEffectList;
 
-        for(const auto& skill : skills){
-            if(auto maybeEffects = skill.checkEffects(actionName)){
-                for (const auto& effect : maybeEffects->get()) {
-                    skillEffectList.emplace_back(effect, skill.getLevel());
-                }
+    for(const auto& skill : skills){
+        if(auto maybeEffects = skill.checkEffects(action->name)){
+            for(const auto& effect : maybeEffects->get()){
+                skillEffectList.emplace_back(effect, skill.getLevel());
             }
         }
-        if(!skills.empty()){
-            action->applyEffects(skillEffectList);
+    }
+
+    // applyEffects resets to base values first so always safe to call
+    action->applyEffects(skillEffectList);
+}
+
+void Player::applySkillEffectsAllActions(){
+    if(skills.empty()) return;
+
+    for(auto& action : currentLocation->getActions()){
+        applySkillEffectsToAction(action);
+    }
+
+    for(auto& action : globalActions){
+        applySkillEffectsToAction(action);
+    }
+
+    for(auto& [itemName, actions] : itemActions){
+        for(auto& action : actions){
+            applySkillEffectsToAction(action);
         }
     }
 }
@@ -197,6 +212,7 @@ void Player::moveLocation(std::shared_ptr<Location> destination){
     this->movedLocation = true;
     this->visitedLocations.insert(destination->name);
     this->triggerManager.onLocationChange(this->triggerContext, destination->name);
+    this->applySkillEffectsAllActions();
 }
 
 void Player::unlockLocation(const std::string& locationName) {
