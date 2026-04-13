@@ -127,6 +127,11 @@ void GameLoop::addActionButtons(){
     for(const auto& action : this->player.getCurrentLocation()->getActions()){
         this->addActionButton(action);
     }
+    for(const auto& [itemName, actions] : this->player.getItemActions()){
+        for(const auto& action : actions){
+            this->addActionButton(action);
+        }
+    }
 }
 
 QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) const{
@@ -183,11 +188,12 @@ void GameLoop::updateUI(){
         }
     }
 
-    if(player.movedLocation){
+    if(player.movedLocation || player.itemActionsChanged){
         this->mainWindow->clearActionButtons();
         this->actionButtons.clear();
         this->addActionButtons();
         player.movedLocation = false;
+        player.itemActionsChanged = false;
     }
 
     this->actionQueueModel->refresh();

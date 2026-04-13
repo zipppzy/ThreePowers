@@ -20,6 +20,12 @@ Item::Item(toml::table itemTable){
     this->size = itemTable["size"].value<double>().value_or(0.0);
     this->weight = itemTable["weight"].value<double>().value_or(0.0);
     this->count = itemTable["count"].value<int64_t>().value_or(0);
+
+    if(auto actionsArray = itemTable["actions"].as_array()){
+        for(auto&& actionName : *actionsArray){
+            this->actions.push_back(actionName.value_or(""));
+        }
+    }
 }
 
 double Item::getWeight() const{

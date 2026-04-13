@@ -19,6 +19,7 @@ public:
     unsigned int count;          //number of items in the stack
 
     std::string name;
+    std::vector<std::string> actions;
 
     static void loadItemDatabase(std::string path);
     static std::optional<std::reference_wrapper<const Item>> checkItemDatabase(std::string name);

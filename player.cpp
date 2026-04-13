@@ -123,11 +123,30 @@ bool Player::pickupItem(Item item){
             (*existingItem)->count += item.count;
         }else{
             inventory.push_back(item);
+            addItemActions(item);
         }
         this->currentWeight = item.getWeight()*item.count;
         inventoryChanged = true;
         return true;
     }
+}
+
+bool Player::removeItem(const std::string& itemName, int count){
+    auto it = std::find_if(inventory.begin(), inventory.end(),
+                           [&itemName](const Item& i){ return i.name == itemName; });
+    if(it == inventory.end()) return false;
+    if(static_cast<int>(it->count) < count) return false;
+
+    this->currentWeight -= it->getWeight() / it->count * count;  // weight per unit * removed count
+    it->count -= count;
+
+    if(it->count == 0){
+        removeItemActions(itemName);
+        inventory.erase(it);
+    }
+
+    inventoryChanged = true;
+    return true;
 }
 
 std::optional<Item*> Player::findItem(std::string itemName){
@@ -146,6 +165,11 @@ std::optional<Item*> Player::findItem(Item item){
 const std::vector<Item>& Player::getInventory() const{
     return inventory;
 }
+
+const std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>>& Player::getItemActions() const{
+    return itemActions;
+}
+
 std::shared_ptr<Location> Player::getCurrentLocation(){
     return currentLocation;
 }
@@ -375,21 +399,7 @@ unsigned long long int Player::fastForwardQueue(){
 void Player::consumeResources(const ConsumeList& toConsume) {
     // Consume items
     for (const auto& itemPair : toConsume.items) {
-        const std::string& itemName = itemPair.first;
-        int itemCount = itemPair.second;
-
-        if (auto item = this->findItem(itemName)) {
-            (*item)->count -= itemCount;
-            this->currentWeight -= (*item)->getWeight();
-
-            if ((*item)->count <= 0) {
-                // Remove from inventory
-                inventory.erase(std::remove_if(inventory.begin(), inventory.end(),
-                                               [&itemName](const Item& i) { return i.name == itemName; }),
-                                inventory.end());
-            }
-            inventoryChanged = true;
-        }
+        removeItem(itemPair.first, itemPair.second);
     }
 
     // Consume reserves
@@ -553,4 +563,31 @@ bool Player::checkActionRequirements(std::shared_ptr<Action> action) const{
     }
 
     return true;
+}
+
+void Player::addItemActions(const Item& item){
+    if(item.actions.empty()) return;
+
+    // Already registered (e.g. picking up a second copy of the same item)
+    if(itemActions.count(item.name)) return;
+
+    std::vector<std::shared_ptr<Action>> resolved;
+    for(const std::string& actionName : item.actions){
+        if(auto maybeAction = Action::checkActionDatabaseDatabase(actionName)){
+            resolved.push_back(std::make_shared<Action>(maybeAction->get()));
+        }else{
+            qDebug() << "Item" << QString::fromStdString(item.name) << "references unknown action:" << QString::fromStdString(actionName);
+        }
+    }
+
+    if(!resolved.empty()){
+        itemActions[item.name] = std::move(resolved);
+        itemActionsChanged = true;
+    }
+}
+
+void Player::removeItemActions(const std::string& itemName){
+    if(itemActions.erase(itemName)){
+        itemActionsChanged = true;
+    }
 }

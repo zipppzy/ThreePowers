@@ -15,8 +15,6 @@
 #include "instanteffect.h"
 #include "world.h"
 
-//TODO: change ptrs to shared_ptr or refrences maybe
-
 class Player
 {
 public:
@@ -36,9 +34,11 @@ public:
     void applyActionConstReserveModifiers(std::shared_ptr<Action> action);
     void removeConstActionReserveModifiers(std::shared_ptr<Action> action);
     bool pickupItem(Item item);
+    bool removeItem(const std::string& itemName, int count);    // Removes count of an item from inventory. Cleans up itemActions if count reaches zero.
     std::optional<Item*> findItem(Item item);
     std::optional<Item*> findItem(std::string itemName);
     const std::vector<Item>& getInventory() const;
+    const std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>>& getItemActions() const;
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsCurrentLocation();
     void moveLocation(std::shared_ptr<Location> destination);
@@ -87,6 +87,7 @@ public:
     std::vector<int> updatedSkillIndexes;   //keeps track of recently updated skills for UI updates
     bool movedLocation = false;
     bool inventoryChanged = false;
+    bool itemActionsChanged = false;        //signals GameLoop to rebuild action buttons
 
     // Queue of event IDs to be displayed
     std::deque<std::string> pendingEvents;
@@ -103,6 +104,14 @@ private:
     std::vector<Item> inventory;
     double maxWeight;       //in kg; can't carry above this weight
     double currentWeight;
+
+    // Actions granted by items currently in inventory, keyed by item name.
+    // Only populated for items that have at least one action defined.
+    // Entries are added on first pickup and removed when count drops to zero.
+    std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>> itemActions;
+
+    void addItemActions(const Item& item);
+    void removeItemActions(const std::string& itemName);
 
     std::vector<std::shared_ptr<Action>> globalActions;
 
