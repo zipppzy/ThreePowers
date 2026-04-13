@@ -2,6 +2,7 @@
 # name = "Item Name"                     # Required: Display name
 # size = 0.01                            # Required: Volume in m³
 # weight = 0.025                         # Required: Weight in kg
+# actions = ["Action Name"]              # Optional: Actions attached to the item
 
 [[items]]
 name = "Copper Coin"
