@@ -12,7 +12,7 @@ inline constexpr std::string_view UI_PREFIX = "ui:";
 
 inline std::optional<std::string> getSectionName(const std::set<std::string>& tags) {
     for (const auto& tag : tags) {
-        if (tag.rfind(UI_PREFIX, 0) == 0) {
+        if (tag.starts_with(UI_PREFIX)){
             return tag.substr(UI_PREFIX.size());
         }
     }
