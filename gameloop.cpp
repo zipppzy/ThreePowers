@@ -12,6 +12,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     World::loadLocationDatabase("config/databases/location_database.toml");
     Event::loadEventDatabase("config/databases/event_database.toml");
     Item::loadItemDatabase("config/databases/item_database.toml");
+    ResearchTopic::loadResearchDatabase("config/databases/research_database.toml");
 
     world.loadWorldState("config/world_state.toml");
 
@@ -21,6 +22,12 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
 
     player.addNewReserve(Reserve{"Vigor", 10.0});
     player.findReserve("Vigor").value()->addRegen(.1);
+
+    player.addNewReserve(Reserve{"Focus", 100.0});
+    player.findReserve("Focus").value()->addRegen(0.05);
+
+    player.addNewReserve(Reserve{"Memory", 50.0});
+    player.findReserve("Memory").value()->addRegen(-0.01);
 
     if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));

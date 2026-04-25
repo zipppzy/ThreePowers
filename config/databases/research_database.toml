@@ -1,0 +1,50 @@
+# [[topics]]
+# name = "Topic Name"                        # Required: Display name
+# description = "Description"               # Optional: Flavor text
+# attemptThreshold = 100.0                  # Required: Min knowledge to attempt cashout
+# guaranteedThreshold = 500.0              # Required: Knowledge needed for 100% success
+# priorAttemptReduction = 10.0             # Optional: How much guaranteedThreshold drops per failed attempt (default 10)
+
+#   # Optional: Effects applied on successful completion
+#   [[topics.completionEffects]]
+#   type = "effect_type"
+#       [topics.completionEffects.parameters]
+#       key = "value"
+
+# NOTES ON TUNING:
+# - attemptThreshold should be reachable with a small number of tier-0 notes
+# - guaranteedThreshold should require either many notes OR merging to higher tiers
+# - priorAttemptReduction controls how forgiving brute-forcing is
+#   small value = many attempts needed, large value = forgives quickly
+# - With DECAY_RATE=0.85 and MERGE_COUNT=10, a single tier-1 note is worth ~5.6 tier-0 notes
+#   and a single tier-2 note is worth ~5.6 tier-1 notes (before lossiness)
+
+[[topics]]
+name = "Basic Qi Sensing"
+description = "Learn to feel the flow of qi in the world around you"
+attemptThreshold = 50.0
+guaranteedThreshold = 200.0
+priorAttemptReduction = 15.0
+    [[topics.completionEffects]]
+    type = "unlock_action"
+        [topics.completionEffects.parameters]
+        actionName = "Qi Sensing"
+    [[topics.completionEffects]]
+    type = "log"
+        [topics.completionEffects.parameters]
+        message = "You have developed an understanding of basic qi sensing"
+
+[[topics]]
+name = "Fundamental Rune Theory"
+description = "The underlying principles connecting written symbols to magical effect"
+attemptThreshold = 300.0
+guaranteedThreshold = 2000.0
+priorAttemptReduction = 25.0
+    [[topics.completionEffects]]
+    type = "unlock_action"
+        [topics.completionEffects.parameters]
+        actionName = "Draw Basic Rune"
+    [[topics.completionEffects]]
+    type = "log"
+        [topics.completionEffects.parameters]
+        message = "You have grasped the fundamentals of rune theory"

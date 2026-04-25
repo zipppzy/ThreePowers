@@ -19,7 +19,9 @@ public:
         HideLocation,
         AddItem,
         AddSkillXp,
-        ModifyReserve
+        ModifyReserve,
+        UnlockResearchTopic,
+        AddResearchNote
     };
 
     EffectType type;

@@ -325,11 +325,108 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
             hideLocation(locationName);
             break;
         }
+
+        case InstantEffect::UnlockResearchTopic: {
+            std::string topicName = effect.parameters.count("topicName") ? effect.parameters.at("topicName") : "";
+            unlockResearchTopic(topicName);
+            break;
+        }
+
+        case InstantEffect::AddResearchNote: {
+            std::string topicName = effect.parameters.count("topicName") ? effect.parameters.at("topicName") : "";
+            double knowledgeValue = effect.parameters.count("knowledgeValue") ? std::stod(effect.parameters.at("knowledgeValue")) : 1.0;
+            int tier = effect.parameters.count("tier") ? std::stoi(effect.parameters.at("tier")) : 0;
+            std::string sourceName = effect.parameters.count("sourceName") ? effect.parameters.at("sourceName") : "";
+            addResearchNote(ResearchNote(knowledgeValue, tier, topicName, sourceName));
+            break;
+        }
+
     }
 }
 
 void Player::queueEvent(const std::string& eventId){
     pendingEvents.push_back(eventId);
+}
+
+void Player::addResearchNote(const ResearchNote& note) {
+    auto it = researchTopics.find(note.topicName);
+    if (it == researchTopics.end()) return; // topic not unlocked yet
+    it->second.addNote(note);
+    researchChanged = true;
+}
+
+bool Player::mergeNotes(const std::string& topicName, int tier, double focusSpent) {
+    auto it = researchTopics.find(topicName);
+    if (it == researchTopics.end()) return false;
+
+    // Focus cost scales with tier - higher tiers cost dramatically more
+    // Tier 0->1: base cost; Tier 1->2: 4x; Tier 2->3: 16x etc.
+    double maxFocusCost = 20.0 * std::pow(4.0, tier);
+
+    if (auto resultNote = it->second.merge(tier, focusSpent, maxFocusCost)) {
+        // Deduct focus
+        if (auto focus = findReserve("Focus")) {
+            focus.value()->subtract(std::min(focusSpent, focus.value()->getCurrentValue()));
+        }
+        it->second.addNote(*resultNote);
+        researchChanged = true;
+        Logger::log("Merged " + ResearchNote::tierName(tier) + "s into a "
+                    + ResearchNote::tierName(tier + 1)
+                    + " on topic: " + topicName);
+        return true;
+    }
+    return false;
+}
+
+bool Player::attemptResearch(const std::string& topicName) {
+    auto it = researchTopics.find(topicName);
+    if (it == researchTopics.end()) return false;
+
+    ResearchTopic& topic = it->second;
+
+    if (topic.successChance() <= 0.0) {
+        Logger::log("Not enough knowledge to attempt: " + topicName);
+        return false;
+    }
+
+    // Roll for success
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    double roll = dist(gen);
+
+    bool success = topic.attempt(roll);
+    researchChanged = true;
+
+    if (success) {
+        Logger::log("Research breakthrough: " + topicName + "!");
+        for (const auto& effect : topic.completionEffects) {
+            applyInstantEffect(effect);
+        }
+    } else {
+        Logger::log("Research attempt failed for: " + topicName
+                    + ". Progress lost but insight gained.");
+    }
+
+    return success;
+}
+
+bool Player::hasResearchTopic(const std::string& topicName) const {
+    return researchTopics.count(topicName) > 0;
+}
+
+void Player::unlockResearchTopic(const std::string& topicName) {
+    if (researchTopics.count(topicName)) return; // already unlocked
+
+    if (auto maybeTemplate = ResearchTopic::checkResearchDatabase(topicName)) {
+        researchTopics.insert_or_assign(topicName, maybeTemplate->get());
+        Logger::log("New research topic available: " + topicName);
+        researchChanged = true;
+    }
+}
+
+const std::unordered_map<std::string, ResearchTopic>& Player::getResearchTopics() const {
+    return researchTopics;
 }
 
 void Player::handleAutoRest(Reserve* targetReserve){

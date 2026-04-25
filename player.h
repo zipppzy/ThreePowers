@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <deque>
 #include <set>
+#include <random>
 
 #include "item.h"
 #include "location.h"
@@ -13,6 +14,7 @@
 #include "skill.h"
 #include "triggermanager.h"
 #include "instanteffect.h"
+#include "researchtopic.h"
 #include "world.h"
 
 class Player
@@ -53,6 +55,14 @@ public:
 
     void queueEvent(const std::string& eventId);
 
+    void addResearchNote(const ResearchNote& note);
+    bool mergeNotes(const std::string& topicName, int tier, double focusSpent);
+    bool attemptResearch(const std::string& topicName);
+    bool hasResearchTopic(const std::string& topicName) const;
+    void unlockResearchTopic(const std::string& topicName);
+    const std::unordered_map<std::string, ResearchTopic>& getResearchTopics() const;
+
+
     const std::vector<std::shared_ptr<Action>>& getGlobalActions() const;
     void addGlobalAction(std::shared_ptr<Action> action);
 
@@ -89,6 +99,7 @@ public:
     bool movedLocation = false;
     bool inventoryChanged = false;
     bool itemActionsChanged = false;        //signals GameLoop to rebuild action buttons
+    bool researchChanged = false;
 
     // Queue of event IDs to be displayed
     std::deque<std::string> pendingEvents;
@@ -127,6 +138,8 @@ private:
     std::shared_ptr<Action> currentAction;
 
     std::set<std::string> visitedLocations;
+
+    std::unordered_map<std::string, ResearchTopic> researchTopics;  // active topics only
 
     TriggerContext triggerContext;
 };

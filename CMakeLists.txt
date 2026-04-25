@@ -54,6 +54,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         requirement.cpp
         ui/collapsibleactionsection.h ui/collapsibleactionsection.cpp
         tags.h
+        researchnote.h researchnote.cpp
+        researchtopic.h researchtopic.cpp
     )
 else()
     if(ANDROID)

@@ -29,7 +29,9 @@ std::optional<InstantEffect::EffectType> InstantEffect::effectTypeFromString(con
         {"hide_location", HideLocation},
         {"add_item", AddItem},
         {"add_skill_xp", AddSkillXp},
-        {"modify_reserve", ModifyReserve}
+        {"modify_reserve", ModifyReserve},
+        {"unlock_research_topic", UnlockResearchTopic},
+        {"add_research_note",     AddResearchNote}
     };
 
     if (auto it = map.find(s); it != map.end())
