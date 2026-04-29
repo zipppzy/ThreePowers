@@ -82,10 +82,11 @@ private:
     QVBoxLayout* tiersLayout = nullptr;
     std::vector<TierRowWidget*> tierRows;
 
-    // Action buttons section - reuses CollapsibleActionSection
     QWidget* actionsContainer = nullptr;
-    QMap<QString, CollapsibleActionSection*> actionSections;
-    QVBoxLayout* actionsLayout = nullptr;
+    QGridLayout* actionsLayout = nullptr;
+    int nextActionCol = 0;
+    int nextActionRow = 0;
+    static constexpr int MAX_ACTION_COLS = 5;
 
     void rebuildTierRows();
     void refreshNotes(const ResearchTopic& topic);

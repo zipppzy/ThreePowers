@@ -262,18 +262,19 @@ ResearchTabWidget::ResearchTabWidget(QWidget* parent)
 
     auto* actionsScrollArea = new QScrollArea();
     actionsScrollArea->setWidgetResizable(true);
+    actionsScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    actionsScrollArea->setFixedHeight(56);
 
     actionsContainer = new QWidget();
-    actionsLayout = new QVBoxLayout(actionsContainer);
-    actionsLayout->setAlignment(Qt::AlignTop);
+    actionsLayout = new QGridLayout(actionsContainer);
+    actionsLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     actionsContainer->setLayout(actionsLayout);
     actionsScrollArea->setWidget(actionsContainer);
 
-    mainLayout->addWidget(actionsScrollArea, 1);
+    mainLayout->addWidget(actionsScrollArea);
 
     // Wire up combo box
-    connect(topicCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &ResearchTabWidget::onTopicSelected);
+    connect(topicCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ResearchTabWidget::onTopicSelected);
 }
 
 void ResearchTabWidget::rebuildTierRows() {
@@ -385,23 +386,20 @@ void ResearchTabWidget::onTopicSelected(int index) {
 }
 
 void ResearchTabWidget::addActionButton(ActionButton* btn) {
-    QString section = "Research";
-    if (auto sectionTag = Tags::getSectionName(btn->getAction()->tags)) {
-        section = Tags::toDisplayName(*sectionTag);
+    actionsLayout->addWidget(btn, nextActionRow, nextActionCol);
+    if (++nextActionCol >= MAX_ACTION_COLS) {
+        nextActionCol = 0;
+        nextActionRow++;
     }
-
-    if (!actionSections.contains(section)) {
-        auto* s = new CollapsibleActionSection(section);
-        actionsLayout->addWidget(s);
-        actionSections[section] = s;
-    }
-    actionSections[section]->addButton(btn);
 }
 
 void ResearchTabWidget::clearActionButtons() {
-    for (auto* section : actionSections) {
-        section->setParent(nullptr);
-        delete section;
+    while (QLayoutItem* item = actionsLayout->takeAt(0)) {
+        if (QWidget* w = item->widget()) {
+            w->setParent(nullptr);
+        }
+        delete item;
     }
-    actionSections.clear();
+    nextActionCol = 0;
+    nextActionRow = 0;
 }
