@@ -17,6 +17,7 @@
 #include "actionqueuedelegate.h"
 #include "reservemodel.h"
 #include "reservedelegate.h"
+#include "researchtabwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -47,6 +48,11 @@ public:
     void setupActionQueueView(ActionQueueModel* actionQueueModel, ActionQueueDelegate *actionQueueDelegate);
     void setupReserveView(ReserveModel* reserveModel);
     void setupInventoryView(InventoryModel* inventoryModel);
+    void setupResearchTab(const std::unordered_map<std::string, ResearchTopic>* topics);
+
+    void refreshResearchTab();
+    void addResearchActionButton(ActionButton* btn);
+    void clearResearchActionButtons();
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +71,7 @@ private:
     QListView* actionQueueView = nullptr;
     QListView* reserveView = nullptr;
     QTableView* inventoryView = nullptr;
+    ResearchTabWidget* researchTab = nullptr;
 
 };
 #endif // MAINWINDOW_H

@@ -9,14 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->showMaximized();
-
-    // buttonContainer = new QWidget();
-    // gridLayout = new QGridLayout(buttonContainer);
-    // gridLayout->setAlignment(Qt::AlignTop);
-
-    // buttonContainer->setLayout(gridLayout);
-    // ui->actionScrollArea->setWidget(buttonContainer);
     sectionsContainer = new QWidget();
     sectionsLayout = new QVBoxLayout(sectionsContainer);
     sectionsLayout->setAlignment(Qt::AlignTop);
@@ -31,7 +23,16 @@ MainWindow::MainWindow(QWidget *parent)
     layout->setContentsMargins(0,0,0,0);
     layout->addWidget(messageLogWidget, 0);
 
+    auto* researchTabPage = new QWidget();
+    ui->tabWidget->addTab(researchTabPage, "Research");
+    auto* researchTabLayout = new QVBoxLayout(researchTabPage);
+    researchTabLayout->setContentsMargins(0, 0, 0, 0);
+    researchTab = new ResearchTabWidget(researchTabPage);
+    researchTabLayout->addWidget(researchTab);
+
+
     ui->tabWidget->setCurrentIndex(0);
+    this->showMaximized();
 }
 
 MainWindow::~MainWindow(){
@@ -147,3 +148,28 @@ void MainWindow::setupInventoryView(InventoryModel* inventoryModel){
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(this->inventoryView);
 }
+
+void MainWindow::setupResearchTab(const std::unordered_map<std::string, ResearchTopic>* topics){
+    if(researchTab) {
+        researchTab->setTopics(topics);
+    }
+}
+
+void MainWindow::refreshResearchTab(){
+    if(researchTab){
+        researchTab->refresh();
+    }
+}
+
+void MainWindow::addResearchActionButton(ActionButton* btn){
+    if(researchTab){
+        researchTab->addActionButton(btn);
+    }
+}
+
+void MainWindow::clearResearchActionButtons() {
+    if(researchTab){
+        researchTab->clearActionButtons();
+    }
+}
+

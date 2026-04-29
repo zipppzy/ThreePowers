@@ -41,6 +41,7 @@ private:
     void handleTriggeredEffect(const TriggerManager::TriggeredEffect& effect);
 
     std::vector<ActionButton*> actionButtons;
+    std::vector<ActionButton*> researchActionButtons;
     SkillModel* skillModel = nullptr;
     InventoryModel* inventoryModel = nullptr;
     ActionQueueModel* actionQueueModel = nullptr;

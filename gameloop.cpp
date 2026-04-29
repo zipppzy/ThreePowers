@@ -33,6 +33,10 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
+    if(auto maybeAction = Action::checkActionDatabaseDatabase("Study")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
@@ -60,6 +64,8 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     });
     mainWindow->setupActionQueueView(this->actionQueueModel, actionQueueDelegate);
 
+    mainWindow->setupResearchTab(&player.getResearchTopics());
+
     startTimer();
 }
 
@@ -82,49 +88,60 @@ void GameLoop::connectButtons(){
 }
 
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
-    ActionButton* btn = new ActionButton(action);
+    // Helper lambda to wire up a button's signals
+    auto wireButton = [this, action](ActionButton* btn) {
+        connect(btn, &ActionButton::tryStartAction, this, [this, action](){
+            this->player.addActionToQueue(action, 1);
+            this->play();
+        });
+        connect(btn, &ActionButton::tryStartMultipleActions, this, [this, action](int count){
+            this->player.addActionToQueue(action, count);
+            this->play();
+        });
+        connect(btn, &ActionButton::setRestAction, this, [this](std::shared_ptr<Action> action){
+            this->player.setRestAction(action);
+        });
+    };
 
-    // Check if this is a travel action
-    if (auto travelAction = std::dynamic_pointer_cast<TravelAction>(action)){
-        std::string destName = travelAction->getDestination()->name;
-        bool isUnlocked = world.isLocationUnlocked(destName);
-        bool isVisible = world.isLocationVisible(destName);
-
-        // Only create button if visible
-        if (!isVisible){
-            delete btn;
-            return;
+    // Helper lambda to configure locked state
+    auto configureButton = [this, action](ActionButton* btn) {
+        if (auto travelAction = std::dynamic_pointer_cast<TravelAction>(action)){
+            std::string destName = travelAction->getDestination()->name;
+            bool isUnlocked = world.isLocationUnlocked(destName);
+            bool isVisible = world.isLocationVisible(destName);
+            if (!isVisible) return false;
+            btn->setLocked(!isUnlocked);
+        } else {
+            bool requirementsMet = player.checkActionRequirements(action);
+            btn->setLocked(!requirementsMet);
         }
+        btn->updateRequirementsDisplay(generateRequirementString(action));
+        return true;
+    };
 
-        // Set locked state
-        btn->setLocked(!isUnlocked);
-    }else{
-        // Check if action requirements are met
-        bool requirementsMet = player.checkActionRequirements(action);
-        btn->setLocked(!requirementsMet);
+    // --- Main action tab button ---
+    ActionButton* btn = new ActionButton(action);
+    if (!configureButton(btn)) {
+        delete btn;
+        return;
     }
-
-    btn->updateRequirementsDisplay(generateRequirementString(action));
-
-    connect(btn, &ActionButton::tryStartAction, this, [this, action](){
-        this->player.addActionToQueue(action, 1);
-        this->play();
-    });
-    connect(btn, &ActionButton::tryStartMultipleActions, this, [this, action](int count){
-        this->player.addActionToQueue(action, count);
-        this->play();
-    });
-    connect(btn, &ActionButton::setRestAction, this, [this](std::shared_ptr<Action> action){
-        this->player.setRestAction(action);
-    });
+    wireButton(btn);
     this->actionButtons.push_back(btn);
 
     QString section = "General";
     if (auto sectionTag = Tags::getSectionName(action->tags)) {
         section = Tags::toDisplayName(*sectionTag);
     }
-
     mainWindow->addActionButton(btn, section);
+
+    // --- Research tab button (separate instance, same Action) ---
+    if (action->tags.count("ui:research")) {
+        ActionButton* researchBtn = new ActionButton(action);
+        configureButton(researchBtn);
+        wireButton(researchBtn);
+        researchActionButtons.push_back(researchBtn);
+        mainWindow->addResearchActionButton(researchBtn);
+    }
 }
 
 void GameLoop::addActionButtons(){
@@ -182,8 +199,6 @@ QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) cons
 void GameLoop::updateUI(){
     for(ActionButton* btn : this->actionButtons){
         btn->updateProgress();
-
-        // Update locked state based on current player state
         std::shared_ptr<Action> action = btn->getAction();
 
         // Skip travel actions - they have their own lock logic based on location visibility
@@ -195,9 +210,23 @@ void GameLoop::updateUI(){
         }
     }
 
+    for (ActionButton* btn : this->researchActionButtons) {
+        btn->updateProgress();
+        std::shared_ptr<Action> action = btn->getAction();
+
+        // Skip travel actions - they have their own lock logic based on location visibility
+        if (!std::dynamic_pointer_cast<TravelAction>(action)) {
+            bool requirementsMet = player.checkActionRequirements(action);
+            btn->setLocked(!requirementsMet);
+            btn->updateRequirementsDisplay(generateRequirementString(action));
+        }
+    }
+
     if(player.movedLocation || player.itemActionsChanged){
         this->mainWindow->clearActionButtons();
+        this->mainWindow->clearResearchActionButtons();
         this->actionButtons.clear();
+        this->researchActionButtons.clear();
         this->addActionButtons();
         player.movedLocation = false;
         player.itemActionsChanged = false;
@@ -228,6 +257,13 @@ void GameLoop::updateUI(){
     }
 
     this->actionQueueModel->refresh();
+
+    if (player.researchChanged) {
+        mainWindow->setupResearchTab(&player.getResearchTopics());
+        player.researchChanged = false;
+    } else {
+        mainWindow->refreshResearchTab();
+    }
 
     this->mainWindow->updateTime(this->ticks);
 

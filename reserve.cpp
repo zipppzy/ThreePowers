@@ -35,6 +35,9 @@ bool Reserve::add(double value){
             //handle softMax here
         }
         return false;
+    }else if(this->currentValue+value<0){
+        this->currentValue = 0;
+        return false;
     }else{
         this->currentValue += value;
         return true;

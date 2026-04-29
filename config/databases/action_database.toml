@@ -194,6 +194,7 @@ description = "Catch your breath and relax your mind"
 baseDuration = -1
     [actions.constantReserveGain]
     "Vigor" = 1
+    "Focus" = 1
 
 [[actions]]
 name = "Look for work"
@@ -284,3 +285,13 @@ baseDuration = 300
         [actions.effects.parameters]
         itemName = "Library Card"
         count = 1
+
+[[actions]]
+name = "Study"
+description = "Gathering knowledge"
+baseDuration = -1
+tags = ["ui:research"]
+    [actions.constantReserveGain]
+    "Memory" = 0.02
+    [actions.constantReserveCost]
+    "Focus" = 0.1
