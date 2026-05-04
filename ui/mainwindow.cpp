@@ -155,6 +155,10 @@ void MainWindow::setupResearchTab(const std::unordered_map<std::string, Research
     }
 }
 
+ResearchTabWidget* MainWindow::getResearchTab() const{
+    return researchTab;
+}
+
 void MainWindow::refreshResearchTab(){
     if(researchTab){
         researchTab->refresh();

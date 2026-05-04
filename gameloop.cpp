@@ -73,6 +73,10 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     mainWindow->setupActionQueueView(this->actionQueueModel, actionQueueDelegate);
 
     mainWindow->setupResearchTab(&player.getResearchTopics());
+    connect(mainWindow->getResearchTab(), &ResearchTabWidget::activeTopicChanged,
+            this, [this](const QString& topicName) {
+                player.activeResearchTopic = topicName.toStdString();
+            });
 
     startTimer();
 }

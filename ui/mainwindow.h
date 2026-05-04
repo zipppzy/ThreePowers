@@ -50,6 +50,7 @@ public:
     void setupInventoryView(InventoryModel* inventoryModel);
     void setupResearchTab(const std::unordered_map<std::string, ResearchTopic>* topics);
 
+    ResearchTabWidget* getResearchTab() const;
     void refreshResearchTab();
     void addResearchActionButton(ActionButton* btn);
     void clearResearchActionButtons();
