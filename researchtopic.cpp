@@ -105,8 +105,7 @@ std::optional<ResearchNote> ResearchTopic::merge(int tier, double focusSpent, do
 
     // Focus scales merge efficiency dramatically
     double focusRatio = std::clamp(focusSpent / maxFocusCost, 0.0, 1.0);
-    double efficiency = BASE_MERGE_EFFICIENCY +
-                        (MAX_MERGE_EFFICIENCY - BASE_MERGE_EFFICIENCY) * focusRatio;
+    double efficiency = BASE_MERGE_EFFICIENCY + (MAX_MERGE_EFFICIENCY - BASE_MERGE_EFFICIENCY) * focusRatio;
 
     double mergedValue = rawValue * efficiency;
 
@@ -115,7 +114,7 @@ std::optional<ResearchNote> ResearchTopic::merge(int tier, double focusSpent, do
     if (tierList.empty()) notes.erase(it);
 
     // Produce one note of the next tier
-    ResearchNote result(mergedValue, tier + 1, name, "Merged " + ResearchNote::tierName(tier));
+    ResearchNote result(mergedValue, tier + 1, name);
     return result;
 }
 

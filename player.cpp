@@ -333,11 +333,22 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
         }
 
         case InstantEffect::AddResearchNote: {
-            std::string topicName = effect.parameters.count("topicName") ? effect.parameters.at("topicName") : "";
-            double knowledgeValue = effect.parameters.count("knowledgeValue") ? std::stod(effect.parameters.at("knowledgeValue")) : 1.0;
-            int tier = effect.parameters.count("tier") ? std::stoi(effect.parameters.at("tier")) : 0;
-            std::string sourceName = effect.parameters.count("sourceName") ? effect.parameters.at("sourceName") : "";
-            addResearchNote(ResearchNote(knowledgeValue, tier, topicName, sourceName));
+            if(this->activeResearchTopic.empty()){
+                Logger::log("No active research topic selected");
+                break;
+            }
+
+            auto maybeMemory = findReserve("Memory");
+            if (!maybeMemory) break;
+            Reserve* memory = maybeMemory.value();
+
+            double memoryConsumed = memory->getCurrentValue();
+            if (memoryConsumed <= 0.0) {
+                Logger::log("Nothing in memory");
+                break;
+            }
+
+            addResearchNote(ResearchNote(memoryConsumed, 0, this->activeResearchTopic));
             break;
         }
 
@@ -416,12 +427,12 @@ bool Player::hasResearchTopic(const std::string& topicName) const {
 }
 
 void Player::unlockResearchTopic(const std::string& topicName) {
-    if (researchTopics.count(topicName)) return; // already unlocked
+    if (this->researchTopics.count(topicName)) return; // already unlocked
 
     if (auto maybeTemplate = ResearchTopic::checkResearchDatabase(topicName)) {
-        researchTopics.insert_or_assign(topicName, maybeTemplate->get());
+        this->researchTopics.insert_or_assign(topicName, maybeTemplate->get());
         Logger::log("New research topic available: " + topicName);
-        researchChanged = true;
+        this->researchChanged = true;
     }
 }
 

@@ -292,6 +292,24 @@ description = "Gathering knowledge"
 baseDuration = -1
 tags = ["ui:research"]
     [actions.constantReserveGain]
-    "Memory" = 0.02
+    "Memory" = 0.1
     [actions.constantReserveCost]
-    "Focus" = 0.1
+    "Focus" = 0.2
+
+[[actions]]
+name = "Think"
+description = "Turn knowledge you gathered into a usable thought"
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "add_research_note"
+
+[[actions]]
+name = "Unlock Research"
+description = "testest"
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "unlock_research_topic"
+        [actions.effects.parameters]
+        "topicName" = "Basic Qi Sensing"

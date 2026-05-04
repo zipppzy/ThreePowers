@@ -62,6 +62,7 @@ public:
     void unlockResearchTopic(const std::string& topicName);
     const std::unordered_map<std::string, ResearchTopic>& getResearchTopics() const;
 
+    std::string activeResearchTopic; // empty string means none selected
 
     const std::vector<std::shared_ptr<Action>>& getGlobalActions() const;
     void addGlobalAction(std::shared_ptr<Action> action);
@@ -139,7 +140,7 @@ private:
 
     std::set<std::string> visitedLocations;
 
-    std::unordered_map<std::string, ResearchTopic> researchTopics;  // active topics only
+    std::unordered_map<std::string, ResearchTopic> researchTopics;  //unlocked topics
 
     TriggerContext triggerContext;
 };

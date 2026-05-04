@@ -1,17 +1,15 @@
 #include "researchnote.h"
 
-ResearchNote::ResearchNote(double knowledgeValue, int tier, const std::string& topicName, const std::string& sourceName)
+ResearchNote::ResearchNote(double knowledgeValue, int tier, const std::string& topicName)
     : knowledgeValue(knowledgeValue)
     , tier(tier)
     , topicName(topicName)
-    , sourceName(sourceName)
 {}
 
 ResearchNote::ResearchNote(const toml::table& noteTable) {
     knowledgeValue = noteTable["knowledgeValue"].value_or(0.0);
     tier           = noteTable["tier"].value_or(0);
     topicName      = noteTable["topicName"].value_or("");
-    sourceName     = noteTable["sourceName"].value_or("");
 }
 
 std::string ResearchNote::tierName(int tier) {

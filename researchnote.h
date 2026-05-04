@@ -7,13 +7,12 @@
 class ResearchNote {
 public:
     ResearchNote() = default;
-    ResearchNote(double knowledgeValue, int tier, const std::string& topicName, const std::string& sourceName = "");
+    ResearchNote(double knowledgeValue, int tier, const std::string& topicName);
     ResearchNote(const toml::table& noteTable);
 
     double knowledgeValue;
     int tier;               // 0 = thought, 1 = idea, 2 = theory (and beyond)
     std::string topicName;  // which research topic this note belongs to
-    std::string sourceName; // flavor: where this knowledge came from
 
     // Tier name helpers
     static std::string tierName(int tier);

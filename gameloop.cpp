@@ -37,6 +37,14 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
+    if(auto maybeAction = Action::checkActionDatabaseDatabase("Unlock Research")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+
+    if(auto maybeAction = Action::checkActionDatabaseDatabase("Think")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
