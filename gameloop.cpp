@@ -272,9 +272,8 @@ void GameLoop::updateUI(){
 
     if (player.researchChanged) {
         mainWindow->setupResearchTab(&player.getResearchTopics());
-        player.researchChanged = false;
-    } else {
         mainWindow->refreshResearchTab();
+        player.researchChanged = false;
     }
 
     this->mainWindow->updateTime(this->ticks);
