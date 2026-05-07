@@ -347,8 +347,9 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
                 Logger::log("Nothing in memory");
                 break;
             }
+            memory->subtract(memoryConsumed);
 
-            addResearchNote(ResearchNote(memoryConsumed, 0, this->activeResearchTopic));
+            this->addResearchNote(ResearchNote(memoryConsumed, 0, this->activeResearchTopic));
             break;
         }
 
@@ -360,9 +361,9 @@ void Player::queueEvent(const std::string& eventId){
 }
 
 void Player::addResearchNote(const ResearchNote& note) {
-    auto it = researchTopics.find(note.topicName);
-    if (it == researchTopics.end()) return; // topic not unlocked yet
-    it->second.addNote(note);
+    if(!this->activeResearchTopic.empty()){
+        this->researchTopics[this->activeResearchTopic].addNote(note);
+    }
     researchChanged = true;
 }
 
