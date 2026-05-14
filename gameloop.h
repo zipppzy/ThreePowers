@@ -30,7 +30,7 @@ private:
     bool paused = false;
 
     //ticks per real life second
-    double timeScale = 50;
+    double timeScale = 500;
     //each tick is a second of game time
     unsigned int ticks = 0;
 

@@ -613,6 +613,29 @@ void Player::tick(){
         for(Reserve& reserve : this->reserves){
             reserve.applyRegen();
         }
+
+        //end infinite duration actions when all reserves being filled are filled
+        if(currentAction->getDuration() == -1){
+            auto constantReserveGain = currentAction->getConstantReserveGain();
+            bool allFull = !constantReserveGain.empty();
+            for(const auto& [reserveName, gain] : constantReserveGain){
+                if(auto maybeReserve = this->findReserve(reserveName)){
+                    if(maybeReserve.value()->getCurrentValue() < maybeReserve.value()->getMaxValue()){
+                        allFull = false;
+                        break;
+                    }
+                } else {
+                    allFull = false;
+                    break;
+                }
+            }
+            if(allFull){
+                this->endCurrentAction();
+                this->attemptStartNextAction();
+                return;
+            }
+        }
+
         //ticks currentAction and check if action is completed then gives rewards
         if(currentAction->tick()){
             if(currentAction->isSuccess()){
