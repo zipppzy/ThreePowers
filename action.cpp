@@ -180,7 +180,7 @@ double Action::getDuration() const{
 const std::vector<InstantEffect>& Action::getCompletionEffects() const{
     return this->completionEffects;
 }
-const std::map<std::string, double> Action::getSkillRewards() const{
+const std::map<std::string, double>& Action::getSkillRewards() const{
     return this->skillRewards;
 }
 

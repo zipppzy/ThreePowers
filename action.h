@@ -29,7 +29,7 @@ public:
     double getCurrentProgress() const;
     double getDuration() const;
     const std::vector<InstantEffect>& getCompletionEffects() const;
-    const std::map<std::string, double> getSkillRewards() const;
+    const std::map<std::string, double>& getSkillRewards() const;
     const std::vector<Item>& getItemRewards() const;
     const std::map<std::string, double>& getReserveRewards() const;
     const std::map<std::string, double>& getConstantReserveCost() const;
