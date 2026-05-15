@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     sectionsContainer->setLayout(sectionsLayout);
     ui->actionScrollArea->setWidget(sectionsContainer);
     ui->actionScrollArea->setWidgetResizable(true);
-    ui->actionScrollArea->setWidgetResizable(true);
 
     this->messageLogWidget = new MessageLog(this);
 
