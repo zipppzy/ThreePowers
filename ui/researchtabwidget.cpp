@@ -131,54 +131,55 @@ void TierRowWidget::setNotes(const std::vector<ResearchNote>& sortedNotes) {
         return;
     }
 
-    double firstValue = sortedNotes.front().knowledgeValue;
-
     for (int i = 0; i < static_cast<int>(sortedNotes.size()); ++i) {
         const auto& note = sortedNotes[i];
 
-        // Reduction relative to first note in tier
-        double reductionPct = firstValue > 0
-                                  ? (1.0 - note.knowledgeValue / firstValue) * 100.0
-                                  : 0.0;
+        double decayFactor   = std::pow(ResearchTopic::DECAY_RATE, i);
+        double effectiveValue = note.knowledgeValue * decayFactor;
+        double reductionPct  = (1.0 - decayFactor) * 100.0;
 
         // Pill widget
         auto* pill = new QWidget();
         pill->setFixedHeight(42);
-        pill->setMinimumWidth(80);
+        pill->setMinimumWidth(100);
 
-        auto* pillLayout2 = new QVBoxLayout(pill);
-        pillLayout2->setContentsMargins(6, 2, 6, 2);
-        pillLayout2->setSpacing(1);
+        auto* pillInnerLayout = new QVBoxLayout(pill);
+        pillInnerLayout->setContentsMargins(6, 2, 6, 2);
+        pillInnerLayout->setSpacing(1);
 
-        auto* valueLabel = new QLabel(QString("%1").arg(note.knowledgeValue, 0, 'f', 1));
+        // Top: effective value after decay
+        auto* valueLabel = new QLabel(QString("%1").arg(effectiveValue, 0, 'f', 1));
         valueLabel->setAlignment(Qt::AlignCenter);
         valueLabel->setStyleSheet("color: white; font-weight: bold; font-size: 11px;");
 
-        QString reductionText = i == 0
-                                    ? "base"
-                                    : QString("-%1%").arg(reductionPct, 0, 'f', 0);
-        auto* reductionLabel = new QLabel(reductionText);
-        reductionLabel->setAlignment(Qt::AlignCenter);
+        // Bottom: base value and reduction percent
+        QString bottomText = i == 0
+                                 ? QString("%1 base").arg(note.knowledgeValue, 0, 'f', 1)
+                                 : QString("%1  -%2%").arg(note.knowledgeValue, 0, 'f', 1).arg(reductionPct, 0, 'f', 0);
 
-        // Color the reduction label: green for base, yellow->red as reduction grows
+        auto* bottomLabel = new QLabel(bottomText);
+        bottomLabel->setAlignment(Qt::AlignCenter);
+
+        // Color: green under 20%, yellow under 50%, red above
         QString reductionColor;
         if (i == 0) {
             reductionColor = "#4caf50";
-        } else if (reductionPct < 30) {
+        } else if (reductionPct < 20) {
+            reductionColor = "#4caf50";
+        } else if (reductionPct < 50) {
             reductionColor = "#ffeb3b";
-        } else if (reductionPct < 60) {
-            reductionColor = "#ff9800";
         } else {
             reductionColor = "#f44336";
         }
-        reductionLabel->setStyleSheet(
+        bottomLabel->setStyleSheet(
             QString("color: %1; font-size: 9px;").arg(reductionColor));
 
-        pillLayout2->addWidget(valueLabel);
-        pillLayout2->addWidget(reductionLabel);
+        pillInnerLayout->addWidget(valueLabel);
+        pillInnerLayout->addWidget(bottomLabel);
 
-        // Pill background darkens with reduction
+        // Pill background darkens as decay increases
         int brightness = static_cast<int>(70 - reductionPct * 0.3);
+        brightness = std::max(brightness, 30); // don't go too dark
         pill->setStyleSheet(
             QString("background-color: rgb(%1,%1,%2); border-radius: 4px; border: 1px solid #555;")
                 .arg(brightness)
