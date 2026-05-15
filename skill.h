@@ -24,8 +24,8 @@ public:
     unsigned int getMaxLevel() const;
     toml::table getSkillTable() const;
     std::optional<std::reference_wrapper<const std::vector<Effect>>> checkEffects(const std::string& name) const;
-    static void loadSkillDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Skill>> checkSkillDatabase(std::string name);
+    static void loadSkillDatabase(const std::string& path);
+    static std::optional<std::reference_wrapper<const Skill>> checkSkillDatabase(const std::string& name);
 
 private:
     static std::unordered_map<std::string, Skill> skillDatabase;

@@ -31,7 +31,7 @@ Event::Event(toml::table eventTable) {
 
 std::unordered_map<std::string, Event> Event::eventDatabase;
 
-void Event::loadEventDatabase(std::string path) {
+void Event::loadEventDatabase(const std::string& path) {
     auto in = toml::parse_file(path);
 
     Event::eventDatabase.clear();
@@ -44,7 +44,7 @@ void Event::loadEventDatabase(std::string path) {
     }
 }
 
-std::optional<std::reference_wrapper<const Event>> Event::checkEventDatabase(std::string id) {
+std::optional<std::reference_wrapper<const Event>> Event::checkEventDatabase(const std::string& id) {
     if(auto search = Event::eventDatabase.find(id); search != Event::eventDatabase.end()) {
         return std::cref(search->second);
     } else {

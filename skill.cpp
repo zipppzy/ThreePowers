@@ -95,7 +95,7 @@ std::optional<std::reference_wrapper<const std::vector<Effect>>> Skill::checkEff
     return std::nullopt;
 }
 
-void Skill::loadSkillDatabase(std::string path){
+void Skill::loadSkillDatabase(const std::string& path){
 
     auto in = toml::parse_file(path);
 
@@ -109,7 +109,7 @@ void Skill::loadSkillDatabase(std::string path){
     }
 }
 
-std::optional<std::reference_wrapper<const Skill>> Skill::checkSkillDatabase(std::string name){
+std::optional<std::reference_wrapper<const Skill>> Skill::checkSkillDatabase(const std::string& name){
     if(auto search = Skill::skillDatabase.find(name); search != Skill::skillDatabase.end()){
         return std::cref(search->second);
     }else{

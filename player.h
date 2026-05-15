@@ -23,13 +23,13 @@ public:
     Player();
     Player(unsigned long long int age, unsigned long long int lifespan, std::shared_ptr<Location> currentLocation, World* world);
     //TODO: add constructor for toml table
-    bool hasSkill(std::string name);
-    std::optional<Skill*> findSkill(std::string name);
-    auto findSkillIter(std::string name);
+    bool hasSkill(const std::string& name);
+    std::optional<Skill*> findSkill(const std::string& name);
+    auto findSkillIter(const std::string& name);
     const std::vector<Skill>& getSkills() const;
-    bool hasReserve(std::string name);
-    std::optional<Reserve*> findReserve(std::string name);
-    void addSkillXp(std::string name, double xp);
+    bool hasReserve(const std::string& name);
+    std::optional<Reserve*> findReserve(const std::string& name);
+    void addSkillXp(const std::string& name, double xp);
     void addNewReserve(const Reserve& reserve);
     void addReserve(const std::string& name, double gain);
     const std::vector<Reserve>& getReserves() const;
@@ -38,7 +38,7 @@ public:
     bool pickupItem(Item item);
     bool removeItem(const std::string& itemName, int count);    // Removes count of an item from inventory. Cleans up itemActions if count reaches zero.
     std::optional<Item*> findItem(Item item);
-    std::optional<Item*> findItem(std::string itemName);
+    std::optional<Item*> findItem(const std::string& itemName);
     const std::vector<Item>& getInventory() const;
     const std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>>& getItemActions() const;
     std::shared_ptr<Location> getCurrentLocation();
@@ -87,8 +87,8 @@ public:
 
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
 
-    void savePlayerState(std::string fileName);
-    void loadPlayerState(std::string fileName);
+    void savePlayerState(const std::string& fileName);
+    void loadPlayerState(const std::string& fileName);
 
     void tick();
     void tick(int numTicks);

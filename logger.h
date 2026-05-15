@@ -7,7 +7,7 @@ struct Logger
 {
     inline static std::deque<std::string> logMessages;
 
-    void static log(std::string logMessage){
+    void static log(const std::string& logMessage){
         Logger::logMessages.push_back(logMessage);
     }
 };

@@ -22,8 +22,8 @@ public:
     Action(toml::table actionTable);
     virtual ~Action() = default;
 
-    static void loadActionDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Action>> checkActionDatabase(std::string name);
+    static void loadActionDatabase(const std::string& path);
+    static std::optional<std::reference_wrapper<const Action>> checkActionDatabase(const std::string& name);
 
     void reduceDuration(double factor);
     double getCurrentProgress() const;

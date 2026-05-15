@@ -23,8 +23,8 @@ public:
     Event(std::string title, std::string body);
     Event(toml::table eventTable);
 
-    static void loadEventDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Event>> checkEventDatabase(std::string name);
+    static void loadEventDatabase(const std::string& path);
+    static std::optional<std::reference_wrapper<const Event>> checkEventDatabase(const std::string& name);
 
     std::string id;
     std::string title;

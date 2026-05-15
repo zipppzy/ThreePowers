@@ -8,7 +8,7 @@ World::World(){
 
 std::unordered_map<std::string, Location> World::locationDatabase;
 
-void World::loadLocationDatabase(std::string path){
+void World::loadLocationDatabase(const std::string& path){
     auto in = toml::parse_file(path);
 
     World::locationDatabase.clear();
@@ -21,7 +21,7 @@ void World::loadLocationDatabase(std::string path){
     }
 }
 
-std::optional<std::reference_wrapper<const Location>> World::checkLocationDatabase(std::string name){
+std::optional<std::reference_wrapper<const Location>> World::checkLocationDatabase(const std::string& name){
     if(auto search = World::locationDatabase.find(name); search != World::locationDatabase.end()){
         return std::cref(search->second);
     }else{
@@ -29,7 +29,7 @@ std::optional<std::reference_wrapper<const Location>> World::checkLocationDataba
     }
 }
 
-void World::loadWorldState(std::string path){
+void World::loadWorldState(const std::string& path){
     auto in = toml::parse_file(path);
 
     this->locationMap.clear();
@@ -45,15 +45,15 @@ void World::loadWorldState(std::string path){
     }
 }
 
-void World::saveWorldState(std::string path){
+void World::saveWorldState(const std::string& path){
     //TODO
 }
 
-void World::addLocation(std::string name, int position){
-    addLocation(std::move(name), position, this->root);
+void World::addLocation(const std::string& name, int position){
+    addLocation(name, position, this->root);
 }
 
-void World::addLocation(std::string name,int position, std::shared_ptr<Location> parent){
+void World::addLocation(const std::string& name,int position, std::shared_ptr<Location> parent){
     std::shared_ptr<Location> newLocation;
     if(auto maybeLocation = World::checkLocationDatabase(name)){
         //found template in locationDatabase

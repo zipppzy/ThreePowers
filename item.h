@@ -21,8 +21,8 @@ public:
     std::string name;
     std::vector<std::string> actions;
 
-    static void loadItemDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Item>> checkItemDatabase(std::string name);
+    static void loadItemDatabase(const std::string& path);
+    static std::optional<std::reference_wrapper<const Item>> checkItemDatabase(const std::string& name);
 private:
     static std::unordered_map<std::string, Item> itemDatabase;
 

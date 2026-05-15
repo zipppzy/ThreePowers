@@ -16,11 +16,11 @@ Player::Player(unsigned long long int age, unsigned long long int lifespan, std:
     this->triggerManager.loadTriggers("config/triggers.toml");
 }
 
-bool Player::hasSkill(std::string name){
+bool Player::hasSkill(const std::string& name){
     return this->findSkill(name) ? true : false;
 }
 
-std::optional<Skill*> Player::findSkill(std::string name){
+std::optional<Skill*> Player::findSkill(const std::string& name){
     auto it  = std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
     if(it == this->skills.end()){
         return std::nullopt;
@@ -29,7 +29,7 @@ std::optional<Skill*> Player::findSkill(std::string name){
     }
 }
 
-auto Player::findSkillIter(std::string name){
+auto Player::findSkillIter(const std::string& name){
     return std::find_if(this->skills.begin(), this->skills.end(), [&name](const Skill& skill){return skill.name == name;});
 }
 
@@ -37,11 +37,11 @@ const std::vector<Skill>& Player::getSkills() const{
     return skills;
 }
 
-bool Player::hasReserve(std::string name){
+bool Player::hasReserve(const std::string& name){
     return this->findReserve(name) ? true : false;
 }
 
-std::optional<Reserve*> Player::findReserve(std::string name){
+std::optional<Reserve*> Player::findReserve(const std::string& name){
     auto it  = std::find_if(this->reserves.begin(), this->reserves.end(), [&name](const Reserve& reserve){return reserve.name == name;});
     if(it == this->reserves.end()){
         return std::nullopt;
@@ -50,7 +50,7 @@ std::optional<Reserve*> Player::findReserve(std::string name){
     }
 }
 
-void Player::addSkillXp(std::string name, double xp){
+void Player::addSkillXp(const std::string& name, double xp){
     auto it = this->findSkillIter(name);
     if(it != skills.end()){
         it -> addXp(xp);
@@ -149,7 +149,7 @@ bool Player::removeItem(const std::string& itemName, int count){
     return true;
 }
 
-std::optional<Item*> Player::findItem(std::string itemName){
+std::optional<Item*> Player::findItem(const std::string& itemName){
     auto it  = std::find_if(this->inventory.begin(), this->inventory.end(), [&itemName](const Item& item){return item.name ==itemName;});
     if(it == inventory.end()){
         return std::nullopt;
@@ -554,7 +554,7 @@ bool Player::startAction(std::shared_ptr<Action> action){
     }
 }
 
-void Player::savePlayerState(std::string fileName){
+void Player::savePlayerState(const std::string& fileName){
     toml::table playerData;
 
     toml::table attributes;
@@ -575,7 +575,7 @@ void Player::savePlayerState(std::string fileName){
     file.close();
 }
 
-void Player::loadPlayerState(std::string fileName){
+void Player::loadPlayerState(const std::string& fileName){
     auto playerData = toml::parse_file(fileName);
 
     this->age = std::stoull(playerData["age"].value_or("0"));

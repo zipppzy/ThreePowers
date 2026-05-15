@@ -144,7 +144,7 @@ Action::Action(toml::table actionTable){
 
 std::unordered_map<std::string, Action> Action::actionDatabase;
 
-void Action::loadActionDatabase(std::string path){
+void Action::loadActionDatabase(const std::string& path){
     auto in = toml::parse_file(path);
 
     Action::actionDatabase.clear();
@@ -157,7 +157,7 @@ void Action::loadActionDatabase(std::string path){
     }
 }
 
-std::optional<std::reference_wrapper<const Action>> Action::checkActionDatabase(std::string name){
+std::optional<std::reference_wrapper<const Action>> Action::checkActionDatabase(const std::string& name){
     if(auto search = Action::actionDatabase.find(name); search != Action::actionDatabase.end()){
         return std::cref(search->second);
     }else{

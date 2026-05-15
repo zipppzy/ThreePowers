@@ -38,7 +38,7 @@ double Item::getSize() const{
 
 std::unordered_map<std::string, Item> Item::itemDatabase;
 
-void Item::loadItemDatabase(std::string path){
+void Item::loadItemDatabase(const std::string& path){
     auto in = toml::parse_file(path);
 
     Item::itemDatabase.clear();
@@ -54,7 +54,7 @@ void Item::loadItemDatabase(std::string path){
     }
 }
 
-std::optional<std::reference_wrapper<const Item>> Item::checkItemDatabase(std::string name){
+std::optional<std::reference_wrapper<const Item>> Item::checkItemDatabase(const std::string& name){
     if(auto search = Item::itemDatabase.find(name); search != Item::itemDatabase.end()){
         return std::cref(search->second);
     }else{

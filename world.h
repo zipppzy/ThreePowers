@@ -10,14 +10,14 @@ class World
 public:
     World();
 
-    static void loadLocationDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Location>> checkLocationDatabase(std::string name);
+    static void loadLocationDatabase(const std::string& path);
+    static std::optional<std::reference_wrapper<const Location>> checkLocationDatabase(const std::string& name);
 
-    void loadWorldState(std::string path);
-    void saveWorldState(std::string path);  //TODO
+    void loadWorldState(const std::string& path);
+    void saveWorldState(const std::string& path);  //TODO
 
-    void addLocation(std::string name, int position);
-    void addLocation(std::string name, int position, std::shared_ptr<Location> parent);
+    void addLocation(const std::string& name, int position);
+    void addLocation(const std::string& name, int position, std::shared_ptr<Location> parent);
     std::optional<std::shared_ptr<Location>> findLocation(int id) const;
     //slower than by id
     //potentially rework to index by name instead
