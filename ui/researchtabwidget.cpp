@@ -101,7 +101,8 @@ TierRowWidget::TierRowWidget(int tier, QWidget* parent)
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setWidgetResizable(true);
-    scrollArea->setFixedHeight(52);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollArea->setFixedHeight(68);
     scrollArea->setStyleSheet("QScrollArea { border: none; background: transparent; }");
 
     pillContainer = new QWidget();
