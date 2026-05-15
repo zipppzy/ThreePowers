@@ -15,7 +15,7 @@ Location::Location(toml::table locationTable){
 
     if(auto actionsArray = locationTable["actions"].as_array()){
         for(auto&& actionName : *actionsArray){
-            if(auto maybeAction = Action::checkActionDatabaseDatabase(actionName.value_or(""))){
+            if(auto maybeAction = Action::checkActionDatabase(actionName.value_or(""))){
                 this->actions.push_back(std::make_shared<Action>(*maybeAction));
             }
         }

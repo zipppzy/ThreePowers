@@ -29,19 +29,19 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     player.addNewReserve(Reserve{"Memory", 50.0});
     player.findReserve("Memory").value()->addRegen(-0.01);
 
-    if(auto maybeAction = Action::checkActionDatabaseDatabase("Rest")){
+    if(auto maybeAction = Action::checkActionDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
-    if(auto maybeAction = Action::checkActionDatabaseDatabase("Study")){
+    if(auto maybeAction = Action::checkActionDatabase("Study")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
-    if(auto maybeAction = Action::checkActionDatabaseDatabase("Unlock Research")){
+    if(auto maybeAction = Action::checkActionDatabase("Unlock Research")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
-    if(auto maybeAction = Action::checkActionDatabaseDatabase("Think")){
+    if(auto maybeAction = Action::checkActionDatabase("Think")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 

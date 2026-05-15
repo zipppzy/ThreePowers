@@ -157,7 +157,7 @@ void Action::loadActionDatabase(std::string path){
     }
 }
 
-std::optional<std::reference_wrapper<const Action>> Action::checkActionDatabaseDatabase(std::string name){
+std::optional<std::reference_wrapper<const Action>> Action::checkActionDatabase(std::string name){
     if(auto search = Action::actionDatabase.find(name); search != Action::actionDatabase.end()){
         return std::cref(search->second);
     }else{
@@ -250,7 +250,7 @@ void Action::copyFrom(const Action& other){
 }
 
 void Action::reset(){
-    if(auto maybeAction = Action::checkActionDatabaseDatabase(this->name)){
+    if(auto maybeAction = Action::checkActionDatabase(this->name)){
         this->copyFrom(maybeAction.value());
     }
     //TODO: handle reseting TravelActions

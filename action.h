@@ -23,7 +23,7 @@ public:
     virtual ~Action() = default;
 
     static void loadActionDatabase(std::string path);
-    static std::optional<std::reference_wrapper<const Action>> checkActionDatabaseDatabase(std::string name);
+    static std::optional<std::reference_wrapper<const Action>> checkActionDatabase(std::string name);
 
     void reduceDuration(double factor);
     double getCurrentProgress() const;

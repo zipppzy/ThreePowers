@@ -266,7 +266,7 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
         case InstantEffect::UnlockAction: {
             std::string actionName = effect.parameters.count("actionName")
             ? effect.parameters.at("actionName") : "";
-            if (auto maybeAction = Action::checkActionDatabaseDatabase(actionName)) {
+            if (auto maybeAction = Action::checkActionDatabase(actionName)) {
                 addGlobalAction(std::make_shared<Action>(maybeAction.value()));
                 Logger::log("Unlocked new action: " + actionName);
             }
@@ -721,7 +721,7 @@ void Player::addItemActions(const Item& item){
 
     std::vector<std::shared_ptr<Action>> resolved;
     for(const std::string& actionName : item.actions){
-        if(auto maybeAction = Action::checkActionDatabaseDatabase(actionName)){
+        if(auto maybeAction = Action::checkActionDatabase(actionName)){
             resolved.push_back(std::make_shared<Action>(maybeAction->get()));
         }else{
             qDebug() << "Item" << QString::fromStdString(item.name) << "references unknown action:" << QString::fromStdString(actionName);
