@@ -53,6 +53,7 @@ private:
 
     //helper method for displaying requirements in the tooltip
     QString generateRequirementString(std::shared_ptr<Action> action) const;
+    void updateActionButtonList(const std::vector<ActionButton*>& buttons);
 
     void updateUI();
 

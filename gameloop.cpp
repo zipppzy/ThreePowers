@@ -208,8 +208,8 @@ QString GameLoop::generateRequirementString(std::shared_ptr<Action> action) cons
     return result;
 }
 
-void GameLoop::updateUI(){
-    for(ActionButton* btn : this->actionButtons){
+void GameLoop::updateActionButtonList(const std::vector<ActionButton*>& buttons){
+    for(ActionButton* btn : buttons){
         btn->updateProgress();
         std::shared_ptr<Action> action = btn->getAction();
 
@@ -221,18 +221,11 @@ void GameLoop::updateUI(){
             btn->updateRequirementsDisplay(generateRequirementString(action));
         }
     }
+}
 
-    for (ActionButton* btn : this->researchActionButtons) {
-        btn->updateProgress();
-        std::shared_ptr<Action> action = btn->getAction();
-
-        // Skip travel actions - they have their own lock logic based on location visibility
-        if (!std::dynamic_pointer_cast<TravelAction>(action)) {
-            bool requirementsMet = player.checkActionRequirements(action);
-            btn->setLocked(!requirementsMet);
-            btn->updateRequirementsDisplay(generateRequirementString(action));
-        }
-    }
+void GameLoop::updateUI(){
+    updateActionButtonList(this->actionButtons);
+    updateActionButtonList(this->researchActionButtons);
 
     if(player.movedLocation || player.itemActionsChanged){
         this->mainWindow->clearActionButtons();
