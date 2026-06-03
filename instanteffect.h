@@ -21,7 +21,8 @@ public:
         AddSkillXp,
         ModifyReserve,
         UnlockResearchTopic,
-        AddResearchNote
+        AddResearchNote,
+        MergeResearchNotes
     };
 
     EffectType type;
