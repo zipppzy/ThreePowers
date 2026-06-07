@@ -313,3 +313,43 @@ tags = ["ui:research"]
     type = "unlock_research_topic"
         [actions.effects.parameters]
         "topicName" = "Basic Qi Sensing"
+
+[[actions]]
+name = "Merge Thoughts"
+description = "Concentrate intensely to combine your scattered thoughts into a coherent idea. Consumes all Focus."
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "merge_research_notes"
+        [actions.effects.parameters]
+        tier = "0"
+
+[[actions]]
+name = "Merge Ideas"
+description = "Synthesize your ideas into a unified theory. Consumes all Focus."
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "merge_research_notes"
+        [actions.effects.parameters]
+        tier = "1"
+
+[[actions]]
+name = "Merge Theories"
+description = "Distill your theories into a profound insight. Consumes all Focus."
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "merge_research_notes"
+        [actions.effects.parameters]
+        tier = "2"
+
+[[actions]]
+name = "Merge Insights"
+description = "Unite your insights into a world-shaking revelation. Consumes all Focus."
+baseDuration = 0
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "merge_research_notes"
+        [actions.effects.parameters]
+        tier = "3"
