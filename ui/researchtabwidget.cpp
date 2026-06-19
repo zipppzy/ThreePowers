@@ -79,15 +79,28 @@ TierRowWidget::TierRowWidget(int tier, QWidget* parent)
     outerLayout->setContentsMargins(4, 2, 4, 2);
     outerLayout->setSpacing(8);
 
-    // Tier name label
+    // Left side: tier name + contribution
+    auto* leftContainer = new QWidget();
+    auto* leftLayout = new QVBoxLayout(leftContainer);
+    leftLayout->setContentsMargins(0, 6, 0, 6);
+    leftLayout->setSpacing(2);
+    leftContainer->setFixedWidth(80);
+
     auto* tierLabel = new QLabel(QString::fromStdString(ResearchNote::tierName(tier)));
-    tierLabel->setFixedWidth(72);
-    tierLabel->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+    tierLabel->setAlignment(Qt::AlignRight | Qt::AlignBottom);
     QFont f = tierLabel->font();
     f.setBold(true);
     tierLabel->setFont(f);
     tierLabel->setStyleSheet("color: #aaa;");
-    outerLayout->addWidget(tierLabel);
+
+    contributionLabel = new QLabel("0.0");
+    contributionLabel->setAlignment(Qt::AlignRight | Qt::AlignTop);
+    contributionLabel->setStyleSheet("color: #666; font-size: 9px;");
+
+    leftLayout->addWidget(tierLabel);
+    leftLayout->addWidget(contributionLabel);
+
+    outerLayout->addWidget(leftContainer);
 
     // Scroll area for pills
     scrollArea = new QScrollArea();
@@ -142,9 +155,10 @@ bool TierRowWidget::eventFilter(QObject* obj, QEvent* event) {
     return QWidget::eventFilter(obj, event);
 }
 
-void TierRowWidget::setNotes(const std::vector<ResearchNote>& sortedNotes) {
+void TierRowWidget::setNotes(const std::vector<ResearchNote>& sortedNotes, double tierContribution) {
     noteCount = static_cast<int>(sortedNotes.size());
     lastNotes = sortedNotes;
+    contributionLabel->setText(QString("%1").arg(tierContribution, 0, 'f', 1));
     updateMergeButton();
     rebuildPills(sortedNotes);
 }
@@ -184,8 +198,7 @@ void TierRowWidget::rebuildPills(const std::vector<ResearchNote>& sortedNotes) {
         bool highlighted = mergeHovered && (i < highlightCount);
 
         auto* pill = new QWidget();
-        pill->setFixedHeight(42);
-        pill->setMinimumWidth(100);
+        pill->setFixedSize(72, 42);
 
         auto* pillInnerLayout = new QVBoxLayout(pill);
         pillInnerLayout->setContentsMargins(6, 2, 6, 2);
@@ -375,7 +388,7 @@ void ResearchTabWidget::refresh() {
         knowledgeBar->setValues(0, 0, 1, 0);
         knowledgeLabel->setText("Attempt threshold: —");
         successLabel->setText("Success chance: —");
-        for (auto* row : tierRows) row->setNotes({});
+        for (auto* row : tierRows) row->setNotes({}, 0.0);
         return;
     }
 
@@ -416,10 +429,11 @@ void ResearchTabWidget::refreshBar(const ResearchTopic& topic) {
 void ResearchTabWidget::refreshNotes(const ResearchTopic& topic) {
     for (int tier = 0; tier <= ResearchNote::MAX_TIER; ++tier) {
         auto it = topic.notes.find(tier);
+        double contribution = topic.tierContribution(tier);
         if (it != topic.notes.end()) {
-            tierRows[tier]->setNotes(it->second);
+            tierRows[tier]->setNotes(it->second, contribution);
         } else {
-            tierRows[tier]->setNotes({});
+            tierRows[tier]->setNotes({}, contribution);
         }
     }
 }

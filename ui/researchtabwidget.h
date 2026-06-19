@@ -38,8 +38,8 @@ class TierRowWidget : public QWidget {
 public:
     explicit TierRowWidget(int tier, QWidget* parent = nullptr);
 
-    // Update note pills and refresh merge button state
-    void setNotes(const std::vector<ResearchNote>& sortedNotes);
+    // Update note pills, contribution, and refresh merge button state
+    void setNotes(const std::vector<ResearchNote>& sortedNotes, double tierContribution);
 
 signals:
     void mergeRequestedForTier(int tier);
@@ -55,6 +55,7 @@ private:
     QWidget* pillContainer = nullptr;
     QScrollArea* scrollArea = nullptr;
     QPushButton* mergeButton = nullptr;
+    QLabel* contributionLabel = nullptr;
 
     void rebuildPills(const std::vector<ResearchNote>& sortedNotes);
     bool eventFilter(QObject* obj, QEvent* event) override;
