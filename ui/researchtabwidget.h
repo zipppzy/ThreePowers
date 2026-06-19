@@ -6,12 +6,14 @@
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
 #include <QPainter>
+#include <QPushButton>
 #include <QFrame>
+#include <QEnterEvent>
 #include "researchtopic.h"
 #include "actionbutton.h"
-#include "collapsibleactionsection.h"
 #include "tags.h"
 
 // Custom widget that draws the knowledge progress bar with threshold markers
@@ -19,13 +21,10 @@ class KnowledgeBar : public QWidget {
     Q_OBJECT
 public:
     explicit KnowledgeBar(QWidget* parent = nullptr);
-
     void setValues(double current, double attemptThreshold,
                    double guaranteedThreshold, double successChance);
-
 protected:
     void paintEvent(QPaintEvent* event) override;
-
 private:
     double current = 0.0;
     double attemptThreshold = 100.0;
@@ -33,18 +32,33 @@ private:
     double successChance = 0.0;
 };
 
-// Displays one tier row: tier name label + scrollable note pills
+// Displays one tier row: tier name label + scrollable note pills + merge button
 class TierRowWidget : public QWidget {
     Q_OBJECT
 public:
     explicit TierRowWidget(int tier, QWidget* parent = nullptr);
+
+    // Update note pills and refresh merge button state
     void setNotes(const std::vector<ResearchNote>& sortedNotes);
+
+signals:
+    void mergeRequestedForTier(int tier);
+    // Emitted when the merge button is clicked
+    void mergeRequested(int tier);
 
 private:
     int tier;
+    int noteCount = 0;              // cached so merge button can check availability
+    bool mergeHovered = false;      // true while mouse is over merge button
+
     QHBoxLayout* pillLayout = nullptr;
     QWidget* pillContainer = nullptr;
     QScrollArea* scrollArea = nullptr;
+    QPushButton* mergeButton = nullptr;
+
+    void rebuildPills(const std::vector<ResearchNote>& sortedNotes);
+    bool eventFilter(QObject* obj, QEvent* event) override;
+    void updateMergeButton();
 };
 
 // The full research tab
@@ -62,6 +76,7 @@ public:
     void clearActionButtons();
 
 signals:
+    void mergeRequestedForTier(int tier);
     void activeTopicChanged(const QString& topicName);
 
 private slots:

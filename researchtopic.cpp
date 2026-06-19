@@ -97,7 +97,7 @@ std::optional<ResearchNote> ResearchTopic::merge(int tier, double focusSpent, do
 
     // Take up to MERGE_COUNT notes (already sorted descending, so these are the best ones)
     int count = std::min(static_cast<int>(tierList.size()), MERGE_COUNT);
-    if (count < 2) return std::nullopt; // Need at least 2 to merge
+    if (count < MERGE_COUNT) return std::nullopt; // Need at least 2 to merge
 
     // Compute raw contribution of the notes being merged
     std::vector<ResearchNote> toMerge(tierList.begin(), tierList.begin() + count);

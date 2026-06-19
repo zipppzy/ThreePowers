@@ -45,6 +45,19 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
 
+    if(auto maybeAction = Action::checkActionDatabase("Merge Thoughts")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+    if(auto maybeAction = Action::checkActionDatabase("Merge Ideas")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+    if(auto maybeAction = Action::checkActionDatabase("Merge Theories")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+    if(auto maybeAction = Action::checkActionDatabase("Merge Insights")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
+
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
 
@@ -73,11 +86,21 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     mainWindow->setupActionQueueView(this->actionQueueModel, actionQueueDelegate);
 
     mainWindow->setupResearchTab(&player.getResearchTopics());
-    connect(mainWindow->getResearchTab(), &ResearchTabWidget::activeTopicChanged,
-            this, [this](const QString& topicName) {
-                player.activeResearchTopic = topicName.toStdString();
-            });
+    connect(mainWindow->getResearchTab(), &ResearchTabWidget::activeTopicChanged, this, [this](const QString& topicName) {
+            player.activeResearchTopic = topicName.toStdString();
+    });
 
+    connect(mainWindow->getResearchTab(), &ResearchTabWidget::mergeRequestedForTier, this, [this](int tier) {
+        QString actionName = QString("Merge %1s").arg(QString::fromStdString(ResearchNote::tierName(tier)));
+        // Find the action in global actions and queue it
+        for (const auto& action : player.getGlobalActions()) {
+            if (action->name == actionName.toStdString()) {
+                player.addActionToQueue(action, 1);
+                this->play();
+                break;
+            }
+        }
+    });
     startTimer();
 }
 

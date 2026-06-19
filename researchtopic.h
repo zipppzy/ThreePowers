@@ -69,8 +69,8 @@ public:
     static std::optional<std::reference_wrapper<const ResearchTopic>> checkResearchDatabase(const std::string& name);
 
     // Tuning constants
-    static constexpr int    MERGE_COUNT          = 10;
-    static constexpr double DECAY_RATE           = 0.85;   // per-note decay within a tier
+    static constexpr int    MERGE_COUNT          = 10;      //Amount of notes merged to reach next tier
+    static constexpr double DECAY_RATE           = 0.85;    // per-note decay within a tier
     static constexpr double BASE_MERGE_EFFICIENCY  = 0.05;  // without focus: very lossy
     static constexpr double MAX_MERGE_EFFICIENCY   = 0.85;  // with full focus
     static constexpr double BASE_ATTEMPT_SUCCESS   = 0.20;  // success chance at attemptThreshold
