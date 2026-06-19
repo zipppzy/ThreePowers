@@ -59,6 +59,8 @@ private:
     void rebuildPills(const std::vector<ResearchNote>& sortedNotes);
     bool eventFilter(QObject* obj, QEvent* event) override;
     void updateMergeButton();
+
+    std::vector<ResearchNote> lastNotes;
 };
 
 // The full research tab

@@ -131,15 +131,12 @@ bool TierRowWidget::eventFilter(QObject* obj, QEvent* event) {
     if (obj == mergeButton) {
         if (event->type() == QEvent::Enter) {
             mergeHovered = true;
-            // Rebuild pills with highlight if there are notes
-            if (noteCount > 0) {
-                // Trigger a repaint by toggling — actual highlight applied in rebuildPills
-                // We need the note data, so we store it. See setNotes for the repaint call.
-                update();
-            }
+            if (noteCount > 0)
+                rebuildPills(lastNotes);
         } else if (event->type() == QEvent::Leave) {
             mergeHovered = false;
-            update();
+            if (noteCount > 0)
+                rebuildPills(lastNotes);
         }
     }
     return QWidget::eventFilter(obj, event);
@@ -147,6 +144,7 @@ bool TierRowWidget::eventFilter(QObject* obj, QEvent* event) {
 
 void TierRowWidget::setNotes(const std::vector<ResearchNote>& sortedNotes) {
     noteCount = static_cast<int>(sortedNotes.size());
+    lastNotes = sortedNotes;
     updateMergeButton();
     rebuildPills(sortedNotes);
 }
@@ -174,8 +172,7 @@ void TierRowWidget::rebuildPills(const std::vector<ResearchNote>& sortedNotes) {
     }
 
     // Top MERGE_COUNT notes will be consumed by a merge — highlight these on hover
-    int highlightCount = std::min(static_cast<int>(sortedNotes.size()),
-                                  ResearchTopic::MERGE_COUNT);
+    int highlightCount = std::min(static_cast<int>(sortedNotes.size()), ResearchTopic::MERGE_COUNT);
 
     for (int i = 0; i < static_cast<int>(sortedNotes.size()); ++i) {
         const auto& note = sortedNotes[i];
