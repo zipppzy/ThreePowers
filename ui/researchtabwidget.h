@@ -81,6 +81,7 @@ public:
 signals:
     void mergeRequestedForTier(int tier);
     void activeTopicChanged(const QString& topicName);
+    void attemptBreakthroughRequested();
 
 private slots:
     void onTopicSelected(int index);
@@ -100,6 +101,7 @@ private:
     QVBoxLayout* tiersLayout = nullptr;
     std::vector<TierRowWidget*> tierRows;
 
+    QPushButton* breakthroughButton = nullptr;
     QWidget* actionsContainer = nullptr;
     QGridLayout* actionsLayout = nullptr;
     int nextActionCol = 0;
@@ -109,6 +111,7 @@ private:
     void rebuildTierRows();
     void refreshNotes(const ResearchTopic& topic);
     void refreshBar(const ResearchTopic& topic);
+    void updateBreakthroughButton(double successChance);
 };
 
 #endif // RESEARCHTABWIDGET_H

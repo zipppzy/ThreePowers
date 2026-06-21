@@ -282,6 +282,26 @@ ResearchTabWidget::ResearchTabWidget(QWidget* parent)
     statsRow->addWidget(successLabel);
     mainLayout->addLayout(statsRow);
 
+    // ── Breakthrough button row ──
+    auto* bthRow = new QHBoxLayout();
+    bthRow->setContentsMargins(0, 0, 0, 0);
+    breakthroughButton = new QPushButton("Attempt Breakthrough");
+    breakthroughButton->setFixedHeight(36);
+    breakthroughButton->setEnabled(false);
+    breakthroughButton->setStyleSheet(
+        "QPushButton { background: #1a3a2a; color: #4caf50; border: 2px solid #4caf50;"
+        "              border-radius: 6px; font-size: 12px; font-weight: bold; }"
+        "QPushButton:hover { background: #2a4a3a; }"
+        "QPushButton:disabled { background: #2a2a2a; color: #444; border: 2px solid #333; }");
+    bthRow->addStretch();
+    bthRow->addWidget(breakthroughButton);
+    bthRow->addStretch();
+    mainLayout->addLayout(bthRow);
+
+    connect(breakthroughButton, &QPushButton::clicked, this, [this]() {
+        emit attemptBreakthroughRequested();
+    });
+
     // ── Separator ──
     auto* sep1 = new QFrame();
     sep1->setFrameShape(QFrame::HLine);
@@ -388,6 +408,7 @@ void ResearchTabWidget::refresh() {
         knowledgeBar->setValues(0, 0, 1, 0);
         knowledgeLabel->setText("Attempt threshold: —");
         successLabel->setText("Success chance: —");
+        breakthroughButton->setEnabled(false);
         for (auto* row : tierRows) row->setNotes({}, 0.0);
         return;
     }
@@ -423,6 +444,27 @@ void ResearchTabWidget::refreshBar(const ResearchTopic& topic) {
                                         : "#ff9800";
         successLabel->setStyleSheet(
             QString("color: %1; font-size: 10px;").arg(color));
+    }
+    updateBreakthroughButton(chance);
+}
+
+void ResearchTabWidget::updateBreakthroughButton(double successChance) {
+    bool canAttempt = successChance > 0.0;
+    breakthroughButton->setEnabled(canAttempt);
+    if (canAttempt) {
+        QString pct = QString("%1%").arg(successChance * 100.0, 0, 'f', 1);
+        breakthroughButton->setText(QString("Attempt Breakthrough (%1)").arg(pct));
+        QString color = successChance >= 1.0 ? "#4caf50" : "#ffeb3b";
+        breakthroughButton->setStyleSheet(
+            QString("QPushButton { background: #1a3a2a; color: %1; border: 2px solid %1;"
+                    "              border-radius: 6px; font-size: 12px; font-weight: bold; }"
+                    "QPushButton:hover { background: #2a4a3a; }").arg(color));
+    } else {
+        breakthroughButton->setText("Attempt Breakthrough");
+        breakthroughButton->setStyleSheet(
+            "QPushButton { background: #2a2a2a; color: #444; border: 2px solid #333;"
+            "              border-radius: 6px; font-size: 12px; font-weight: bold; }"
+            "QPushButton:disabled { background: #2a2a2a; color: #444; border: 2px solid #333; }");
     }
 }
 

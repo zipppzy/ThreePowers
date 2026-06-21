@@ -22,7 +22,8 @@ public:
         ModifyReserve,
         UnlockResearchTopic,
         AddResearchNote,
-        MergeResearchNotes
+        MergeResearchNotes,
+        AttemptResearch
     };
 
     EffectType type;

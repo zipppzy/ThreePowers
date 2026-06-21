@@ -57,6 +57,9 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     if(auto maybeAction = Action::checkActionDatabase("Merge Insights")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }
+    if(auto maybeAction = Action::checkActionDatabase("Attempt Breakthrough")){
+        player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
+    }
 
     player.setRestAction(player.getGlobalActions()[0]);
     this->addActionButtons();
@@ -101,6 +104,17 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
             }
         }
     });
+
+    connect(mainWindow->getResearchTab(), &ResearchTabWidget::attemptBreakthroughRequested, this, [this]() {
+        for (const auto& action : player.getGlobalActions()) {
+            if (action->name == "Attempt Breakthrough") {
+                player.addActionToQueue(action, 1);
+                this->play();
+                break;
+            }
+        }
+    });
+
     startTimer();
 }
 

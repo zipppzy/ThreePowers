@@ -32,7 +32,8 @@ std::optional<InstantEffect::EffectType> InstantEffect::effectTypeFromString(con
         {"modify_reserve", ModifyReserve},
         {"unlock_research_topic", UnlockResearchTopic},
         {"add_research_note", AddResearchNote},
-        {"merge_research_notes", MergeResearchNotes}
+        {"merge_research_notes", MergeResearchNotes},
+        {"attempt_research", AttemptResearch}
     };
 
     if (auto it = map.find(s); it != map.end())

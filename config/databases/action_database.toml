@@ -353,3 +353,11 @@ tags = ["ui:research"]
     type = "merge_research_notes"
         [actions.effects.parameters]
         tier = "3"
+
+[[actions]]
+name = "Attempt Breakthrough"
+description = "Risk all accumulated research progress for a chance at a breakthrough. Clears all notes on failure."
+baseDuration = 60
+tags = ["ui:research"]
+    [[actions.effects]]
+    type = "attempt_research"

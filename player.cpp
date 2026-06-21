@@ -368,6 +368,16 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
 
             int tier = effect.parameters.count("tier") ? std::stoi(effect.parameters.at("tier")) : 0;
             this->mergeNotes(this->activeResearchTopic, tier, focusConsumed);
+            break;
+        }
+
+        case InstantEffect::AttemptResearch: {
+            if (this->activeResearchTopic.empty()) {
+                Logger::log("No active research topic selected");
+                break;
+            }
+            this->attemptResearch(this->activeResearchTopic);
+            break;
         }
 
     }
