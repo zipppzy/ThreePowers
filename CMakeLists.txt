@@ -36,6 +36,7 @@ set(PROJECT_SOURCES
     ui/reservedelegate.cpp ui/reservedelegate.h
     ui/mainwindow.cpp ui/mainwindow.h
     ui/mainwindow.ui
+    ui/hotkeymanager.cpp ui/hotkeymanager.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

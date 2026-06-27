@@ -12,6 +12,7 @@
 #include "event.h"
 #include "eventdialog.h"
 #include "tags.h"
+#include "hotkeymanager.h"
 #include <QObject>
 #include <QTimer>
 #include <QElapsedTimer>
@@ -42,12 +43,14 @@ private:
 
     std::vector<ActionButton*> actionButtons;
     std::vector<ActionButton*> researchActionButtons;
+    HotkeyManager* hotkeyManager = nullptr;
     SkillModel* skillModel = nullptr;
     InventoryModel* inventoryModel = nullptr;
     ActionQueueModel* actionQueueModel = nullptr;
     ReserveModel* reserveModel = nullptr;
 
     void connectButtons();
+    void setupHotkeys();
     void addActionButton(std::shared_ptr<Action> action);
     void addActionButtons();
 
@@ -64,6 +67,7 @@ public slots:
     void loop();
     void play();
     void pause();
+    void togglePlayPause();
     void skip();
 };
 

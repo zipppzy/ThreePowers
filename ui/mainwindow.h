@@ -33,8 +33,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QPushButton* getPauseButton() const;
-    QPushButton* getPlayButton() const;
+    QPushButton* getPlayPauseButton() const;
     QPushButton* getSkipButton() const;
 
     void updateTime(unsigned int ticks);

@@ -6,6 +6,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     , mainWindow(mainWindow)
 {
     this->connectButtons();
+    this->setupHotkeys();
 
     Action::loadActionDatabase("config/databases/action_database.toml");
     Skill::loadSkillDatabase("config/databases/skills_database.toml");
@@ -131,9 +132,19 @@ void GameLoop::handleTriggeredEffect(const TriggerManager::TriggeredEffect& effe
 }
 
 void GameLoop::connectButtons(){
-    connect(mainWindow->getPauseButton(),&QPushButton::clicked, this , &GameLoop::pause);
-    connect(mainWindow->getPlayButton(), &QPushButton::clicked, this , &GameLoop::play);
+    connect(mainWindow->getPlayPauseButton(), &QPushButton::clicked, this , &GameLoop::togglePlayPause);
     connect(mainWindow->getSkipButton(), &QPushButton::clicked, this, &GameLoop::skip);
+
+    auto* btn = mainWindow->getPlayPauseButton();
+    btn->setText(">");
+    btn->setStyleSheet("QPushButton { background-color: #c0392b; color: white; font-weight: bold; font-size: 16px; border-radius: 4px; } QPushButton:hover { background-color: #e74c3c; }");
+}
+
+void GameLoop::setupHotkeys(){
+    hotkeyManager = new HotkeyManager(mainWindow);
+    hotkeyManager->registerHotkey("togglePlayPause", Qt::Key_Space, [this]() {
+        togglePlayPause();
+    });
 }
 
 void GameLoop::addActionButton(std::shared_ptr<Action> action){
@@ -345,11 +356,28 @@ void GameLoop::play()
 {
     paused = false;
     elapsedTimer.restart();
+
+    auto* btn = mainWindow->getPlayPauseButton();
+    btn->setText("||");
+    btn->setStyleSheet("QPushButton { background-color: #27ae60; color: white; font-weight: bold; font-size: 16px; border-radius: 4px; } QPushButton:hover { background-color: #2ecc71; }");
 }
 
 void GameLoop::pause()
 {
     paused = true;
+
+    auto* btn = mainWindow->getPlayPauseButton();
+    btn->setText(">");
+    btn->setStyleSheet("QPushButton { background-color: #c0392b; color: white; font-weight: bold; font-size: 16px; border-radius: 4px; } QPushButton:hover { background-color: #e74c3c; }");
+}
+
+void GameLoop::togglePlayPause()
+{
+    if (paused) {
+        play();
+    } else {
+        pause();
+    }
 }
 
 void GameLoop::skip(){

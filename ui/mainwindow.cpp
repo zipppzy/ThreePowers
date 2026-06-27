@@ -38,12 +38,8 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
-QPushButton* MainWindow::getPauseButton() const{
-    return ui->pauseButton;
-}
-
-QPushButton* MainWindow::getPlayButton() const{
-    return ui->playButton;
+QPushButton* MainWindow::getPlayPauseButton() const{
+    return ui->playPauseButton;
 }
 
 QPushButton* MainWindow::getSkipButton() const{
