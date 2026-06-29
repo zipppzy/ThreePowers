@@ -136,6 +136,7 @@ void GameLoop::connectButtons(){
     connect(mainWindow->getSkipButton(), &QPushButton::clicked, this, &GameLoop::skip);
 
     auto* btn = mainWindow->getPlayPauseButton();
+    btn->setCursor(Qt::PointingHandCursor);
     btn->setText(">");
     btn->setStyleSheet("QPushButton { background-color: #c0392b; color: white; font-weight: bold; font-size: 16px; border-radius: 4px; } QPushButton:hover { background-color: #e74c3c; }");
 }
