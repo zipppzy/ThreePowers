@@ -29,6 +29,24 @@ MainWindow::MainWindow(QWidget *parent)
     researchTab = new ResearchTabWidget(researchTabPage);
     researchTabLayout->addWidget(researchTab);
 
+    // Speed controls: /2  [spinbox]  x2
+    halfSpeedButton = new QPushButton("/2");
+    halfSpeedButton->setMaximumWidth(40);
+    doubleSpeedButton = new QPushButton("x2");
+    doubleSpeedButton->setMaximumWidth(40);
+    speedSpinBox = new QDoubleSpinBox();
+    speedSpinBox->setMinimum(1);
+    speedSpinBox->setMaximum(100000);
+    speedSpinBox->setSingleStep(1);
+    speedSpinBox->setDecimals(0);
+    speedSpinBox->setValue(500);
+
+    auto* speedLayout = new QHBoxLayout();
+    speedLayout->addWidget(halfSpeedButton);
+    speedLayout->addWidget(speedSpinBox);
+    speedLayout->addWidget(doubleSpeedButton);
+
+    ui->leftVerticalLayout->insertLayout(2, speedLayout);
 
     ui->tabWidget->setCurrentIndex(0);
     this->showMaximized();
@@ -44,6 +62,18 @@ QPushButton* MainWindow::getPlayPauseButton() const{
 
 QPushButton* MainWindow::getSkipButton() const{
     return ui->skipButton;
+}
+
+QDoubleSpinBox* MainWindow::getSpeedSpinBox() const{
+    return speedSpinBox;
+}
+
+QPushButton* MainWindow::getHalfSpeedButton() const{
+    return halfSpeedButton;
+}
+
+QPushButton* MainWindow::getDoubleSpeedButton() const{
+    return doubleSpeedButton;
 }
 
 void MainWindow::addActionButton(ActionButton* btn, const QString& section){

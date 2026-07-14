@@ -5,6 +5,7 @@
 #include <QListView>
 #include <QTableView>
 #include <QHeaderView>
+#include <QDoubleSpinBox>
 #include <qgridlayout.h>
 #include "actionbutton.h"
 #include "actionqueuemodel.h"
@@ -35,6 +36,9 @@ public:
 
     QPushButton* getPlayPauseButton() const;
     QPushButton* getSkipButton() const;
+    QDoubleSpinBox* getSpeedSpinBox() const;
+    QPushButton* getHalfSpeedButton() const;
+    QPushButton* getDoubleSpeedButton() const;
 
     void updateTime(unsigned int ticks);
 
@@ -72,6 +76,10 @@ private:
     QListView* reserveView = nullptr;
     QTableView* inventoryView = nullptr;
     ResearchTabWidget* researchTab = nullptr;
+
+    QDoubleSpinBox* speedSpinBox = nullptr;
+    QPushButton* halfSpeedButton = nullptr;
+    QPushButton* doubleSpeedButton = nullptr;
 
 };
 #endif // MAINWINDOW_H

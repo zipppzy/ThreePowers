@@ -139,6 +139,28 @@ void GameLoop::connectButtons(){
     btn->setCursor(Qt::PointingHandCursor);
     btn->setText(">");
     btn->setStyleSheet("QPushButton { background-color: #c0392b; color: white; font-weight: bold; font-size: 16px; border-radius: 4px; } QPushButton:hover { background-color: #e74c3c; }");
+
+    auto* halfBtn = mainWindow->getHalfSpeedButton();
+    auto* doubleBtn = mainWindow->getDoubleSpeedButton();
+    auto* speedBox = mainWindow->getSpeedSpinBox();
+
+    halfBtn->setCursor(Qt::PointingHandCursor);
+    doubleBtn->setCursor(Qt::PointingHandCursor);
+
+    QString btnStyle = "QPushButton { background-color: #2c3e50; color: white; font-weight: bold; font-size: 14px; border-radius: 4px; } QPushButton:hover { background-color: #34495e; }";
+    halfBtn->setStyleSheet(btnStyle);
+    doubleBtn->setStyleSheet(btnStyle);
+
+    speedBox->setStyleSheet("QDoubleSpinBox { font-size: 14px; border-radius: 4px; padding: 2px; }");
+
+    connect(speedBox, &QDoubleSpinBox::valueChanged, this, &GameLoop::setSpeed);
+
+    connect(halfBtn, &QPushButton::clicked, this, [speedBox]() {
+        speedBox->setValue(speedBox->value() / 2.0);
+    });
+    connect(doubleBtn, &QPushButton::clicked, this, [speedBox]() {
+        speedBox->setValue(speedBox->value() * 2.0);
+    });
 }
 
 void GameLoop::setupHotkeys(){
@@ -385,6 +407,10 @@ void GameLoop::skip(){
     unsigned long long int ticksSimulated = this->player.fastForwardQueue();
     this->ticks += ticksSimulated;
     this->updateUI();
+}
+
+void GameLoop::setSpeed(double value){
+    timeScale = value;
 }
 
 void GameLoop::loop()

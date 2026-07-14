@@ -68,6 +68,7 @@ public slots:
     void play();
     void pause();
     void togglePlayPause();
+    void setSpeed(double value);
     void skip();
 };
 
