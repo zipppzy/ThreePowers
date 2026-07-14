@@ -86,7 +86,7 @@ void MainWindow::addActionButton(ActionButton* btn, const QString& section){
 }
 
 void MainWindow::clearActionButtons() {
-    for (auto* section : actionSections) {
+    for (auto* section : std::as_const(actionSections)) {
         section->setParent(nullptr);
         delete section;
     }
