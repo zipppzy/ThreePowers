@@ -1,0 +1,22 @@
+# [[attacks]]
+# name = "Attack Name"                   # Required: Display name
+# baseDuration = 3                       # Required: Time in seconds to execute
+# damageType = "physical"                # Required: physical | qi | mana | psychic
+# baseDamage = 10.0                      # Required: Damage before armor resolution
+# range = "melee"                        # Required: melee | ranged | either
+#
+# All other Action fields (requirements, skillRewards, tags, etc.) work the same as action_database.toml
+
+[[attacks]]
+name = "Slash"
+baseDuration = 3
+damageType = "physical"
+baseDamage = 10.0
+range = "melee"
+
+[[attacks]]
+name = "Claw Swipe"
+baseDuration = 2
+damageType = "physical"
+baseDamage = 6.0
+range = "melee"
