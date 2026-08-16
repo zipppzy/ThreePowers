@@ -15,6 +15,7 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     Event::loadEventDatabase("config/databases/event_database.toml");
     Item::loadItemDatabase("config/databases/item_database.toml");
     ResearchTopic::loadResearchDatabase("config/databases/research_database.toml");
+    Combatant::loadCombatantDatabase("config/databases/combatant_database.toml");
 
     world.loadWorldState("config/world_state.toml");
 

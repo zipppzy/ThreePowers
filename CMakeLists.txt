@@ -59,6 +59,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         researchtopic.h researchtopic.cpp
         ui/researchtabwidget.h ui/researchtabwidget.cpp
         combatattack.h combatattack.cpp
+        combatant.h combatant.cpp
     )
 else()
     if(ANDROID)

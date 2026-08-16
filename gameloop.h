@@ -13,6 +13,7 @@
 #include "eventdialog.h"
 #include "tags.h"
 #include "combatattack.h"
+#include "combatant.h"
 #include "hotkeymanager.h"
 #include <QObject>
 #include <QTimer>

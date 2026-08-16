@@ -1,0 +1,16 @@
+# [[combatants]]
+# name = "Combatant Name"                # Required: Display name
+# maxHealth = 30.0                       # Required
+# speed = 5.0                            # Required
+#
+#   [[combatants.attacks]]
+#   name = "Attack Name"                   # Must exist in combat_attack_database.toml
+#   weight = 3                             # AI selection weight, relative to other attacks
+
+[[combatants]]
+name = "Wolf"
+maxHealth = 20.0
+speed = 2.0
+    [[combatants.attacks]]
+    name = "Claw Swipe"
+    weight = 1
