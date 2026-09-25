@@ -23,7 +23,8 @@ public:
         UnlockResearchTopic,
         AddResearchNote,
         MergeResearchNotes,
-        AttemptResearch
+        AttemptResearch,
+        EnterCombat
     };
 
     EffectType type;

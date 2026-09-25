@@ -215,6 +215,19 @@ void Player::moveLocation(std::shared_ptr<Location> destination){
     this->applySkillEffectsAllActions();
 }
 
+void Player::takeDamage(double amount){
+    if(auto health = this->findReserve("Health")){
+        health.value()->subtract(amount);
+    }
+    //TODO: death handling
+}
+
+bool Player::isDead() const{
+    auto it = std::find_if(this->reserves.begin(), this->reserves.end(), [](const Reserve& r){return r.name == "Health";});
+    if(it == this->reserves.end()) return false;
+    return it->getCurrentValue() <= 0;
+}
+
 void Player::unlockLocation(const std::string& locationName) {
     if (world){
         world->unlockLocation(locationName);
@@ -380,6 +393,13 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
             break;
         }
 
+        case InstantEffect::EnterCombat: {
+            std::string combatantName = effect.parameters.count("combatantName") ? effect.parameters.at("combatantName") : "";
+            if(auto maybeCombatant = Combatant::checkCombatantDatabase(combatantName)){
+                this->enterCombat(Combatant(maybeCombatant->get()));
+            }
+            break;
+        }
     }
 }
 
@@ -581,6 +601,23 @@ bool Player::startAction(std::shared_ptr<Action> action){
     }
 }
 
+void Player::enterCombat(Combatant enemy){
+    if(this->currentAction != nullptr){
+        this->removeConstActionReserveModifiers(this->currentAction);
+    }
+    this->preCombatQueue = this->actionQueue;
+    this->actionQueue.clear();
+    this->currentAction = nullptr;
+    this->activeCombat = std::make_unique<CombatEncounter>(enemy);
+}
+
+void Player::exitCombat(){
+    this->activeCombat.reset();
+    this->actionQueue = this->preCombatQueue;
+    this->preCombatQueue.clear();
+    this->attemptStartNextAction();
+}
+
 void Player::savePlayerState(const std::string& fileName){
     toml::table playerData;
 
@@ -620,6 +657,19 @@ void Player::loadPlayerState(const std::string& fileName){
 
 void Player::tick(){
     this->age++;
+
+    if(this->activeCombat){
+        if(this->activeCombat->tickEnemy()){
+            this->takeDamage(this->activeCombat->enemy.currentAttack->getBaseDamage());
+            this->activeCombat->enemy.pickNextAttack();
+        }
+
+        if(this->isDead() || this->activeCombat->isEnemyDead()){
+            this->exitCombat();
+            return;
+        }
+    }
+
     if(currentAction != nullptr){
         // Check if any reserve with a cost has run out
         auto constantReserveCost = currentAction->getConstantReserveCost();
@@ -669,6 +719,11 @@ void Player::tick(){
                 if(auto travelAction = std::dynamic_pointer_cast<TravelAction>(currentAction)){
                     this->moveLocation(travelAction->getDestination());
                     this->movedLocation = true;
+                }
+                if(auto combatAttack = std::dynamic_pointer_cast<CombatAttack>(currentAction)){
+                    if(this->activeCombat){
+                        this->activeCombat->enemy.takeDamage(combatAttack->getBaseDamage());
+                    }
                 }
                 auto skillRewards = currentAction->getSkillRewards();
                 for(const auto& [key,value] : skillRewards){

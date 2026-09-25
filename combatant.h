@@ -9,8 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-// Lightweight representation of a combat participant on the enemy side.
-// Does not reuse Player's Skill/Reserve/Action-queue machinery.
+// Lightweight representation of a combat participan
 class Combatant
 {
 public:

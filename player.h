@@ -6,6 +6,7 @@
 #include <set>
 #include <random>
 
+#include "combatencounter.h"
 #include "item.h"
 #include "location.h"
 #include "action.h"
@@ -43,8 +44,11 @@ public:
     const std::unordered_map<std::string, std::vector<std::shared_ptr<Action>>>& getItemActions() const;
     std::shared_ptr<Location> getCurrentLocation();
     void applySkillEffectsToAction(std::shared_ptr<Action> action);
-    void applySkillEffectsAllActions();   // replaces applySkillEffectsCurrentLocation
+    void applySkillEffectsAllActions();
     void moveLocation(std::shared_ptr<Location> destination);
+
+    void takeDamage(double amount);
+    bool isDead() const;
 
     void unlockLocation(const std::string& locationName);
     void lockLocation(const std::string& locationName);
@@ -86,6 +90,9 @@ public:
     void consumeResources(const ConsumeList& toConsume);
 
     bool startAction(std::shared_ptr<Action> action);       //returns true if action is started and false otherwise
+
+    void enterCombat(Combatant enemy);
+    void exitCombat();
 
     void savePlayerState(const std::string& fileName);
     void loadPlayerState(const std::string& fileName);
@@ -132,6 +139,10 @@ private:
 
     //queue of actions with number of times to repeat; -1 means repeat indefinitely
     std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;
+    //stashed queue from before combat begins
+    std::deque<std::pair<std::shared_ptr<Action>, int>> preCombatQueue;
+
+    std::unique_ptr<CombatEncounter> activeCombat;
 
     World* world = nullptr;
 
