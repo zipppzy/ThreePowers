@@ -396,7 +396,7 @@ void Player::applyInstantEffect(const InstantEffect& effect) {
         case InstantEffect::EnterCombat: {
             std::string combatantName = effect.parameters.count("combatantName") ? effect.parameters.at("combatantName") : "";
             if(auto maybeCombatant = Combatant::checkCombatantDatabase(combatantName)){
-                this->enterCombat(Combatant(maybeCombatant->get()));
+                this->pendingCombatant = Combatant(maybeCombatant->get());
             }
             break;
         }
@@ -609,6 +609,7 @@ void Player::enterCombat(Combatant enemy){
     this->actionQueue.clear();
     this->currentAction = nullptr;
     this->activeCombat = std::make_unique<CombatEncounter>(enemy);
+    this->combatStateChanged = true;
 }
 
 void Player::exitCombat(){
@@ -616,6 +617,7 @@ void Player::exitCombat(){
     this->actionQueue = this->preCombatQueue;
     this->preCombatQueue.clear();
     this->attemptStartNextAction();
+    this->combatStateChanged = true;
 }
 
 void Player::savePlayerState(const std::string& fileName){

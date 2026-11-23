@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     researchTab = new ResearchTabWidget(researchTabPage);
     researchTabLayout->addWidget(researchTab);
 
+    combatTab = new CombatTabWidget();
+
     // Speed controls: /2  [spinbox]  x2
     halfSpeedButton = new QPushButton("/2");
     halfSpeedButton->setMaximumWidth(40);
@@ -202,3 +204,18 @@ void MainWindow::clearResearchActionButtons() {
     }
 }
 
+void MainWindow::showCombatTab(){
+    if(combatTabIndex != -1) return;
+    combatTabIndex = ui->tabWidget->addTab(combatTab, "Combat");
+    ui->tabWidget->setCurrentIndex(combatTabIndex);
+}
+
+void MainWindow::hideCombatTab(){
+    if(combatTabIndex == -1) return;
+    ui->tabWidget->removeTab(combatTabIndex);
+    combatTabIndex = -1;
+}
+
+CombatTabWidget* MainWindow::getCombatTab() const{
+    return combatTab;
+}

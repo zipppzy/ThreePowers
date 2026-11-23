@@ -19,6 +19,7 @@
 #include "reservemodel.h"
 #include "reservedelegate.h"
 #include "researchtabwidget.h"
+#include "combattabwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -58,6 +59,10 @@ public:
     void addResearchActionButton(ActionButton* btn);
     void clearResearchActionButtons();
 
+    void showCombatTab();
+    void hideCombatTab();
+    CombatTabWidget* getCombatTab() const;
+
 private:
     Ui::MainWindow *ui;
 
@@ -76,6 +81,8 @@ private:
     QListView* reserveView = nullptr;
     QTableView* inventoryView = nullptr;
     ResearchTabWidget* researchTab = nullptr;
+    CombatTabWidget* combatTab = nullptr;
+    int combatTabIndex = -1;
 
     QDoubleSpinBox* speedSpinBox = nullptr;
     QPushButton* halfSpeedButton = nullptr;

@@ -117,6 +117,11 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
             }
         }
     });
+    connect(mainWindow->getCombatTab(), &CombatTabWidget::attackTargetChosen, this, [this](std::shared_ptr<CombatAttack> attack, int repeats, int targetIndex){
+        Q_UNUSED(targetIndex);   //only one possible target until multi-enemy lands
+        player.addActionToQueue(attack, repeats);
+        this->play();
+    });
 
     startTimer();
 }
@@ -316,6 +321,20 @@ void GameLoop::updateUI(){
     if(player.inventoryChanged){
         this->inventoryModel->onItemAdded();
         player.inventoryChanged = false;
+    }
+
+    if(player.combatStateChanged){
+        if(player.getActiveCombat()){
+            mainWindow->showCombatTab();
+            mainWindow->getCombatTab()->setAttackButtons(player.getPlayerAttacks());
+        }else{
+            mainWindow->hideCombatTab();
+        }
+        player.combatStateChanged = false;
+    }
+
+    if(player.getActiveCombat()){
+        mainWindow->getCombatTab()->refresh(*player.getActiveCombat());
     }
 
     if(!player.updatedSkillIndexes.empty()){

@@ -61,6 +61,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         combatattack.h combatattack.cpp
         combatant.h combatant.cpp
         combatencounter.h combatencounter.cpp
+        ui/healthbarwidget.h ui/healthbarwidget.cpp
+        ui/combatantwidget.h ui/combatantwidget.cpp
+        ui/combattabwidget.h ui/combattabwidget.cpp
+
     )
 else()
     if(ANDROID)

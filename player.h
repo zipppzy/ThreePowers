@@ -93,6 +93,11 @@ public:
 
     void enterCombat(Combatant enemy);
     void exitCombat();
+    bool combatStateChanged = false;
+    const CombatEncounter* getActiveCombat() const { return activeCombat.get(); }
+
+    //stubbed - the player's own set of usable combat attacks isn't designed yet (see open question below)
+    const std::vector<std::shared_ptr<CombatAttack>>& getPlayerAttacks() const { return playerAttacks; }
 
     void savePlayerState(const std::string& fileName);
     void loadPlayerState(const std::string& fileName);
@@ -141,8 +146,11 @@ private:
     std::deque<std::pair<std::shared_ptr<Action>, int>> actionQueue;
     //stashed queue from before combat begins
     std::deque<std::pair<std::shared_ptr<Action>, int>> preCombatQueue;
+    std::optional<Combatant> pendingCombatant;
+    bool startPendingCombat();
 
     std::unique_ptr<CombatEncounter> activeCombat;
+    std::vector<std::shared_ptr<CombatAttack>> playerAttacks;
 
     World* world = nullptr;
 
