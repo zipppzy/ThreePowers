@@ -195,6 +195,7 @@ baseDuration = -1
     [actions.constantReserveGain]
     "Vigor" = 1
     "Focus" = 1
+    "Health" = 1
 
 [[actions]]
 name = "Look for work"
@@ -266,7 +267,7 @@ baseDuration = 5400
         name = "Iron Axe"
         count = 1
     [[actions.effects]]
-    type = "add item"
+    type = "add_item"
         [actions.effects.parameters]
         itemName = "Log"
         count = 1
@@ -356,3 +357,12 @@ description = "Risk all accumulated research progress for a chance at a breakthr
 baseDuration = 60
     [[actions.effects]]
     type = "attempt_research"
+
+[[actions]]
+name = "Fight Wolf"
+description = "Placeholder: pick a fight with a wolf"
+baseDuration = 10
+    [[actions.effects]]
+    type = "enter_combat"
+        [actions.effects.parameters]
+        combatantName = "Wolf"

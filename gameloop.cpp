@@ -32,6 +32,16 @@ GameLoop::GameLoop(MainWindow *mainWindow, QObject *parent):
     player.addNewReserve(Reserve{"Memory", 50.0});
     player.findReserve("Memory").value()->addRegen(-0.01);
 
+    player.addNewReserve(Reserve{"Health", 10.0});
+    player.findReserve("Health").value()->add(10.0);    //Reserve(name, maxValue) starts at 0, so fill it
+
+    //placeholder player attacks until the real attack source is designed
+    for(const std::string& attackName : std::vector<std::string>{"Slash", "Punch", "Heavy Slam"}){
+        if(auto maybeAttack = CombatAttack::checkAttackDatabase(attackName)){
+            player.addPlayerAttack(std::make_shared<CombatAttack>(maybeAttack->get()));
+        }
+    }
+
     if(auto maybeAction = Action::checkActionDatabase("Rest")){
         player.addGlobalAction(std::make_shared<Action>(maybeAction.value()));
     }

@@ -96,8 +96,9 @@ public:
     bool combatStateChanged = false;
     const CombatEncounter* getActiveCombat() const { return activeCombat.get(); }
 
-    //stubbed - the player's own set of usable combat attacks isn't designed yet (see open question below)
+    //placeholder - the player's own set of usable combat attacks is added manually until the real source (skills/items/unlocks) is designed
     const std::vector<std::shared_ptr<CombatAttack>>& getPlayerAttacks() const { return playerAttacks; }
+    void addPlayerAttack(std::shared_ptr<CombatAttack> attack);
 
     void savePlayerState(const std::string& fileName);
     void loadPlayerState(const std::string& fileName);

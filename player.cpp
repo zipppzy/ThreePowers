@@ -551,6 +551,7 @@ void Player::endCurrentAction(){
 }
 
 void Player::attemptStartNextAction(){
+    if(this->pendingCombatant) return;
     if(!this->actionQueue.empty()){
         if(!startAction(this->actionQueue.front().first)){
             actionQueue.pop_front();
@@ -612,7 +613,23 @@ void Player::enterCombat(Combatant enemy){
     this->combatStateChanged = true;
 }
 
+bool Player::startPendingCombat(){
+    if(!this->pendingCombatant || this->activeCombat) return false;
+    Combatant enemy = *this->pendingCombatant;
+    this->pendingCombatant.reset();
+    this->enterCombat(enemy);
+    return true;
+}
+
+void Player::addPlayerAttack(std::shared_ptr<CombatAttack> attack){
+    this->playerAttacks.push_back(attack);
+}
+
 void Player::exitCombat(){
+    if(this->currentAction != nullptr){
+        this->removeConstActionReserveModifiers(this->currentAction);
+        this->currentAction = nullptr;
+    }
     this->activeCombat.reset();
     this->actionQueue = this->preCombatQueue;
     this->preCombatQueue.clear();
@@ -659,6 +676,8 @@ void Player::loadPlayerState(const std::string& fileName){
 
 void Player::tick(){
     this->age++;
+
+    this->startPendingCombat();
 
     if(this->activeCombat){
         if(this->activeCombat->tickEnemy()){
@@ -755,9 +774,11 @@ void Player::tick(){
                 if(actionQueue.front().second == 0){
                     endCurrentAction();
                     attemptStartNextAction();
+                    this->startPendingCombat();
                     return;
                 }
             }
+            if(this->startPendingCombat()) return;
         }
         //handle ending of autoRest
         if(this->isAutoResting){

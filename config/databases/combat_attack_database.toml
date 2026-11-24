@@ -1,6 +1,6 @@
 # [[attacks]]
 # name = "Attack Name"                   # Required: Display name
-# baseDuration = 3                       # Required: Time in seconds to execute
+# baseDuration = 500                     # Required: Duration in ticks (1 tick = 1 game second; at timeScale 500 a duration of 500 is about 1 real second)
 # damageType = "physical"                # Required: physical | qi | mana | psychic
 # baseDamage = 10.0                      # Required: Damage before armor resolution
 # range = "melee"                        # Required: melee | ranged | either
@@ -9,14 +9,28 @@
 
 [[attacks]]
 name = "Slash"
-baseDuration = 3
+baseDuration = 500
 damageType = "physical"
 baseDamage = 10.0
 range = "melee"
 
 [[attacks]]
-name = "Claw Swipe"
-baseDuration = 2
+name = "Punch"
+baseDuration = 250
 damageType = "physical"
-baseDamage = 6.0
+baseDamage = 3.0
+range = "melee"
+
+[[attacks]]
+name = "Heavy Slam"
+baseDuration = 1000
+damageType = "physical"
+baseDamage = 15.0
+range = "melee"
+
+[[attacks]]
+name = "Claw Swipe"
+baseDuration = 1500
+damageType = "physical"
+baseDamage = 2.0
 range = "melee"

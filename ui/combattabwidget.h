@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QLabel>
+#include <QShortcut>
 #include <vector>
 #include "combatantwidget.h"
 #include "combatattack.h"
@@ -21,10 +23,17 @@ public:
 signals:
     void attackTargetChosen(std::shared_ptr<CombatAttack> attack, int repeats, int combatantIndex);
 
+protected:
+    void mousePressEvent(QMouseEvent* event) override;
+    void hideEvent(QHideEvent* event) override;
+
 private:
     QWidget* enemyContainer;
     QGridLayout* enemyLayout;
     std::vector<CombatantWidget*> enemyWidgets;
+
+    QLabel* targetingHintLabel;
+    QShortcut* cancelShortcut;
 
     QWidget* attackButtonContainer;
     QGridLayout* attackButtonLayout;

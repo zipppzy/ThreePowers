@@ -1,5 +1,7 @@
 #include "combattabwidget.h"
 #include <QVBoxLayout>
+#include <QMouseEvent>
+#include <QHideEvent>
 
 CombatTabWidget::CombatTabWidget(QWidget* parent)
     : QWidget(parent)
@@ -10,11 +12,21 @@ CombatTabWidget::CombatTabWidget(QWidget* parent)
     enemyLayout = new QGridLayout(enemyContainer);
     mainLayout->addWidget(enemyContainer);
 
+    targetingHintLabel = new QLabel(this);
+    targetingHintLabel->setMinimumHeight(20);
+    targetingHintLabel->setStyleSheet("color: #64c8ff;");
+    mainLayout->addWidget(targetingHintLabel);
+
     attackButtonContainer = new QWidget(this);
     attackButtonLayout = new QGridLayout(attackButtonContainer);
     mainLayout->addWidget(attackButtonContainer);
 
     mainLayout->addStretch();
+
+    //only enabled while targeting so Esc is never swallowed the rest of the time
+    cancelShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    cancelShortcut->setEnabled(false);
+    connect(cancelShortcut, &QShortcut::activated, this, &CombatTabWidget::cancelTargeting);
 }
 
 void CombatTabWidget::refresh(const CombatEncounter& encounter){
@@ -64,6 +76,8 @@ void CombatTabWidget::enterTargetingMode(std::shared_ptr<CombatAttack> attack){
     for(CombatantWidget* widget : enemyWidgets){
         widget->setTargetable(true);
     }
+    targetingHintLabel->setText("Choose a target  (right-click or Esc to cancel)");
+    cancelShortcut->setEnabled(true);
 }
 
 void CombatTabWidget::cancelTargeting(){
@@ -72,4 +86,20 @@ void CombatTabWidget::cancelTargeting(){
     for(CombatantWidget* widget : enemyWidgets){
         widget->setTargetable(false);
     }
+    targetingHintLabel->setText("");
+    cancelShortcut->setEnabled(false);
+}
+
+void CombatTabWidget::mousePressEvent(QMouseEvent* event){
+    //child widgets (labels, bars, CombatantWidget) ignore right-clicks, so they bubble up to here
+    if(event->button() == Qt::RightButton && pendingAttack){
+        cancelTargeting();
+        return;
+    }
+    QWidget::mousePressEvent(event);
+}
+
+void CombatTabWidget::hideEvent(QHideEvent* event){
+    cancelTargeting();
+    QWidget::hideEvent(event);
 }
